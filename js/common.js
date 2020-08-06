@@ -378,11 +378,10 @@ var MUI = MUI || {
 				var val = $(this).val();
 				var target = $(this).parent().find(".selText");
 				if (val == "DISP_ROOT") {
-					target.html(target.attr("data-name"))
+					target.html(target.attr("data-name"));
 				} else {
-					target.html($(this).find(".bestSubCate" + val).attr("data-name"))
+					target.html($(this).find(".bestSubCate" + val).attr("data-name"));
 				}
-				//console.log(val, target);
 			});
 		},
 		fixedTop: function(){
