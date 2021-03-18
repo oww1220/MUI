@@ -8,7 +8,7 @@
 	<title></title>
 
 
-    <script src="./js/build/pdf.js"></script>
+    <script src="./js/pdf.js"></script>
 	
 
 </head>
@@ -27,8 +27,8 @@
 
     //var url = './pdf/avante-price.pdf';
     var url = './pdf/tivoli_price_2012.pdf';
-    var worker = new pdfjsLib.PDFWorker('./js/build/pdf.worker.js');
-    //pdfjsLib.GlobalWorkerOptions.workerSrc = './js/build/pdf.worker.js';
+    var worker = new pdfjsLib.PDFWorker('./js/pdf.worker.js');
+    //pdfjsLib.GlobalWorkerOptions.workerSrc = './js/pdf.worker.js';
 
     var loadingTask = pdfjsLib.getDocument({
         url: url,

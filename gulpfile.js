@@ -40,7 +40,7 @@ gulp.task('uglify', function (done) {
 /*pc*/
 gulp.task('sassPC', function () {
   return gulp
-    .src('wwwroot/scss/**/*.scss')
+    .src('wwwroot/Guide/assets/scss/**/*.scss')
     .pipe(plumber(plumberOption))
     .pipe(
       sourcemaps.init({
@@ -61,13 +61,13 @@ gulp.task('sassPC', function () {
       })
 	)
     .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest('wwwroot/styles'))
+    .pipe(gulp.dest('wwwroot/Guide/assets/styles'))
     .pipe(browserSync.reload({ stream: true }));
 });
 
 gulp.task('buildPC', function () {
   return gulp
-    .src('wwwroot/scss/**/*.scss')
+    .src('wwwroot/Guide/assets/scss/**/*.scss')
     .pipe(plumber(plumberOption))
     .pipe(
       sass({
@@ -80,7 +80,7 @@ gulp.task('buildPC', function () {
         cascade: true,
       })
     )
-    .pipe(gulp.dest('wwwroot/styles/dist'))
+    .pipe(gulp.dest('wwwroot/Guide/assets/styles/dist'))
     .pipe(browserSync.reload({ stream: true }))
     .on('end', function () {
       console.log('-------- appned css --------');
@@ -100,7 +100,7 @@ gulp.task('watch', function () {
 
   //gulp.watch('wwwroot/scripts/**/*.js',  gulp.series('uglify'));
   gulp.watch(
-    'wwwroot/scss/**/*.scss',
+    'wwwroot/Guide/assets/scss/**/*.scss',
     gulp.series('sassPC', 'buildPC')
   );
 
