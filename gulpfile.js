@@ -1,17 +1,29 @@
 var gulp = require('gulp');
-var babel = require('gulp-babel');
+
+/*유틸*/
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+
+/*view server*/
+var browserSync = require('browser-sync').create();
+
+/*scss, css*/
 var sass = require('gulp-sass');
 sass.compiler = require('node-sass');
+var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var cleanCss = require('gulp-clean-css');
-var sourcemaps = require('gulp-sourcemaps');
-var browserSync = require('browser-sync').create();
 var modifyCssUrls = require('gulp-modify-css-urls');
 var pxtorem = require('gulp-pxtorem');
 
+/*타입스크립트*/
+var ts = require('gulp-typescript');
+var tsProject = ts.createProject('tsconfig.json');
+
+/*오류 처리*/
 var plumber = require('gulp-plumber');
+
+
 
 var errorHandler = function (error) {
   console.error(error.message);
@@ -21,23 +33,16 @@ var plumberOption = {
   errorHandler: errorHandler,
 };
 
-var BABEL_POLYFILL = './node_modules/@babel/polyfill/browser.js';
 var autoprefixBrowsers = ['> 0%', 'last 4 versions'];
 
-gulp.task('uglify', function (done) {
-  done();
-  return (
-    gulp
-      .src(['wwwroot/scripts/**/*.js', BABEL_POLYFILL]) //src 폴더 아래의 모든 js 파일을
-      .pipe(plumber(plumberOption))
-      .pipe(babel())
-      //.pipe(concat('all.js'))
-      //.pipe(uglify()) //minify 해서
-      .pipe(gulp.dest('wwwroot/scripts/dist'))
-  ); //dist 폴더에 저장
-});
-
 /*pc*/
+gulp.task('tsPC', function () {
+  return tsProject.src()
+      .pipe(plumber(plumberOption))
+      .pipe(tsProject())
+      //.pipe(uglify())
+      .pipe(gulp.dest('wwwroot/Guide/assets/js/dist'))
+});
 gulp.task('sassPC', function () {
   return gulp
     .src('wwwroot/Guide/assets/scss/**/*.scss')
@@ -64,7 +69,6 @@ gulp.task('sassPC', function () {
     .pipe(gulp.dest('wwwroot/Guide/assets/styles'))
     .pipe(browserSync.reload({ stream: true }));
 });
-
 gulp.task('buildPC', function () {
   return gulp
     .src('wwwroot/Guide/assets/scss/**/*.scss')
@@ -90,7 +94,7 @@ gulp.task('buildPC', function () {
 
 gulp.task('watch', function () {
   browserSync.init({
-    //logLevel: "debug",
+    //logLevel: 'debug',
     port: 3333,
     open: false,
     directory: true,
@@ -106,9 +110,10 @@ gulp.task('watch', function () {
 
   gulp.watch('wwwroot/**/*.html').on('change', browserSync.reload);
   gulp.watch('wwwroot/**/*.js').on('change', browserSync.reload);
+  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC'));
 });
 
 gulp.task(
   'default',
-  gulp.series('sassPC', 'buildPC', 'watch')
+  gulp.series('sassPC', 'buildPC', 'tsPC', 'watch')
 );
