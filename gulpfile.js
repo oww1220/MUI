@@ -41,7 +41,7 @@ gulp.task('tsPC', function () {
       .pipe(plumber(plumberOption))
       .pipe(tsProject())
       //.pipe(uglify())
-      .pipe(gulp.dest('wwwroot/Guide/assets/js/dist'))
+      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/dist'))
 });
 gulp.task('sassPC', function () {
   return gulp
