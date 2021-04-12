@@ -21,6 +21,7 @@
     },
     "globals": {
         "IScroll": true,
-        "Swiper": true
+        "Swiper": true,
+        "CommonUI": true
     }
 }
