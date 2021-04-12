@@ -12,7 +12,7 @@
     <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="./assets/js/slick.min.js"></script>
     <script type="text/javascript" src="./assets/js/iscroll.js"></script>
-	<script type="text/javascript" src="./assets/js/common.js"></script>
+	<script type="text/javascript" src="./assets/js/CommonUI.js"></script>
 	
 
 </head>
@@ -23,7 +23,7 @@
 
     <div class="col">
         <h2>레이어 팝업</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, CommonUI.js</h3>
         <div class="cont">
 
             <style>
@@ -70,12 +70,12 @@
                 /*오픈 이벤트------*/
                 //1
                 $(document).on(TOUCH_EVENT, '#layer_open1', function(){
-                    MUI.layer.open('.layer-common', LAYER_DIM, LAYER_PARENT, function(){
+                    CommonUI.layer.open('.layer-common', LAYER_DIM, LAYER_PARENT, function(){
                         console.log('open');
                     });
                 });
                 //2
-                MUI.layer.openClick('#layer_open2', LAYER_DIM, LAYER_PARENT, function(show){
+                CommonUI.layer.openClick('#layer_open2', LAYER_DIM, LAYER_PARENT, function(show){
                     console.log('open');
                     show();
                 });
@@ -84,13 +84,13 @@
                 /*닫기 이벤트------*/
                 //1
                 $(document).on(TOUCH_EVENT, '#layer_close1', function(){
-                    MUI.layer.close('.layer-common', LAYER_DIM, LAYER_PARENT, function(){
+                    CommonUI.layer.close('.layer-common', LAYER_DIM, LAYER_PARENT, function(){
                         console.log('close');
                     });
                 });
 
                 //2
-                MUI.layer.closeClick('#layer_close2', LAYER_DIM, LAYER_PARENT, function(hide){
+                CommonUI.layer.closeClick('#layer_close2', LAYER_DIM, LAYER_PARENT, function(hide){
                     console.log('close');
                     hide();
                 });
@@ -98,7 +98,7 @@
 
                 /*배경닫기 이벤트------*/
                 $(LAYER_DIM).on(TOUCH_EVENT, function(e){
-                    MUI.layer.close(LAYER_DIM, LAYER_DIM, LAYER_PARENT, function(){
+                    CommonUI.layer.close(LAYER_DIM, LAYER_DIM, LAYER_PARENT, function(){
                         console.log('close');
                     });
                 });
@@ -109,7 +109,7 @@
     <br/><br/>
     <div class="col">
         <h2>탭 변경</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
             </style>
@@ -147,11 +147,11 @@
             </div>
 
             <script>
-                MUI.event.taps('.tab-normal', function(swap){
+                CommonUI.event.taps('.tab-normal', function(swap){
                     console.log('taps');
                     swap();
                 });
-                MUI.event.taps('.tab-normal2', function(swap){
+                CommonUI.event.taps('.tab-normal2', function(swap){
                     console.log('taps');
                     swap();
                 });
@@ -161,7 +161,7 @@
     <br/><br/>
     <div class="col">
         <h2>탑으로 버튼</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
                 .btnTop {position: fixed;top: auto;left: auto;bottom: 35px;right: 35px;margin-left: 0;z-index: 2;display:none;}
@@ -175,12 +175,12 @@
                     $GOTOP = $('.btnTop');
                     
                 /*top으로*/
-                MUI.event.goTop($GOTOP);
+                CommonUI.event.goTop($GOTOP);
                 
                 /*pc top으로 scroll*/
-                MUI.event.topScrollCh($GOTOP, $BODY);
+                CommonUI.event.topScrollCh($GOTOP, $BODY);
                 $(window).on('scroll', function(){
-                    MUI.event.topScrollCh($GOTOP, $BODY);
+                    CommonUI.event.topScrollCh($GOTOP, $BODY);
                 });
             </script>
         </div>
@@ -188,7 +188,7 @@
     <br/><br/>
     <div class="col">
         <h2>토글</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
 
@@ -199,7 +199,7 @@
             <div class="toggle_cont questions_target02">토글2 내용</div>
 
             <script>
-	            MUI.event.toggle('.toggle_btn', '.toggle_cont', function(logic, layer) {
+	            CommonUI.event.toggle('.toggle_btn', '.toggle_cont', function(logic, layer) {
                     console.log('toggle');
                     logic();
                 });
@@ -211,7 +211,7 @@
             <div class="toggle_cont2 questions2_target02">토글2 내용</div>
 
             <script>
-                MUI.event.toggle('.toggle_btn2', '.toggle_cont2', function(logic, layer) {
+                CommonUI.event.toggle('.toggle_btn2', '.toggle_cont2', function(logic, layer) {
                     console.log('toggle');
                     logic();
                 });
@@ -222,7 +222,7 @@
             <div class="toggle_cont3 questions3_target01">토글1 내용</div>
 
             <script>
-                MUI.event.toggle('.toggle_btn3', '.toggle_cont3', function(logic, layer) {
+                CommonUI.event.toggle('.toggle_btn3', '.toggle_cont3', function(logic, layer) {
                     console.log('toggle');
                     logic();
                 });
@@ -233,7 +233,7 @@
             <div class="toggle_cont4 questions4_target01">토글1 내용</div>
 
             <script>
-                MUI.event.toggle('.toggle_btn4', '.toggle_cont4', function(logic, layer) {
+                CommonUI.event.toggle('.toggle_btn4', '.toggle_cont4', function(logic, layer) {
                     console.log('toggle');
                     logic();
                 });
@@ -244,19 +244,19 @@
     <br/><br/>
     <div class="col">
         <h2>rem 설정 및 호스트 환경체크</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
                 body{font-size: 1rem;}
             </style>
 
             <script>
-                MUI.resize.font();
+                CommonUI.resize.font();
                 $(function(){
                     var $BODY = $('body');
                     /*호스트환경 체크*/
-                    MUI.resize.chk($BODY);
-                    MUI.resize.resize($BODY);
+                    CommonUI.resize.chk($BODY);
+                    CommonUI.resize.resize($BODY);
                 });
             </script>
         </div>
@@ -264,7 +264,7 @@
     <br/><br/>
     <div class="col">
         <h2>datepicker</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, jquery-ui.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, jquery-ui.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
                 /* datepicker */
@@ -296,7 +296,7 @@
             </div>
 
             <script>
-                MUI.event.calander(".datepicker", {
+                CommonUI.event.calander(".datepicker", {
                     dateFormat: 'yy-mm-dd',
                     showMonthAfterYear: true,
                     changeYear: false,
@@ -315,7 +315,7 @@
                 });
 
                 /*
-                MUI.event.calander('.datepicker', {
+                CommonUI.event.calander('.datepicker', {
                     changeMonth:true,
                     changeYear:true,
                     showOn:'button',
@@ -338,7 +338,7 @@
     <br/><br/>
     <div class="col">
         <h2>슬라이더 소스적용 예</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, slick.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, slick.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
                 /*slick*/
@@ -418,7 +418,7 @@
                 /*메인 상단 슬라이드*/
                 if($('.target1').length && $.fn.slick) {
                     (function(){
-                        MUI.slide.init($('.target1'), 'slick', {
+                        CommonUI.slide.init($('.target1'), 'slick', {
                             infinite: true,
                             autoplay: true,
                             arrows: true,
@@ -435,7 +435,7 @@
     <br/><br/>
     <div class="col">
         <h2>커스텀 셀렉트</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, iscroll.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, iscroll.js, CommonUI.js</h3>
         <div class="cont">
             <style>
                 .select_custum {box-sizing:border-box;position: relative;display:inline-block;vertical-align: middle;z-index: 0;}
@@ -514,12 +514,12 @@
             </div>
 
             <script>
-                MUI.event.customSelect(".select_custum");
+                CommonUI.event.customSelect(".select_custum");
 
                 $(window).on("load", function(){
                 /*아이스크롤*/
                 if($(".select_custum .select_list").length){
-                        MUI.iscrolls.init(".select_custum .select_list", { 
+                        CommonUI.iscrolls.init(".select_custum .select_list", { 
                             scrollbars: true,
                             mouseWheel: true,
                             interactiveScrollbars: true,
@@ -535,7 +535,7 @@
     <br/><br/>
     <div class="col">
         <h2>커스텀 셀렉트(기본 인풋사용)</h2>
-        <h3>필요모듈: jquery-1.9.1.min.js, common.js</h3>
+        <h3>필요모듈: jquery-1.9.1.min.js, CommonUI.js</h3>
         <div class="cont">
             <style>
                 .sort_select {position: relative;display:inline-block;vertical-align: middle;}
@@ -558,7 +558,7 @@
             </div>
 
             <script>
-                MUI.event.changeSelect(".sort_select select");
+                CommonUI.event.changeSelect(".sort_select select");
             </script>
         </div>
     </div>

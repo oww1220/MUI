@@ -1,5 +1,5 @@
 /* 코어 start */
-var MUI = MUI || {
+var CommonUI = CommonUI || {
 	resize: {
 		chk: function(target){
 			if (target.width() >= 1025 ) {
@@ -22,8 +22,8 @@ var MUI = MUI || {
 		},
 		resize: function($BODY){
 			$(window).on('resize', function(){
-				MUI.resize.chk($BODY);
-				MUI.resize.font();
+				CommonUI.resize.chk($BODY);
+				CommonUI.resize.font();
 			});
 		},
 	},
@@ -353,7 +353,7 @@ var MUI = MUI || {
 				else{
 					$(parent).removeClass("on");
                     $parent.addClass("on");
-                    MUI.iscrolls.resize();
+                    CommonUI.iscrolls.resize();
 				}
 				//console.log($parent);
 			});
@@ -435,7 +435,7 @@ var MUI = MUI || {
         num: 0,
 		init: function(target, option){
 
-			this.cash = this.cash ? this.cash :  MUI.Map.init();
+			this.cash = this.cash ? this.cash :  CommonUI.Map.init();
 
             $(target).each(function(idx, item){
                 $(target)[idx].iscrolls = new IScroll(item, option);
