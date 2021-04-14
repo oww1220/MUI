@@ -23,7 +23,9 @@ Undefined: 정책 적용 안함.<br />
 
 ### ■ gulp 프로젝트 다운후 다운받은 경로에 `npm i` 패키지 설치
 
-### ■ 다운받은 경로에 `gulp` 명령어로 구동시킴
+### ■ package.json 에 scripts작성! 환경분리!
+
+### ■ 다운받은 경로에 `npm run gulp:pc` `npm run gulp:mo` 명령어로 구동시킴
 
 ### ■ gulp 패키지들
 - `npm i -D gulp del`
@@ -70,6 +72,13 @@ Undefined: 정책 적용 안함.<br />
 - scripts/dist 파일 사용
 	- scripts/dist: 타입스크립트 컴파일러 결과물
 	- scripts/bundle: webpack으로 말아서 나온 결과물
+
+### `■ env-cmd`
+package.json 내부에 scripts에서 env-cmd -f .env.dev이런식으로 env 파일을 강제로 실행시키게 해준다!<br/>
+`npm i -D env-cmd`
+
+### `■ 경로체크부분`
+tsconfig.json, gulp.js, .env 파일내부! 
 
 ### `■ .gitignore`
 .gitignore 제외파일 경로 맞게 수정!

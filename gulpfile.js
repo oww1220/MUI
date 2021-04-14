@@ -1,59 +1,63 @@
-var gulp = require('gulp');
-var del = require('del');
+const URL = process.env.APP_ENV_URL;
+
+const gulp = require('gulp');
+const del = require('del');
 
 /*유틸*/
-var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
 
 /*view server*/
-var browserSync = require('browser-sync').create();
+const browserSync = require('browser-sync').create();
 
 /*scss, css*/
-var sass = require('gulp-sass');
+const sass = require('gulp-sass');
 sass.compiler = require('node-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var autoprefixer = require('gulp-autoprefixer');
-var modifyCssUrls = require('gulp-modify-css-urls');
-var pxtorem = require('gulp-pxtorem');
+const sourcemaps = require('gulp-sourcemaps');
+const autoprefixer = require('gulp-autoprefixer');
+const modifyCssUrls = require('gulp-modify-css-urls');
+const pxtorem = require('gulp-pxtorem');
 
 /*타입스크립트*/
-var ts = require('gulp-typescript');
-var tsProject = ts.createProject('tsconfig.json');
+const ts = require('gulp-typescript');
+const tsProjectP = ts.createProject('tsconfig.json');
+const tsProjectM = ts.createProject('tsconfig.mo.json');
+const tsProject = (URL === 'mo') ? tsProjectM : tsProjectP;
 
 /*오류 처리*/
-var plumber = require('gulp-plumber');
+const plumber = require('gulp-plumber');
 
 /*babel*/
-var babel = require('gulp-babel');
+const babel = require('gulp-babel');
 
 /*webpack*/
-var webpack = require('webpack-stream');
+const webpack = require('webpack-stream');
 
 
-
-var errorHandler = function (error) {
+const errorHandler = (error)=>{
   console.error(error.message);
   this.emit('end');
 };
-var plumberOption = {
+const plumberOption = {
   errorHandler: errorHandler,
 };
 
-var autoprefixBrowsers = ['> 0%', 'last 4 versions'];
-var polyfill = './node_modules/@babel/polyfill/browser.js';
+const autoprefixBrowsers = ['> 0%', 'last 4 versions'];
+const polyfill = './node_modules/@babel/polyfill/browser.js';
 
-/*pc*/
-gulp.task('tsPC', function () {
+
+/*typescript*/
+gulp.task('ts', ()=>{
   return tsProject.src()
       .pipe(plumber(plumberOption))
       .pipe(tsProject())
-      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/build/js'))
+      .pipe(gulp.dest(`wwwroot/${URL}/assets/scripts/build/js`))
 });
 
 // babel 
-gulp.task('babelPC', function () {
+gulp.task('babel', ()=>{
   return gulp
-    .src([polyfill, './wwwroot/Guide/assets/scripts/build/js/*.js'], {allowEmpty: true})
+    .src([polyfill, `./wwwroot/${URL}/assets/scripts/build/js/*.js`], {allowEmpty: true})
     .pipe(babel({
       presets: [
         [ '@babel/preset-env', {
@@ -62,26 +66,25 @@ gulp.task('babelPC', function () {
           }
         }]
       ],
-      //plugins: ['@babel/transform-runtime'],
     }))
-    .pipe(gulp.dest('wwwroot/Guide/assets/scripts/build/dist'))
+    .pipe(gulp.dest(`wwwroot/${URL}/assets/scripts/build/dist`))
 });
 
 //웹팩 모듈 번들러.. 모듈 코딩시에만 필요!
-gulp.task('webpackPC', function () {
+gulp.task('webpack', ()=>{
   return gulp
-      .src('./wwwroot/Guide/assets/scripts/build/dist/*.js'
+      .src(`./wwwroot/${URL}/assets/scripts/build/dist/*.js`
         , {allowEmpty: true}
       )
       .pipe(webpack({
         output: {filename: 'UI.bundle.js'},
       }))
-      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/build/bundle'))
+      .pipe(gulp.dest(`wwwroot/${URL}/assets/scripts/build/bundle`))
 });
 
-gulp.task('sassPC', function () {
+gulp.task('sass', ()=>{
   return gulp
-    .src('wwwroot/Guide/assets/scss/**/*.scss')
+    .src(`wwwroot/${URL}/assets/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
     .pipe(
       sourcemaps.init({
@@ -102,12 +105,12 @@ gulp.task('sassPC', function () {
       })
 	)
     .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest('wwwroot/Guide/assets/styles'))
+    .pipe(gulp.dest(`wwwroot/${URL}/assets/styles`))
     .pipe(browserSync.reload({ stream: true }));
 });
-gulp.task('buildPC', function () {
+gulp.task('build', ()=>{
   return gulp
-    .src('wwwroot/Guide/assets/scss/**/*.scss')
+    .src(`wwwroot/${URL}/assets/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
     .pipe(
       sass({
@@ -120,19 +123,19 @@ gulp.task('buildPC', function () {
         cascade: true,
       })
     )
-    .pipe(gulp.dest('wwwroot/Guide/assets/styles/dist'))
+    .pipe(gulp.dest(`wwwroot/${URL}/assets/styles/dist`))
     .pipe(browserSync.reload({ stream: true }))
     .on('end', function () {
       console.log('-------- appned css --------');
     });
 });
 
-gulp.task('cleanPC', function() {
-  return del(['wwwroot/Guide/assets/scripts/build/js'], {force:true});
+gulp.task('clean', ()=>{
+  return del([`wwwroot/${URL}/assets/scripts/build/js`], {force:true});
 });
 
 
-gulp.task('watch', function () {
+gulp.task('watch', ()=>{
   browserSync.init({
     //logLevel: 'debug',
     port: 3333,
@@ -143,16 +146,16 @@ gulp.task('watch', function () {
   });
 
   gulp.watch(
-    'wwwroot/Guide/assets/scss/**/*.scss',
-    gulp.series('sassPC', 'buildPC')
+    `wwwroot/${URL}/assets/scss/**/*.scss`,
+    gulp.series('sass', 'build')
   );
 
-  gulp.watch('wwwroot/**/*.html').on('change', browserSync.reload);
-  gulp.watch('wwwroot/**/*.js').on('change', browserSync.reload);
-  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC', 'babelPC', 'webpackPC', 'cleanPC'));
+  gulp.watch(`wwwroot/${URL}/**/*.html`).on('change', browserSync.reload);
+  gulp.watch(`wwwroot/${URL}/**/*.js`).on('change', browserSync.reload);
+  gulp.watch(`wwwroot/${URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
 });
 
 gulp.task(
   'default',
-  gulp.series('sassPC', 'buildPC', 'tsPC', 'babelPC', 'webpackPC', 'cleanPC', 'watch')
+  gulp.series('sass', 'build', 'ts', 'babel', 'webpack', 'clean', 'watch')
 );

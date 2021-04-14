@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "gulp:pc": "env-cmd -f .env.pc gulp",
+    "gulp:mo": "env-cmd -f .env.mo gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,6 +17,7 @@
     "@types/jquery": "^3.5.5",
     "browser-sync": "^2.26.7",
     "del": "^6.0.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^7.6.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",

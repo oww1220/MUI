@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title></title>
+
+	<link rel="stylesheet" href="./assets/styles/reset.css">
+    <link rel="stylesheet" href="./assets/styles/modules.css">
+</head>
+<body>
+
+<style>
+    .col {margin-top:50px;}
+    h2{
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .cont {
+        border:1px solid red;
+    }
+    .cont li {
+        width: 80px;
+        list-style: none;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    .cont li img {
+        width: 100%;
+    }
+    
+</style>
+
+<div id="root">
+    <div class="col">
+        <h2>@include Flex-config($wrap:wrap); 50%</h2>
+        <div class="cont cont00">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+    
+    <div class="col">
+        <h2>@include Flex-config($justify:center, $align:center);</h2>
+        <div class="cont cont01">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($align:center);</h2>
+        <div class="cont cont01-2">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:flex-end, $align:center);</h2>
+        <div class="cont cont01-4">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+
+    <div class="col">
+        <h2>@include Flex-config();</h2>
+        <div class="cont cont01-3">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:center);</h2>
+        <div class="cont cont01-5">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:center, $align:flex-end);</h2>
+        <div class="cont cont01-6">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:space-between);</h2>
+        <div class="cont cont01-7">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:space-between, $align:center);</h2>
+        <div class="cont cont01-8">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:space-between, $align:flex-end);</h2>
+        <div class="cont cont01-9">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:space-around);</h2>
+        <div class="cont cont01-10">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($justify:center, $align:center, $flow: column);</h2>
+        <div class="cont cont02">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($align:center, $flow: column);</h2>
+        <div class="cont cont03">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($flow: column);</h2>
+        <div class="cont cont04">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($display:inline-flex);</h2>
+        <div class="cont cont05">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+    <div class="col">
+        <h2>@include Flex-config($display:inline-flex, $align:center);</h2>
+        <div class="cont cont06">
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+            <li><img src="./assets/image/main_s_bn01.png" alt=""></li>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+</body>
+</html>

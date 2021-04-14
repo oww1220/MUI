@@ -7,8 +7,7 @@ CommonUI.resize.font();
 /*dom tree 생성이후 시점*/
 $(()=>{
 
-   // const aaa = Promise.resolve(1);
-    
+    //ie test es6 method!
     const aaa = new Promise<number>((resolve, reject)=>{
             setTimeout(()=>{
                 resolve(1);
