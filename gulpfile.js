@@ -12,7 +12,6 @@ var sass = require('gulp-sass');
 sass.compiler = require('node-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
-var cleanCss = require('gulp-clean-css');
 var modifyCssUrls = require('gulp-modify-css-urls');
 var pxtorem = require('gulp-pxtorem');
 
