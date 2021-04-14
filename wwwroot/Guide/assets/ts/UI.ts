@@ -1,4 +1,5 @@
 import {CommonUI} from './CommonUI';
+
 /*dom tree 생성이전 시점*/
 //rem 설정 및 호스트 환경체크
 CommonUI.resize.font();
@@ -6,7 +7,28 @@ CommonUI.resize.font();
 /*dom tree 생성이후 시점*/
 $(()=>{
 
-    const aaa = Promise.resolve(1);
+   // const aaa = Promise.resolve(1);
+    
+    const aaa = new Promise<number>((resolve, reject)=>{
+            setTimeout(()=>{
+                resolve(1);
+            }, 2000);
+        })
+        .then((result)=>{
+            console.log(result+ 1); // 1
+        return result;
+    });
+
+    const bb = {
+        as: 1,
+        cs: 3,
+    };
+
+    const { as , cs } = bb;
+
+    const ddd = Object.assign(as,cs);
+    console.log(ddd);
+
 
     //레이어 팝업
     (()=>{

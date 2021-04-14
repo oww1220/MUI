@@ -22,8 +22,11 @@ var tsProject = ts.createProject('tsconfig.json');
 /*오류 처리*/
 var plumber = require('gulp-plumber');
 
+/*babel*/
+var babel = require('gulp-babel');
+
 /*webpack*/
-const webpack = require('webpack-stream');
+var webpack = require('webpack-stream');
 
 
 
@@ -36,28 +39,43 @@ var plumberOption = {
 };
 
 var autoprefixBrowsers = ['> 0%', 'last 4 versions'];
+var polyfill = './node_modules/@babel/polyfill/browser.js';
 
 /*pc*/
 gulp.task('tsPC', function () {
   return tsProject.src()
       .pipe(plumber(plumberOption))
       .pipe(tsProject())
-      //.pipe(uglify())
-      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/dist'))
+      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/build/js'))
 });
 
-//웹팩 모듈 번들러.. 모듈 사용시 필요!
+// babel 
+gulp.task('babelPC', function () {
+  return gulp
+    .src([polyfill, './wwwroot/Guide/assets/scripts/build/js/*.js'], {allowEmpty: true})
+    .pipe(babel({
+      presets: [
+        [ '@babel/preset-env', {
+          targets: {
+            browsers: [ 'last 1 version', 'ie >= 11' ]
+          }
+        }]
+      ],
+      //plugins: ['@babel/transform-runtime'],
+    }))
+    .pipe(gulp.dest('wwwroot/Guide/assets/scripts/build/dist'))
+});
+
+//웹팩 모듈 번들러.. 모듈 코딩시에만 필요!
 gulp.task('webpackPC', function () {
   return gulp
-      .src(
-        [
-          './wwwroot/Guide/assets/scripts/dist/CommonUI.js',
-          './wwwroot/Guide/assets/scripts/dist/UI.js',
-        ]
+      .src('./wwwroot/Guide/assets/scripts/build/dist/*.js'
         , {allowEmpty: true}
       )
-      .pipe(webpack({output: {filename: 'UI.bundle.js'} }))
-      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/bundle'))
+      .pipe(webpack({
+        output: {filename: 'UI.bundle.js'},
+      }))
+      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/build/bundle'))
 });
 
 gulp.task('sassPC', function () {
@@ -119,7 +137,6 @@ gulp.task('watch', function () {
     browser: 'google chrome',
   });
 
-  //gulp.watch('wwwroot/scripts/**/*.js',  gulp.series('uglify'));
   gulp.watch(
     'wwwroot/Guide/assets/scss/**/*.scss',
     gulp.series('sassPC', 'buildPC')
@@ -127,10 +144,10 @@ gulp.task('watch', function () {
 
   gulp.watch('wwwroot/**/*.html').on('change', browserSync.reload);
   gulp.watch('wwwroot/**/*.js').on('change', browserSync.reload);
-  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC', 'webpackPC'));
+  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC', 'babelPC', 'webpackPC'));
 });
 
 gulp.task(
   'default',
-  gulp.series('sassPC', 'buildPC', 'tsPC', 'webpackPC', 'watch')
+  gulp.series('sassPC', 'buildPC', 'tsPC', 'babelPC', 'webpackPC', 'watch')
 );

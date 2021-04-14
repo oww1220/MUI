@@ -1,3 +1,4 @@
+//import '@babel/polyfill';
 export namespace CommonUI {
 //namespace CommonUI {
     export const $: JQueryStatic = jQuery;
