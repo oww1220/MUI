@@ -1,4 +1,5 @@
-namespace CommonUI {
+export namespace CommonUI {
+//namespace CommonUI {
     export const $: JQueryStatic = jQuery;
     export const resize={
         chk(target: JQuery){
@@ -455,3 +456,4 @@ namespace CommonUI {
 		},
     };
 }
+

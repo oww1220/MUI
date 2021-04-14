@@ -51,8 +51,15 @@ Undefined: 정책 적용 안함.<br />
    	- gulp-typescript: TypeScript 컴파일 워크 플로를 처리하기위한 gulp 플러그인. 플러그인은 TypeScript API를 사용하여 TypeScript의 컴파일러 옵션을 gulp에 노출합니다.
 	- typescript: typescript core 컴파일러
 
+- `npm i -D webpack-stream`
+   	- webpack-stream: Run webpack as a stream to conveniently integrate with gulp.
 
-
+### `■ 번들기능 삭제`
+- 걸프 모듈 번들 task전부 삭제
+- ts 내에 import, export제거
+- scripts/dist 파일 사용
+	- scripts/dist: 타입스크립트 컴파일러 결과물
+	- scripts/bundle: webpack으로 말아서 나온 결과물
 
 ### `■ 메타변환함수 예시`
 function meta_change(version){

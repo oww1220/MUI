@@ -22,6 +22,9 @@ var tsProject = ts.createProject('tsconfig.json');
 /*오류 처리*/
 var plumber = require('gulp-plumber');
 
+/*webpack*/
+const webpack = require('webpack-stream');
+
 
 
 var errorHandler = function (error) {
@@ -42,6 +45,21 @@ gulp.task('tsPC', function () {
       //.pipe(uglify())
       .pipe(gulp.dest('wwwroot/Guide/assets/scripts/dist'))
 });
+
+//웹팩 모듈 번들러.. 모듈 사용시 필요!
+gulp.task('webpackPC', function () {
+  return gulp
+      .src(
+        [
+          './wwwroot/Guide/assets/scripts/dist/CommonUI.js',
+          './wwwroot/Guide/assets/scripts/dist/UI.js',
+        ]
+        , {allowEmpty: true}
+      )
+      .pipe(webpack({output: {filename: 'UI.bundle.js'} }))
+      .pipe(gulp.dest('wwwroot/Guide/assets/scripts/bundle'))
+});
+
 gulp.task('sassPC', function () {
   return gulp
     .src('wwwroot/Guide/assets/scss/**/*.scss')
@@ -109,10 +127,10 @@ gulp.task('watch', function () {
 
   gulp.watch('wwwroot/**/*.html').on('change', browserSync.reload);
   gulp.watch('wwwroot/**/*.js').on('change', browserSync.reload);
-  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC'));
+  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC', 'webpackPC'));
 });
 
 gulp.task(
   'default',
-  gulp.series('sassPC', 'buildPC', 'tsPC', 'watch')
+  gulp.series('sassPC', 'buildPC', 'tsPC', 'webpackPC', 'watch')
 );
