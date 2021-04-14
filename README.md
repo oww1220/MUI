@@ -26,8 +26,9 @@ Undefined: 정책 적용 안함.<br />
 ### ■ 다운받은 경로에 `gulp` 명령어로 구동시킴
 
 ### ■ gulp 패키지들
-- `npm i -D gulp`
+- `npm i -D gulp del`
    - gulp: gulp core 빌드 자동화 툴
+   - del: 폴더 삭제 모듈!
 
 - `npm i -D gulp-sass node-sass gulp-sourcemaps gulp-autoprefixer gulp-pxtorem gulp-modify-css-urls`
 	- gulp-sass: sass를 CSS 로 변경

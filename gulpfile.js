@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var del = require('del');
 
 /*유틸*/
 var uglify = require('gulp-uglify');
@@ -126,6 +127,10 @@ gulp.task('buildPC', function () {
     });
 });
 
+gulp.task('cleanPC', function() {
+  return del(['wwwroot/Guide/assets/scripts/build/js'], {force:true});
+});
+
 
 gulp.task('watch', function () {
   browserSync.init({
@@ -144,10 +149,10 @@ gulp.task('watch', function () {
 
   gulp.watch('wwwroot/**/*.html').on('change', browserSync.reload);
   gulp.watch('wwwroot/**/*.js').on('change', browserSync.reload);
-  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC', 'babelPC', 'webpackPC'));
+  gulp.watch('./**/*.ts').on('change', gulp.series('tsPC', 'babelPC', 'webpackPC', 'cleanPC'));
 });
 
 gulp.task(
   'default',
-  gulp.series('sassPC', 'buildPC', 'tsPC', 'babelPC', 'webpackPC', 'watch')
+  gulp.series('sassPC', 'buildPC', 'tsPC', 'babelPC', 'webpackPC', 'cleanPC', 'watch')
 );
