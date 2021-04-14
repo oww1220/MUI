@@ -10,8 +10,10 @@
 
 # production
 /build
-/wwwroot/mo/resources-mo/styles/dist
-/wwwroot/pc/resources-pc/styles/dist
+/wwwroot/Guide/assets/styles/dist
+/wwwroot/Guide/assets/scripts/bundle
+/wwwroot/Guide/assets/scripts/dist
+
 *.map
 
 # misc
