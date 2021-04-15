@@ -459,4 +459,4 @@ export namespace CommonUI {
 }
 
 //전역으로 내보냄 -- 선택사항
-(window as any).CommonUI = CommonUI;
+window.CommonUI = CommonUI;

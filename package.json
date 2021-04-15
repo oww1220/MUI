@@ -1,11 +1,11 @@
 {
-  "name": "gulp_test",
+  "name": "common-ui",
   "version": "1.0.0",
-  "description": "",
+  "description": "common-ui",
   "main": "index.js",
   "scripts": {
-    "gulp:pc": "env-cmd -f .env.pc gulp",
-    "gulp:mo": "env-cmd -f .env.mo gulp",
+    "pc": "env-cmd -f .env.pc gulp",
+    "mo": "env-cmd -f .env.mo gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
