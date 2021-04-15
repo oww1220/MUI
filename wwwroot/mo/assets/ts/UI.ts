@@ -96,7 +96,6 @@ $(()=>{
         /*pc top으로 scroll*/
         CommonUI.event.topScrollCh($GOTOP, $BODY);
         $(window).on('scroll', function(){
-            console.log(1111);
             CommonUI.event.topScrollCh($GOTOP, $BODY);
         });
     })();

@@ -27,7 +27,20 @@ $(()=>{
 
     const ddd = Object.assign({as},{cs});
     console.log(ddd);
-    console.log(ddd);
+
+    CommonUI.async.generaterRun(function*(){
+
+        const runVal1 = yield CommonUI.async.wait(2000,'test1');
+        console.log(runVal1);
+
+        const runVal2 = yield 'test2';
+        console.log(runVal2);
+
+    });
+
+    //(Array.prototype as any).mapToNumbers = function () {
+        ///* ... */
+    //};
     
 
     //레이어 팝업
@@ -97,7 +110,6 @@ $(()=>{
         /*pc top으로 scroll*/
         CommonUI.event.topScrollCh($GOTOP, $BODY);
         $(window).on('scroll', function(){
-            console.log(1111);
             CommonUI.event.topScrollCh($GOTOP, $BODY);
         });
     })();

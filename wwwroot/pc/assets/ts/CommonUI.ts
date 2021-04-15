@@ -1,4 +1,10 @@
 //import '@babel/polyfill';
+declare global {
+    interface window {
+        CommonUI: any
+    }
+}
+
 export namespace CommonUI {
 //namespace CommonUI {
     export const $: JQueryStatic = jQuery;
@@ -456,5 +462,26 @@ export namespace CommonUI {
 			
 		},
     };
+
+	export const async = {
+		generaterRun(gen: () => Generator) {
+			const iter = gen();  
+			(function iterate({value, done}) {
+				if (done) return value;  
+				if (value.constructor === Promise ) {
+					value.then(data => iterate(iter.next(data)))
+					.catch(err => iter.throw(err)); 
+				} else {
+					iterate(iter.next(value));
+				}
+			})(iter.next());
+		},
+		wait(ms: number, value?: any){
+			return new Promise(resolve => setTimeout(resolve, ms, value));
+		},
+	};
 }
+
+//전역으로 내보냄 -- 선택사항
+(window as any).CommonUI = CommonUI;
 
