@@ -10,10 +10,10 @@
 
 # production
 /build
-/wwwroot/Guide/assets/styles/dist
-/wwwroot/Guide/assets/scripts/build
-
-
+/wwwroot/pc/assets/styles/dist
+/wwwroot/pc/assets/scripts/build
+/wwwroot/mo/assets/styles/dist
+/wwwroot/mo/assets/scripts/build
 *.map
 
 # misc

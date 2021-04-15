@@ -78,10 +78,11 @@ package.json 내부에 scripts에서 env-cmd -f .env.dev이런식으로 env 파�
 `npm i -D env-cmd`
 
 ### `■ 경로체크부분`
-tsconfig.json, gulp.js, .env 파일내부! 
+- `tsconfig.json` : 타입스크립트 설정->프로젝트 맞게 url설정
+- `gulp.js` : 걸프 파이프 라인 설정->프로젝트 맞게 url설정
+- `.env` : 환경변수 설정 파일->프로젝트 맞게 내부 키워드 설정 ex) pc, mo 
+- `.gitignore` : 프로젝트 내에서 깃 커밋 무시->프로젝트 맞게 url설정 
 
-### `■ .gitignore`
-.gitignore 제외파일 경로 맞게 수정!
 
 ### `■ 메타변환함수 예시`
 function meta_change(version){
