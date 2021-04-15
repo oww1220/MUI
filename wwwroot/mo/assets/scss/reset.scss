@@ -1,44 +1,7 @@
 @charset "utf-8";
 @import "./_common.scss";
 
-/// reset PC
-html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, strong, em, img, sub, sup, address, cite, pre, code, del, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, figure, figcaption, footer, header, menu, nav, output, section, summary, time, mark, audio, video {line-height: 1;margin:0; padding:0; border:0; font:inherit; font-size:100%; vertical-align:baseline;}
-article, aside, figcaption, figure, footer, header, nav, section {display:block;}
-ol, ul {list-style:none;}
-table {border-collapse:collapse; border-spacing:0;}
-button, html input[type='button'], input[type='reset'], input[type='submit'] {overflow:visible; appearance:button; cursor:pointer;}
-button::-moz-focus-inner, input::-moz-focus-inner {padding:0; border:0;}
-input[data-type=number] {ime-mode:disabled;}
-input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button {height:auto;}
-input[type='search'] {appearance:textfield; box-sizing:content-box;}
-input[type='search']::-webkit-search-cancel-button, input[type='search']::-webkit-search-decoration {appearance:none;}
-input::-ms-clear, input::-ms-reveal {display: none;}
-select::-ms-expand {display:none;}
-[disabled] {cursor:default;}
-
-html {overflow-y:scroll; font-size:62.5%;}
-body {width: 100%;font-size: 15px;font-family:"ManropeR", "NotoR", serif;letter-spacing:-.5px; word-break:break-all; color:#111; background-color:#fff;
-display: flex;flex-flow: column; min-height: 100vh;color: #2B2B2B;font-size: 15px;}
-input, button, select, textarea {line-height: 1;margin:0; padding:0; border:0; color: #2B2B2B;font-size: 16px;font-family:inherit; color:inherit; 
-box-sizing:border-box; appearance:none; vertical-align:middle; border-radius:0; background-color:transparent;outline: none;}
-caption, legend, hr {display:none;}
-em, address, i {font-style:normal;}
-img {max-width:100%; vertical-align:middle;height: auto;}
-a {color:inherit; text-decoration:none; cursor: pointer;}
-strong, b {font-weight:normal;color: #2B2B2B;font-size: 15px;line-height: 1;@include BreakWord;}
-p, span {@include BreakWord;}
-label {cursor: pointer;}
-
-input::placeholder {
-	color: #C1C1C1;
-	line-height: normal;
-}
-textarea::placeholder {
-	color: #C1C1C1;
-}
-
-/*mo
+//reset mo
 html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, strong, em, img, sub, sup, address, cite, pre, code, del, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, figure, figcaption, footer, header, menu, nav, output, section, summary, time, mark, audio, video {line-height: 1;margin:0; padding:0; border:0; font:inherit; font-size:100%; vertical-align:baseline;}
 // article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block;}
@@ -70,7 +33,7 @@ input::placeholder {
 textarea::placeholder {
 	color: #C1C1C1;
 }
-*/
+
 
 //Spoqa
 @font-face {

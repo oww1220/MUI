@@ -20,9 +20,6 @@ const pxtorem = require('gulp-pxtorem');
 
 /*타입스크립트*/
 const ts = require('gulp-typescript');
-const tsProjectP = ts.createProject('tsconfig.pc.json');
-const tsProjectM = ts.createProject('tsconfig.mo.json');
-const tsProject = (URL === 'mo') ? tsProjectM : tsProjectP;
 
 /*오류 처리*/
 const plumber = require('gulp-plumber');
@@ -35,11 +32,11 @@ const webpack = require('webpack-stream');
 
 
 const errorHandler = (error)=>{
-  console.error(error.message);
-  this.emit('end');
+    console.error(error.message);
+    this.emit('end');
 };
 const plumberOption = {
-  errorHandler: errorHandler,
+    errorHandler: errorHandler,
 };
 
 const autoprefixBrowsers = ['> 0%', 'last 4 versions'];
@@ -49,114 +46,119 @@ const TASK_BASE_URL = `${BASE_URL}/assets`;
 
 /*typescript*/
 gulp.task('ts', ()=>{
-  return tsProject.src()
-      .pipe(plumber(plumberOption))
-      .pipe(tsProject())
-      .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/js`))
+    //createProject 인스턴스 하나만 요구해서 함수내부 scope로 옮겨서 task callback에서 생성..
+    const tsProjectP = ts.createProject('tsconfig.pc.json');
+    const tsProjectM = ts.createProject('tsconfig.mo.json');
+    const tsProject = (URL === 'mo') ? tsProjectM : tsProjectP;
+return tsProject.src()
+    .pipe(plumber(plumberOption))
+    .pipe(tsProject())
+    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/js`))
 });
 
 // babel 
 gulp.task('babel', ()=>{
-  return gulp
+return gulp
     .src([polyfill, `${TASK_BASE_URL}/scripts/build/js/*.js`], {allowEmpty: true})
     .pipe(babel({
-      presets: [
-        [ '@babel/preset-env', {
-          targets: {
-            browsers: [ 'last 1 version', 'ie >= 11' ]
-          }
-        }]
-      ],
+        presets: [
+            [ '@babel/preset-env', {
+                targets: {
+                    browsers: [ 'last 1 version', 'ie >= 11' ]
+                }
+            }]
+        ],
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/dist`))
 });
 
 //웹팩 모듈 번들러.. 모듈 코딩시에만 필요!
 gulp.task('webpack', ()=>{
-  return gulp
-      .src(`${TASK_BASE_URL}/scripts/build/dist/*.js`
+return gulp
+    .src(`${TASK_BASE_URL}/scripts/build/dist/*.js`
         , {allowEmpty: true}
-      )
-      .pipe(webpack({
+    )
+    .pipe(webpack({
         output: {filename: 'UI.bundle.js'},
-      }))
-      .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/bundle`))
+    }))
+    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/bundle`))
 });
 
 gulp.task('sass', ()=>{
-  return gulp
+return gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
     .pipe(
-      sourcemaps.init({
-        loadMaps: true,
-      })
+        sourcemaps.init({
+            loadMaps: true,
+        })
     )
     .pipe(
-      sass({
-        outputStyle: 'expanded', //[nested, compact, expanded, compressed]
-        indentType: 'tab',
-        indentWidth: 1,
-      }).on('error', sass.logError)
+        sass({
+            outputStyle: 'expanded', //[nested, compact, expanded, compressed]
+            indentType: 'tab',
+            indentWidth: 1,
+        }).on('error', sass.logError)
     )
     .pipe(
-      autoprefixer({
-        browsers: autoprefixBrowsers,
-        cascade: true,
-      })
+        autoprefixer({
+            browsers: autoprefixBrowsers,
+            cascade: true,
+        })
 	)
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(`${TASK_BASE_URL}/styles`))
     .pipe(browserSync.reload({ stream: true }));
 });
 gulp.task('build', ()=>{
-  return gulp
+return gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
     .pipe(
-      sass({
-        outputStyle: 'compressed', //[nested, compact, expanded, compressed]
-      }).on('error', sass.logError)
+        sass({
+            outputStyle: 'compressed', //[nested, compact, expanded, compressed]
+        }).on('error', sass.logError)
     )
     .pipe(
-      autoprefixer({
-        browsers: autoprefixBrowsers,
-        cascade: true,
-      })
+        autoprefixer({
+            browsers: autoprefixBrowsers,
+            cascade: true,
+        })
     )
     .pipe(gulp.dest(`${TASK_BASE_URL}/styles/dist`))
     .pipe(browserSync.reload({ stream: true }))
     .on('end', function () {
-      console.log('-------- appned css --------');
+        console.log('-------- appned css --------');
     });
 });
 
 gulp.task('clean', ()=>{
-  return del([`${TASK_BASE_URL}/scripts/build/js`], {force:true});
+    return del([`${TASK_BASE_URL}/scripts/build/js`], {force:true});
 });
 
 
 gulp.task('watch', ()=>{
-  browserSync.init({
-    //logLevel: 'debug',
-    port: 3333,
-    open: false,
-    directory: true,
-    server: './wwwroot/',
-    browser: 'google chrome',
-  });
+    browserSync.init({
+        //logLevel: 'debug',
+        port: 3333,
+        open: false,
+        directory: true,
+        server: './wwwroot/',
+        browser: 'google chrome',
+    });
 
-  gulp.watch(
-    `${TASK_BASE_URL}/scss/**/*.scss`,
-    gulp.series('sass', 'build')
-  );
+    gulp.watch(
+        `${TASK_BASE_URL}/scss/**/*.scss`,
+        gulp.series('sass', 'build')
+    );
 
-  gulp.watch(`${BASE_URL}/**/*.html`).on('change', browserSync.reload);
-  gulp.watch(`${BASE_URL}/**/*.js`).on('change', browserSync.reload);
-  gulp.watch(`${BASE_URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
+    gulp.watch(`${BASE_URL}/**/*.html`).on('change', browserSync.reload);
+    //js내보내는 폴더가 다중이라 babel output 폴더 js만 watch함-중복방지
+    gulp.watch(`${TASK_BASE_URL}/scripts/build/dist/*.js`).on('change', browserSync.reload);
+    gulp.watch(`${BASE_URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
 });
 
 gulp.task(
-  'default',
-  gulp.series('sass', 'build', 'ts', 'babel', 'webpack', 'clean', 'watch')
+    'default',
+    gulp.series('sass', 'build', 'ts', 'babel', 'webpack', 'clean', 'watch')
 );
