@@ -33,6 +33,11 @@ $(() => {
             resolve(true);
         });
     };
+    const promiseCallback2: PromiseCallback = (resolve, reject) => {
+        $('.col:first-child h2').animate({ 'margin-left': 0 }, 5000, () => {
+            resolve(true);
+        });
+    };
     CommonUI.async.generaterRun(function* () {
         console.log('!!!!!!!!!!!!start');
 
@@ -48,11 +53,7 @@ $(() => {
         const delay2 = yield CommonUI.async.wait(3000, 'delay3초');
         console.log(delay2);
 
-        const runVal22 = yield CommonUI.async.promise((resolve, reject) => {
-            $('.col:first-child h2').animate({ 'margin-left': 0 }, 5000, () => {
-                resolve(true);
-            });
-        });
+        const runVal22 = yield CommonUI.async.promise(promiseCallback2);
         console.log(runVal22);
 
         console.log('end!!!!!!!!!!!!');
