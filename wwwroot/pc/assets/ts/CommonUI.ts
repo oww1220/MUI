@@ -1,492 +1,472 @@
 //import '@babel/polyfill';
 declare global {
     interface window {
-        CommonUI: any
+        CommonUI: any;
     }
 }
 
 export namespace CommonUI {
-//namespace CommonUI {
+    //namespace CommonUI {
     export const $: JQueryStatic = jQuery;
-    export const resize={
-        chk(target: JQuery){
-			if((target.width() || 0) >= 1025 ) {
-				target.removeClass('pc mobile tablet').addClass('pc');
-			}
-			else if((target.width() || 0) >=  768){
-				target.removeClass('pc mobile tablet').addClass('tablet');
-			}
-			else {
-				target.removeClass('pc mobile tablet').addClass('mobile');
-			}
-		},
-        font(){
-			const doc = document.documentElement;
-            const caculateWidth: any  = (doc.clientWidth / 320 * 62.5) * 100;
-			let fontSizeVal = (parseFloat(caculateWidth) / 100);
-			fontSizeVal = (fontSizeVal >= 85) ? 85 : fontSizeVal;
+    export const resize = {
+        chk(target: JQuery) {
+            if ((target.width() || 0) >= 1025) {
+                target.removeClass('pc mobile tablet').addClass('pc');
+            } else if ((target.width() || 0) >= 768) {
+                target.removeClass('pc mobile tablet').addClass('tablet');
+            } else {
+                target.removeClass('pc mobile tablet').addClass('mobile');
+            }
+        },
+        font() {
+            const doc = document.documentElement;
+            const caculateWidth: any = (doc.clientWidth / 320) * 62.5 * 100;
+            let fontSizeVal = parseFloat(caculateWidth) / 100;
+            fontSizeVal = fontSizeVal >= 85 ? 85 : fontSizeVal;
 
-			doc.style.fontSize = fontSizeVal + '%';
-		},
-		resize($BODY: JQuery){
-			$(window).on('resize', function(){
-				CommonUI.resize.chk($BODY);
-				CommonUI.resize.font();
-			});
-		},
+            doc.style.fontSize = fontSizeVal + '%';
+        },
+        resize($BODY: JQuery) {
+            $(window).on('resize', function () {
+                CommonUI.resize.chk($BODY);
+                CommonUI.resize.font();
+            });
+        },
     };
-    export const Map={
-        init(){
-
+    export const Map = {
+        init() {
             class JqMap {
                 map: Object;
                 constructor() {
                     this.map = new Object();
                 }
                 /* key, value 값으로 구성된 데이터를 추가 */
-				put(key: any, value: any) {
-					this.map[key] = value;
-				}
+                put(key: any, value: any) {
+                    this.map[key] = value;
+                }
                 /* 지정한 key값의 value값 반환 */
-				get(key: any): any {
-					return this.map[key];
-				}
-				/* 구성된 key 값 존재여부 반환 */
-				containsKey(key: any): boolean {
-					return key in this.map;
-				}
+                get(key: any): any {
+                    return this.map[key];
+                }
+                /* 구성된 key 값 존재여부 반환 */
+                containsKey(key: any): boolean {
+                    return key in this.map;
+                }
                 /* 구성된 데이터 초기화 */
-				clear() {
-					for (const prop in this.map) {
-						delete this.map[prop];
-					}
-				}
-				/*  key에 해당하는 데이터 삭제 */
-				remove(key: any) {
-					delete this.map[key];
-				}
-				/* 배열로 key 반환 */
-				keys(): any[] {
-					const arKey = new Array();
-					for (const prop in this.map) {
-						arKey.push(prop);
-					}
-					return arKey;
-				}
-				/* 배열로 value 반환 */
-				values(): any[] {
-					const arVal = new Array();
-					for (const prop in this.map) {
-						arVal.push(this.map[prop]);
-					}
-					return arVal;
-				}
-				/* Map에 구성된 개수 반환 */
-				size(): number {
-					let count = 0;
-					for (const prop in this.map) {
-						count++;
-					}
-					return count;
-				}
-
+                clear() {
+                    for (const prop in this.map) {
+                        delete this.map[prop];
+                    }
+                }
+                /*  key에 해당하는 데이터 삭제 */
+                remove(key: any) {
+                    delete this.map[key];
+                }
+                /* 배열로 key 반환 */
+                keys(): any[] {
+                    const arKey = new Array();
+                    for (const prop in this.map) {
+                        arKey.push(prop);
+                    }
+                    return arKey;
+                }
+                /* 배열로 value 반환 */
+                values(): any[] {
+                    const arVal = new Array();
+                    for (const prop in this.map) {
+                        arVal.push(this.map[prop]);
+                    }
+                    return arVal;
+                }
+                /* Map에 구성된 개수 반환 */
+                size(): number {
+                    let count = 0;
+                    for (const prop in this.map) {
+                        count++;
+                    }
+                    return count;
+                }
             }
 
-			
-			return new JqMap();
-
-		}
+            return new JqMap();
+        },
     };
-    export const slide={
-        init(target: JQuery, sort: string, option:any){
-			if(sort == 'slick') {
-				//console.log('slick');
-				return target.slick(option);
-			}
-            if(sort === 'swiper') {
-				return new Swiper(target, option);
-			}
-		},
+    export const slide = {
+        init(target: JQuery, sort: string, option: any) {
+            if (sort == 'slick') {
+                //console.log('slick');
+                return target.slick(option);
+            }
+            if (sort === 'swiper') {
+                return new Swiper(target, option);
+            }
+        },
     };
-    export const layer={
+    export const layer = {
         scrollTop: 0,
-		calculate(layer: string){
-			const $layer = $(layer),
-				layerIn = $layer.find('.pop_inner'),
-				winH = $(window).height() || 0,
-				winW= $(window).width() || 0;
-                
-			layerIn.find('.pop_scroll').removeAttr('style');
+        calculate(layer: string) {
+            const $layer = $(layer),
+                layerIn = $layer.find('.pop_inner'),
+                winH = $(window).height() || 0,
+                winW = $(window).width() || 0;
 
-			const layerH = $layer.height() || 0,
-				layerW = $layer.width() || 0,
-				marginH = parseInt(layerIn.css('marginTop')) + parseInt(layerIn.css('marginBottom'));
-			//console.log(layer, winH, winW, layerH, layerW, marginH);
-			
-			if(winH < layerH){
-				layerIn.find('.pop_scroll').css({
-					height: winH - marginH,
-					overflow: 'auto',
-				});
-				$layer.css({
-					top: 0,
-					left: (winW - layerW) / 2,
-				});
-			}
-			else{
-				layerIn.find('.pop_scroll').removeAttr('style');
-				$layer.css({
-					top: (winH - layerH) / 2,
-					left: (winW - layerW) / 2,
-				});
-			}
+            layerIn.find('.pop_scroll').removeAttr('style');
 
-		},
-        openClick(target: string, dimmed: string, parent: string, callback?:(show:()=>void, layer: string, targetDom: JQuery)=>void){
+            const layerH = $layer.height() || 0,
+                layerW = $layer.width() || 0,
+                marginH = parseInt(layerIn.css('marginTop')) + parseInt(layerIn.css('marginBottom'));
+            //console.log(layer, winH, winW, layerH, layerW, marginH);
+
+            if (winH < layerH) {
+                layerIn.find('.pop_scroll').css({
+                    height: winH - marginH,
+                    overflow: 'auto',
+                });
+                $layer.css({
+                    top: 0,
+                    left: (winW - layerW) / 2,
+                });
+            } else {
+                layerIn.find('.pop_scroll').removeAttr('style');
+                $layer.css({
+                    top: (winH - layerH) / 2,
+                    left: (winW - layerW) / 2,
+                });
+            }
+        },
+        openClick(
+            target: string,
+            dimmed: string,
+            parent: string,
+            callback?: (show: () => void, layer: string, targetDom: JQuery) => void,
+        ) {
             const that = this;
-            $(document).on('click', target, function(e){
-                const layer = '.'+$(this).data('layer');
+            $(document).on('click', target, function (e) {
+                const layer = '.' + $(this).data('layer');
                 const targetDom = $(this);
                 //that.scrollTop = $(window).scrollTop();
 
-                const show = ()=> {
+                const show = () => {
                     that.open(layer, dimmed, parent);
-                }
+                };
 
-                if(callback){
+                if (callback) {
                     callback(show, layer, targetDom);
-                }
-                else{
+                } else {
                     show();
                 }
-                
-                
+
                 e.preventDefault();
             });
         },
-        open(layer: string, dimmed: string, parent: string, callback?:(layer: string)=>void){
+        open(layer: string, dimmed: string, parent: string, callback?: (layer: string) => void) {
             const that = this;
             that.scrollTop = $(window).scrollTop() || 0;
             $('body').addClass('fixed');
-            $('body').css({top:-that.scrollTop});
-            if(dimmed) $(dimmed).fadeIn();
-			if(callback) callback(layer);
+            $('body').css({ top: -that.scrollTop });
+            if (dimmed) $(dimmed).fadeIn();
+            if (callback) callback(layer);
             $(parent + layer).show();
             that.calculate(layer);
-            $(window).on('resize.layer', function(){
+            $(window).on('resize.layer', function () {
                 that.calculate(layer);
             });
         },
-        closeClick(target: string, dimmed: string, parent: string, callback?:(hide:()=>void, layer: string, targetDom: JQuery)=>void){
+        closeClick(
+            target: string,
+            dimmed: string,
+            parent: string,
+            callback?: (hide: () => void, layer: string, targetDom: JQuery) => void,
+        ) {
             const that = this;
-            $(document).on('click', target, function(e){
+            $(document).on('click', target, function (e) {
                 let layer: string;
                 const targetDom = $(this);
-                const hide = ()=> {
+                const hide = () => {
                     that.close(layer, dimmed, parent);
-                }
-                if(target == dimmed){
+                };
+                if (target == dimmed) {
                     layer = parent;
+                } else {
+                    layer = parent + '.' + $(this).data('layer');
                 }
-                else{
-                    layer = parent + '.'+$(this).data('layer');
-                }
-                
-                if(callback){
+
+                if (callback) {
                     callback(hide, layer, targetDom);
-                }
-                else{
+                } else {
                     hide();
                 }
 
                 e.preventDefault();
             });
         },
-        close(layer: string, dimmed: string, parent: string, callback?:(layer: string)=>void){
+        close(layer: string, dimmed: string, parent: string, callback?: (layer: string) => void) {
             const that = this;
-            if(layer != dimmed) {
-				$(layer).hide();
-            }
-            else {
+            if (layer != dimmed) {
+                $(layer).hide();
+            } else {
                 $(parent).hide();
             }
-			if(dimmed) $(dimmed).fadeOut();
-			if(callback) callback(layer);
+            if (dimmed) $(dimmed).fadeOut();
+            if (callback) callback(layer);
             $('body').removeClass('fixed');
-            $('body').css({top:0});
-			$(window).scrollTop(that.scrollTop);
+            $('body').css({ top: 0 });
+            $(window).scrollTop(that.scrollTop);
             $(window).off('resize.layer');
         },
     };
-    export const event={
-        toggle(target: string, parent: string, callback?: (logic:()=>void, layer: JQuery)=>void){
-			$(document).on('click', target, function(e) {
-				const $this = $(this);
-				const $targetDiv = $(target);
-				const layer = $('.' + $this.data('target'));
-				const sort = $this.data('sort');
-				const onClass = $this.data('on');
-				const siblings = $this.data('siblings');
-				const $parent =$(parent);
-				//console.log(sort, onClass, siblings, $parent);
+    export const event = {
+        toggle(target: string, parent: string, callback?: (logic: () => void, layer: JQuery) => void) {
+            $(document).on('click', target, function (e) {
+                const $this = $(this);
+                const $targetDiv = $(target);
+                const layer = $('.' + $this.data('target'));
+                const sort = $this.data('sort');
+                const onClass = $this.data('on');
+                const siblings = $this.data('siblings');
+                const $parent = $(parent);
+                //console.log(sort, onClass, siblings, $parent);
 
-				const logic= ()=> {
-					
-					if(onClass){
-						
-						if(parent === null ? $this.hasClass('on') : layer.is(':visible')){
-							$this.removeClass('on');
-							layer.removeClass('on');
-						}
-						else{
-							if(siblings){
-								$targetDiv.removeClass('on');
-								$parent.removeClass('on');
-							}
-							$this.addClass('on');
-							layer.addClass('on');
-						}	
-					}
-	
-					if(layer.is(':visible')){
-						if(sort == 'fade'){
-							layer.fadeOut();
-						}
-						else if (sort == 'normal'){
-							layer.hide();
-						}
-						else if (sort == 'none'){
-							return false;
-						}
-						else{
-							layer.slideUp();
-						}
-					}
-					else{
-						if(sort == 'fade'){
-							if(siblings){
-								$parent.fadeOut();
-							}
-							layer.fadeIn();
-						}
-						else if (sort == 'normal'){
-							if(siblings){
-								$parent.hide();
-							}
-							layer.show();
-						}
-						else if (sort == 'none'){
-							return false;
-						}
-						else{
-							if(siblings){
-								$parent.slideUp();
-							}
-							layer.slideDown();
-						}
-					}
-	
-				}
+                const logic = () => {
+                    if (onClass) {
+                        if (parent === null ? $this.hasClass('on') : layer.is(':visible')) {
+                            $this.removeClass('on');
+                            layer.removeClass('on');
+                        } else {
+                            if (siblings) {
+                                $targetDiv.removeClass('on');
+                                $parent.removeClass('on');
+                            }
+                            $this.addClass('on');
+                            layer.addClass('on');
+                        }
+                    }
 
-				if(callback) {
-					callback(logic, layer);
-				}
-				else{
-					logic();
-				}
-				//e.preventDefault();
-			});
-		},
-		goTop(target: JQuery){
-			target.on('click',function(e) {
-				$('html, body').stop().animate({'scrollTop': 0}, 1000);
-            	e.preventDefault();
-			});
-		}, 
-        topScrollCh(target: JQuery, parent: JQuery){
-			if(parent.hasClass('pc')){
-				const winScroll = $(window).scrollTop() || 0;
-				if(winScroll == 0){
-					target.fadeOut();
-					$('#header .inner').removeClass('on');
-				}
-				else{
-					target.fadeIn();
-					$('#header .inner').addClass('on');
-				}
-			}
-			else{
-				return;
-			}
-		},
-		taps(tab_nav: string, callback?:(swap: ()=>void)=>void){
-			const target = tab_nav + '.tab_nav li';
-			//console.log(target);
-			$(document).on('click', target, function(e){
-				const $this = $(this);
-				const $layer = $(tab_nav + '.tab_cont');
-				const idx = $this.index();
+                    if (layer.is(':visible')) {
+                        if (sort == 'fade') {
+                            layer.fadeOut();
+                        } else if (sort == 'normal') {
+                            layer.hide();
+                        } else if (sort == 'none') {
+                            return false;
+                        } else {
+                            layer.slideUp();
+                        }
+                    } else {
+                        if (sort == 'fade') {
+                            if (siblings) {
+                                $parent.fadeOut();
+                            }
+                            layer.fadeIn();
+                        } else if (sort == 'normal') {
+                            if (siblings) {
+                                $parent.hide();
+                            }
+                            layer.show();
+                        } else if (sort == 'none') {
+                            return false;
+                        } else {
+                            if (siblings) {
+                                $parent.slideUp();
+                            }
+                            layer.slideDown();
+                        }
+                    }
+                };
 
-				const swap = ()=>{
-					$this.addClass('on').siblings().removeClass('on');
-					$layer.find('> div').eq(idx).show().siblings().hide();
-				} 
-				if(callback){
-					callback(swap);
-				}
-				else{
-					swap();
-				}
-				e.preventDefault();
-			});
-		},
-		calander(target: string, option: any, callback?:JQuery.TypeEventHandler<HTMLElement, unknown, any, any, "change">){
-			$(target).each(function(){
-				$(this).datepicker(option); 
-				$(this).datepicker('setDate', 'today'); 
-				if(callback) $(this).on('change', callback);
-			});
-		},
-        customSelect(parent: string){
-			const target = parent + " button";
-			const listTarget = parent + " a";
-			let $parent: JQuery;
-			$(document).on("click", target, function(e){
-				$parent = $(this).parent();
-				if($parent.hasClass("on")){
-					$parent.removeClass("on");
-				}
-				else{
-					$(parent).removeClass("on");
-                    $parent.addClass("on");
+                if (callback) {
+                    callback(logic, layer);
+                } else {
+                    logic();
+                }
+                //e.preventDefault();
+            });
+        },
+        goTop(target: JQuery) {
+            target.on('click', function (e) {
+                $('html, body').stop().animate({ scrollTop: 0 }, 1000);
+                e.preventDefault();
+            });
+        },
+        topScrollCh(target: JQuery, parent: JQuery) {
+            if (parent.hasClass('pc')) {
+                const winScroll = $(window).scrollTop() || 0;
+                if (winScroll == 0) {
+                    target.fadeOut();
+                    $('#header .inner').removeClass('on');
+                } else {
+                    target.fadeIn();
+                    $('#header .inner').addClass('on');
+                }
+            } else {
+                return;
+            }
+        },
+        taps(tab_nav: string, callback?: (swap: () => void) => void) {
+            const target = tab_nav + '.tab_nav li';
+            //console.log(target);
+            $(document).on('click', target, function (e) {
+                const $this = $(this);
+                const $layer = $(tab_nav + '.tab_cont');
+                const idx = $this.index();
+
+                const swap = () => {
+                    $this.addClass('on').siblings().removeClass('on');
+                    $layer.find('> div').eq(idx).show().siblings().hide();
+                };
+                if (callback) {
+                    callback(swap);
+                } else {
+                    swap();
+                }
+                e.preventDefault();
+            });
+        },
+        calander(
+            target: string,
+            option: any,
+            callback?: JQuery.TypeEventHandler<HTMLElement, unknown, any, any, 'change'>,
+        ) {
+            $(target).each(function () {
+                $(this).datepicker(option);
+                $(this).datepicker('setDate', 'today');
+                if (callback) $(this).on('change', callback);
+            });
+        },
+        customSelect(parent: string) {
+            const target = parent + ' button';
+            const listTarget = parent + ' a';
+            let $parent: JQuery;
+            $(document).on('click', target, function (e) {
+                $parent = $(this).parent();
+                if ($parent.hasClass('on')) {
+                    $parent.removeClass('on');
+                } else {
+                    $(parent).removeClass('on');
+                    $parent.addClass('on');
                     CommonUI.iscrolls.resize();
-				}
-				//console.log($parent);
-			});
-			$(document).on("click", listTarget, function(e){
-				const bt = $parent.find("button");
-				const input = $parent.find("input");
-				const val = $(this).data("val");
-				const text = $(this).text();
+                }
+                //console.log($parent);
+            });
+            $(document).on('click', listTarget, function (e) {
+                const bt = $parent.find('button');
+                const input = $parent.find('input');
+                const val = $(this).data('val');
+                const text = $(this).text();
 
-				input.val(val);
-				bt.text(text);
-				//console.log(input, input.val());
+                input.val(val);
+                bt.text(text);
+                //console.log(input, input.val());
 
-				$parent.addClass("select");
-				$parent.removeClass("on");
+                $parent.addClass('select');
+                $parent.removeClass('on');
 
-				e.preventDefault();
-			});
-		},
-        changeSelect(target: string){
-			$(document).on("change", target, function(e){
-				const val = $(this).val();
-				const target = $(this).parent().find(".selText");
-				if (val == "DISP_ROOT") {
-					target.html(target.attr("data-name") || '');
-				} else {
-					target.html($(this).find(".bestSubCate" + val).attr("data-name") || '');
-				}
-			});
-		},
-		fixedTop: function(){
-			let enScrollTop = 0,
-				beScrollTop = 0;
-			const $header = $('#header'),
-				$topBanner = $('.top_bn_w'),
-				fixdTop = $header.offset()?.top || 0,
-				paddingTop = $header.height() || 0,
-				scrollThreshold = 90;
+                e.preventDefault();
+            });
+        },
+        changeSelect(target: string) {
+            $(document).on('change', target, function (e) {
+                const val = $(this).val();
+                const target = $(this).parent().find('.selText');
+                if (val == 'DISP_ROOT') {
+                    target.html(target.attr('data-name') || '');
+                } else {
+                    target.html(
+                        $(this)
+                            .find('.bestSubCate' + val)
+                            .attr('data-name') || '',
+                    );
+                }
+            });
+        },
+        fixedTop: function () {
+            let enScrollTop = 0,
+                beScrollTop = 0;
+            const $header = $('#header'),
+                $topBanner = $('.top_bn_w'),
+                fixdTop = $header.offset()?.top || 0,
+                paddingTop = $header.height() || 0,
+                scrollThreshold = 90;
 
-			if($topBanner.length && $topBanner.is(':visible')){
-				$header.removeClass('fixed');
-				$header.css({'height': 'auto'});
-			}
-			else{
-				$header.addClass('fixed');
-				$header.css({'height': paddingTop});		
-			}
+            if ($topBanner.length && $topBanner.is(':visible')) {
+                $header.removeClass('fixed');
+                $header.css({ height: 'auto' });
+            } else {
+                $header.addClass('fixed');
+                $header.css({ height: paddingTop });
+            }
 
-			$(window).on('scroll', function(e) {
+            $(window).on('scroll', function (e) {
+                const scrollpos = window.scrollY || window.pageYOffset;
 
-				const scrollpos = window.scrollY || window.pageYOffset;
+                enScrollTop = scrollpos;
 
-				enScrollTop = scrollpos;
+                if ($topBanner.length && $topBanner.is(':visible')) {
+                    //console.log(fixdTop, scrollpos);
+                    if (fixdTop <= scrollpos) {
+                        $header.addClass('fixed');
+                    } else {
+                        $header.removeClass('fixed');
+                    }
+                }
+                if (Math.abs(enScrollTop - beScrollTop) < scrollThreshold) return false;
 
-				if($topBanner.length && $topBanner.is(':visible')){
-					//console.log(fixdTop, scrollpos);
-					if(fixdTop <= scrollpos) {
-						$header.addClass('fixed');
-					}
-					else {
-						$header.removeClass('fixed');
-					}
-				}
-				if (Math.abs(enScrollTop - beScrollTop) < scrollThreshold) return false;
-
-				if(!$('body').hasClass('pc')) {	
-					beScrollTop > enScrollTop ? $header.removeClass('on') : $header.addClass('on');
-				}
-				else{
-					$header.removeClass('on');
-				}
-
-				beScrollTop = enScrollTop;
-			});
-		},
+                if (!$('body').hasClass('pc')) {
+                    beScrollTop > enScrollTop ? $header.removeClass('on') : $header.addClass('on');
+                } else {
+                    $header.removeClass('on');
+                }
+                beScrollTop = enScrollTop;
+            });
+        },
     };
-    export const iscrolls: Iiscrolls={
+    export const iscrolls: Iiscrolls = {
         cash: null,
         num: 0,
-		init(target, option){
-			this.cash = this.cash ? this.cash :  CommonUI.Map.init();
-            $(target).each((idx: number, item)=>{
-
+        init(target, option) {
+            this.cash = this.cash ? this.cash : CommonUI.Map.init();
+            $(target).each((idx: number, item) => {
                 const targetIdx = $(target)[idx];
 
                 targetIdx.iscrolls = new IScroll(item, option);
                 //console.log(item);
-                this.cash.put(this.num++, {sort: item, option: option});
+                this.cash.put(this.num++, { sort: item, option: option });
             });
             //console.log(this.cash);
-		},
-		resize: function(){
-            if(!this.cash) return;
-            $.each(this.cash.map, (key, value)=>{
-                if(value.sort.className == "select_list"){
+        },
+        resize: function () {
+            if (!this.cash) return;
+            $.each(this.cash.map, (key, value) => {
+                if (value.sort.className == 'select_list') {
                     //console.log(key, value.sort.iscrolls);
-                    value.sort.iscrolls.scrollTo(0, 0);                 
+                    value.sort.iscrolls.scrollTo(0, 0);
                 }
             });
-			
-		},
+        },
     };
 
-	export const async = {
-		generaterRun(gen: () => Generator) {
-			const iter = gen();  
-			(function iterate({value, done}) {
-				if (done) return value;  
-				if (value.constructor === Promise ) {
-					value.then(data => iterate(iter.next(data)))
-					.catch(err => iter.throw(err)); 
-				} else {
-					iterate(iter.next(value));
-				}
-			})(iter.next());
-		},
-		wait(ms: number, value?: any){
-			return new Promise(resolve => setTimeout(resolve, ms, value));
-		},
-		promise(callback:(resolve:(value: any) => void, reject:(reason?: any) => void)=>void){
-			return new Promise((resolve, reject)=>{
-				callback(resolve, reject);
-			});
-		},
-	};
+    export const async = {
+        generaterRun(gen: () => Generator) {
+            const iter = gen();
+            (function iterate({ value, done }) {
+                if (done) return value;
+                if (value.constructor === Promise) {
+                    value.then((data) => iterate(iter.next(data))).catch((err) => iter.throw(err));
+                } else {
+                    iterate(iter.next(value));
+                }
+            })(iter.next());
+        },
+        wait(ms: number, value?: any) {
+            return new Promise((resolve) => setTimeout(resolve, ms, value));
+        },
+        promise(callback: (resolve: (value: any) => void, reject: (reason?: any) => void) => void) {
+            return new Promise((resolve, reject) => {
+                callback(resolve, reject);
+            });
+        },
+    };
 }
 
 //전역으로 내보냄 -- 선택사항
 window.CommonUI = CommonUI;
-

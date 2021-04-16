@@ -1,20 +1,18 @@
-import {CommonUI} from './CommonUI';
+import { CommonUI } from './CommonUI';
 
 /*dom tree 생성이전 시점*/
 //rem 설정 및 호스트 환경체크
 CommonUI.resize.font();
 
 /*dom tree 생성이후 시점*/
-$(()=>{
-
+$(() => {
     //ie test es6 method!
-    const aaa = new Promise<number>((resolve, reject)=>{
-            setTimeout(()=>{
-                resolve(1);
-            }, 2000);
-        })
-        .then((result)=>{
-            console.log(result+ 1); // 1
+    const aaa = new Promise<number>((resolve, reject) => {
+        setTimeout(() => {
+            resolve(1);
+        }, 2000);
+    }).then((result) => {
+        console.log(result + 1); // 1
         return result;
     });
 
@@ -23,23 +21,21 @@ $(()=>{
         cs: 3,
     };
 
-    const { as , cs } = bb;
+    const { as, cs } = bb;
 
-    const ddd = Object.assign({as},{cs});
+    const ddd = Object.assign({ as }, { cs });
     console.log(ddd);
     console.log(ddd);
 
-    
     //비동기 함수들 --> 동기적으로 실행 예시!!
-    CommonUI.async.generaterRun(function*(){
-
+    CommonUI.async.generaterRun(function* () {
         console.log('!!!!!!!!!!!!start');
 
-        const delay1 = yield CommonUI.async.wait(2000,'delay2초');
+        const delay1 = yield CommonUI.async.wait(2000, 'delay2초');
         console.log(delay1);
 
-        const runVal11 = yield CommonUI.async.promise((resolve, reject)=>{
-            $('.col:first-child h2').animate({'margin-left': 100}, 5000, ()=>{
+        const runVal11 = yield CommonUI.async.promise((resolve, reject) => {
+            $('.col:first-child h2').animate({ 'margin-left': 100 }, 5000, () => {
                 resolve(true);
             });
         });
@@ -48,151 +44,144 @@ $(()=>{
         const runVal2 = yield 'test2';
         console.log(runVal2);
 
-        const delay2 = yield CommonUI.async.wait(3000,'delay3초');
+        const delay2 = yield CommonUI.async.wait(3000, 'delay3초');
         console.log(delay2);
 
-        const runVal22 = yield CommonUI.async.promise((resolve, reject)=>{
-            $('.col:first-child h2').animate({'margin-left': 0}, 5000, ()=>{
+        const runVal22 = yield CommonUI.async.promise((resolve, reject) => {
+            $('.col:first-child h2').animate({ 'margin-left': 0 }, 5000, () => {
                 resolve(true);
             });
-        });;
+        });
         console.log(runVal22);
 
         console.log('end!!!!!!!!!!!!');
-
     });
 
-    
-
-    
-
     //(Array.prototype as any).mapToNumbers = function () {
-        ///* ... */
+    ///* ... */
     //};
-    
 
     //레이어 팝업
-    (()=>{
-        const TOUCH_EVENT = ('ontouchstart' in window) ? 'touchstart' : 'click',
+    (() => {
+        const TOUCH_EVENT = 'ontouchstart' in window ? 'touchstart' : 'click',
             LAYER_DIM = '.layer_dimmed',
             LAYER_PARENT = '.pop_layer';
 
         /*오픈 이벤트------*/
         //1
-        $(document).on('click', '#layer_open1', function(){
-            CommonUI.layer.open('.layer-common', LAYER_DIM, LAYER_PARENT, ()=>{
+        $(document).on('click', '#layer_open1', function () {
+            CommonUI.layer.open('.layer-common', LAYER_DIM, LAYER_PARENT, () => {
                 console.log('open');
             });
         });
         //2
-        CommonUI.layer.openClick('#layer_open2', LAYER_DIM, LAYER_PARENT, (show)=>{
+        CommonUI.layer.openClick('#layer_open2', LAYER_DIM, LAYER_PARENT, (show) => {
             console.log('open');
             show();
         });
 
-
         /*닫기 이벤트------*/
         //1
-        $(document).on('click', '#layer_close1', function(){
-            CommonUI.layer.close('.layer-common', LAYER_DIM, LAYER_PARENT, ()=>{
+        $(document).on('click', '#layer_close1', function () {
+            CommonUI.layer.close('.layer-common', LAYER_DIM, LAYER_PARENT, () => {
                 console.log('close');
             });
         });
 
         //2
-        CommonUI.layer.closeClick('#layer_close2', LAYER_DIM, LAYER_PARENT, (hide)=>{
+        CommonUI.layer.closeClick('#layer_close2', LAYER_DIM, LAYER_PARENT, (hide) => {
             console.log('close');
             hide();
         });
 
-
         /*배경닫기 이벤트------*/
-        $(LAYER_DIM).on('click', function(e){
-            CommonUI.layer.close(LAYER_DIM, LAYER_DIM, LAYER_PARENT, ()=>{
+        $(LAYER_DIM).on('click', function (e) {
+            CommonUI.layer.close(LAYER_DIM, LAYER_DIM, LAYER_PARENT, () => {
                 console.log('close');
             });
         });
-
     })();
 
     //탭 변경
-    (()=>{
-        CommonUI.event.taps('.tab-normal', (swap)=>{
+    (() => {
+        CommonUI.event.taps('.tab-normal', (swap) => {
             console.log('taps');
             swap();
         });
-        CommonUI.event.taps('.tab-normal2', (swap)=>{
+        CommonUI.event.taps('.tab-normal2', (swap) => {
             console.log('taps');
             swap();
         });
     })();
 
     //탑으로 버튼
-    (()=>{
+    (() => {
         const $BODY = $('body'),
-        $GOTOP = $('.btnTop');
-        
+            $GOTOP = $('.btnTop');
+
         /*top으로*/
         CommonUI.event.goTop($GOTOP);
-        
+
         /*pc top으로 scroll*/
         CommonUI.event.topScrollCh($GOTOP, $BODY);
-        $(window).on('scroll', function(){
+        $(window).on('scroll', function () {
             CommonUI.event.topScrollCh($GOTOP, $BODY);
         });
     })();
 
     //토글
-    (()=>{
-        CommonUI.event.toggle('.toggle_btn', '.toggle_cont', (logic, layer)=>{
+    (() => {
+        CommonUI.event.toggle('.toggle_btn', '.toggle_cont', (logic, layer) => {
             console.log('toggle');
             logic();
         });
 
-        CommonUI.event.toggle('.toggle_btn2', '.toggle_cont2', (logic, layer)=>{
+        CommonUI.event.toggle('.toggle_btn2', '.toggle_cont2', (logic, layer) => {
             console.log('toggle');
             logic();
         });
 
-        CommonUI.event.toggle('.toggle_btn3', '.toggle_cont3', (logic, layer)=>{
+        CommonUI.event.toggle('.toggle_btn3', '.toggle_cont3', (logic, layer) => {
             console.log('toggle');
             logic();
         });
 
-        CommonUI.event.toggle('.toggle_btn4', '.toggle_cont4', (logic, layer)=>{
+        CommonUI.event.toggle('.toggle_btn4', '.toggle_cont4', (logic, layer) => {
             console.log('toggle');
             logic();
         });
     })();
 
     //rem 설정 및 호스트 환경체크
-    (()=>{
+    (() => {
         const $BODY = $('body');
         /*호스트환경 체크*/
         CommonUI.resize.chk($BODY);
         CommonUI.resize.resize($BODY);
     })();
 
-
     //datepicker
-    (()=>{
-        CommonUI.event.calander('.datepicker', {
-            dateFormat: 'yy-mm-dd',
-            showMonthAfterYear: true,
-            changeYear: false,
-            changeMonth: false,
-            showOn: 'both',
-            buttonText: '날짜선택',
-            yearSuffix: '.',
-            monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
-            monthNamesShort: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
-            dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-        },
-        function(e){
-            console.log('날짜변경됨');
-        });
+    (() => {
+        CommonUI.event.calander(
+            '.datepicker',
+            {
+                dateFormat: 'yy-mm-dd',
+                showMonthAfterYear: true,
+                changeYear: false,
+                changeMonth: false,
+                showOn: 'both',
+                buttonText: '날짜선택',
+                yearSuffix: '.',
+                monthNames: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+                monthNamesShort: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+                dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+            },
+            function (e) {
+                console.log('날짜변경됨');
+            },
+        );
 
         /*
         CommonUI.event.calander('.datepicker', {
@@ -215,16 +204,16 @@ $(()=>{
     })();
 
     //슬라이더
-    (()=>{
-        if($('.target1').length && $.fn.slick) {
-            (function(){
+    (() => {
+        if ($('.target1').length && $.fn.slick) {
+            (function () {
                 CommonUI.slide.init($('.target1'), 'slick', {
                     infinite: true,
                     autoplay: true,
                     arrows: true,
                     dots: true,
                 });
-                $('.target1').on('mouseleave', function(e){
+                $('.target1').on('mouseleave', function (e) {
                     $(this).slick('slickPlay');
                 });
             })();
@@ -232,38 +221,31 @@ $(()=>{
     })();
 
     //커스텀 셀렉트
-    (()=>{
+    (() => {
         CommonUI.event.customSelect('.select_custum');
-        $(window).on('load', function(){
+        $(window).on('load', function () {
             /*아이스크롤*/
-            if($('.select_custum .select_list').length){
-                CommonUI.iscrolls.init('.select_custum .select_list', { 
+            if ($('.select_custum .select_list').length) {
+                CommonUI.iscrolls.init('.select_custum .select_list', {
                     scrollbars: true,
                     mouseWheel: true,
                     interactiveScrollbars: true,
                     shrinkScrollbars: 'scale',
                     fadeScrollbars: true,
-                    hScroll:false
-                });	
+                    hScroll: false,
+                });
             }
         });
     })();
 
     //커스텀 셀렉트(기본 인풋사용)
-    (()=>{
+    (() => {
         CommonUI.event.changeSelect('.sort_select select');
     })();
 
-
     //
-    (()=>{
-
-    })();
-
+    (() => {})();
 });
 
 /*브라우저 모든 resources 다운 완료시점*/
-$(window).on('load', function(){
-
-
-});
+$(window).on('load', function () {});
