@@ -45,7 +45,7 @@ const BASE_URL = `./wwwroot/${URL}`;
 const TASK_BASE_URL = `${BASE_URL}/assets`;
 
 /*typescript*/
-gulp.task('ts', ()=>{
+gulp.task('ts', ()=> {
     //createProject 인스턴스 하나만 요구해서 함수내부 scope로 옮겨서 task callback 함수내부에서 인스턴스 생성(함수호출시마다 매번 다른 인스턴스 생성)..
     const tsProjectP = ts.createProject('tsconfig.pc.json');
     const tsProjectM = ts.createProject('tsconfig.mo.json');
@@ -57,8 +57,8 @@ return tsProject.src()
 });
 
 // babel 
-gulp.task('babel', ()=>{
-return gulp
+gulp.task('babel', ()=>
+    gulp
     .src([polyfill, `${TASK_BASE_URL}/scripts/build/js/*.js`], {allowEmpty: true})
     .pipe(babel({
         presets: [
@@ -70,11 +70,11 @@ return gulp
         ],
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/dist`))
-});
+);
 
 //웹팩 모듈 번들러.. 모듈 코딩시에만 필요!
-gulp.task('webpack', ()=>{
-return gulp
+gulp.task('webpack', ()=>
+    gulp
     .src(`${TASK_BASE_URL}/scripts/build/dist/*.js`
         , {allowEmpty: true}
     )
@@ -82,10 +82,10 @@ return gulp
         output: {filename: 'UI.bundle.js'},
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/bundle`))
-});
+);
 
-gulp.task('sass', ()=>{
-return gulp
+gulp.task('sass', ()=>
+    gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
     .pipe(
@@ -108,10 +108,10 @@ return gulp
 	)
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(`${TASK_BASE_URL}/styles`))
-    .pipe(browserSync.reload({ stream: true }));
-});
-gulp.task('build', ()=>{
-return gulp
+    .pipe(browserSync.reload({ stream: true }))
+);
+gulp.task('build', ()=>
+    gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
     .pipe(
@@ -129,15 +129,15 @@ return gulp
     .pipe(browserSync.reload({ stream: true }))
     .on('end', function () {
         console.log('-------- appned css --------');
-    });
-});
+    })
+);
 
-gulp.task('clean', ()=>{
-    return del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/mo`, `${TASK_BASE_URL}/pc`], {force:true});
-});
+gulp.task('clean', ()=>
+    del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/mo`, `${TASK_BASE_URL}/pc`], {force:true})
+);
 
 
-gulp.task('watch', ()=>{
+gulp.task('watch', ()=> {
     browserSync.init({
         //logLevel: 'debug',
         port: 3333,
