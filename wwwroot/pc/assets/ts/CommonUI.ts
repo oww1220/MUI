@@ -1,10 +1,4 @@
 //import '@babel/polyfill';
-declare global {
-    interface window {
-        CommonUI: any;
-    }
-}
-
 export namespace CommonUI {
     //namespace CommonUI {
     export const $: JQueryStatic = jQuery;
