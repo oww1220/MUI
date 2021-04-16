@@ -10,9 +10,9 @@
 
 # production
 /build
-/wwwroot/pc/assets/styles/dist
+/wwwroot/pc/assets/styles
+/wwwroot/mo/assets/styles
 /wwwroot/pc/assets/scripts/build
-/wwwroot/mo/assets/styles/dist
 /wwwroot/mo/assets/scripts/build
 /wwwroot/pc/assets/mo
 /wwwroot/mo/assets/pc
