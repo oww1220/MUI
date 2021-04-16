@@ -479,6 +479,11 @@ export namespace CommonUI {
 		wait(ms: number, value?: any){
 			return new Promise(resolve => setTimeout(resolve, ms, value));
 		},
+		promise(callback:(resolve:(value: any) => void, reject:(reason?: any) => void)=>void){
+			return new Promise((resolve, reject)=>{
+				callback(resolve, reject);
+			});
+		},
 	};
 }
 

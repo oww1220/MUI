@@ -28,16 +28,43 @@ $(()=>{
     const ddd = Object.assign({as},{cs});
     console.log(ddd);
     console.log(ddd);
+
     
+    //비동기 함수들 --> 동기적으로 실행 예시!!
     CommonUI.async.generaterRun(function*(){
 
-        const runVal1 = yield CommonUI.async.wait(2000,'test1');
-        console.log(runVal1);
+        console.log('!!!!!!!!!!!!start');
+
+        const delay1 = yield CommonUI.async.wait(2000,'delay2초');
+        console.log(delay1);
+
+        const runVal11 = yield CommonUI.async.promise((resolve, reject)=>{
+            $('.col:first-child h2').animate({'margin-left': 100}, 5000, ()=>{
+                resolve(true);
+            });
+        });
+        console.log(runVal11);
 
         const runVal2 = yield 'test2';
         console.log(runVal2);
 
+        const delay2 = yield CommonUI.async.wait(3000,'delay3초');
+        console.log(delay2);
+
+        const runVal22 = yield CommonUI.async.promise((resolve, reject)=>{
+            $('.col:first-child h2').animate({'margin-left': 0}, 5000, ()=>{
+                resolve(true);
+            });
+        });;
+        console.log(runVal22);
+
+        console.log('end!!!!!!!!!!!!');
+
     });
+
+    
+
+    
 
     //(Array.prototype as any).mapToNumbers = function () {
         ///* ... */

@@ -153,7 +153,7 @@ gulp.task('watch', ()=> {
     );
 
     gulp.watch(`${BASE_URL}/**/*.html`).on('change', browserSync.reload);
-    gulp.watch(`${BASE_URL}/**/*.js`).on('change', browserSync.reload);
+    gulp.watch(`${TASK_BASE_URL}/scripts/build/bundle/*.js`).on('change', browserSync.reload);
     gulp.watch(`${BASE_URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
 });
 
