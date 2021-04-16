@@ -1,9 +1,6 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./wwwroot/mo/assets/ts/@type"],
-  },
-  "include": [
-    "wwwroot/mo/**/*.ts"
-  ]
+    "rootDir": "./wwwroot/mo/assets/ts",
+  }
 }

@@ -14,6 +14,8 @@
 /wwwroot/pc/assets/scripts/build
 /wwwroot/mo/assets/styles/dist
 /wwwroot/mo/assets/scripts/build
+/wwwroot/pc/assets/mo
+/wwwroot/mo/assets/pc
 *.map
 
 # misc

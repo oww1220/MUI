@@ -46,7 +46,7 @@ const TASK_BASE_URL = `${BASE_URL}/assets`;
 
 /*typescript*/
 gulp.task('ts', ()=>{
-    //createProject 인스턴스 하나만 요구해서 함수내부 scope로 옮겨서 task callback에서 생성..
+    //createProject 인스턴스 하나만 요구해서 함수내부 scope로 옮겨서 task callback 함수내부에서 인스턴스 생성(함수호출시마다 매번 다른 인스턴스 생성)..
     const tsProjectP = ts.createProject('tsconfig.pc.json');
     const tsProjectM = ts.createProject('tsconfig.mo.json');
     const tsProject = (URL === 'mo') ? tsProjectM : tsProjectP;
@@ -133,7 +133,7 @@ return gulp
 });
 
 gulp.task('clean', ()=>{
-    return del([`${TASK_BASE_URL}/scripts/build/js`], {force:true});
+    return del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/mo`, `${TASK_BASE_URL}/pc`], {force:true});
 });
 
 
@@ -153,8 +153,7 @@ gulp.task('watch', ()=>{
     );
 
     gulp.watch(`${BASE_URL}/**/*.html`).on('change', browserSync.reload);
-    //js내보내는 폴더가 다중이라 babel output 폴더 js만 watch함-중복방지
-    gulp.watch(`${TASK_BASE_URL}/scripts/build/dist/*.js`).on('change', browserSync.reload);
+    gulp.watch(`${BASE_URL}/**/*.js`).on('change', browserSync.reload);
     gulp.watch(`${BASE_URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
 });
 

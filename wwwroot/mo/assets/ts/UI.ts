@@ -28,6 +28,7 @@ $(()=>{
     const ddd = Object.assign({as},{cs});
     console.log(ddd);
     console.log(ddd);
+    
 
     //레이어 팝업
     (()=>{

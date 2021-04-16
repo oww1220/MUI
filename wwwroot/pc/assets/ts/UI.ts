@@ -27,7 +27,8 @@ $(()=>{
 
     const ddd = Object.assign({as},{cs});
     console.log(ddd);
-
+    console.log(ddd);
+    console.log(ddd);
     CommonUI.async.generaterRun(function*(){
 
         const runVal1 = yield CommonUI.async.wait(2000,'test1');
