@@ -1,5 +1,5 @@
 import { CommonUI } from './CommonUI';
-
+import Swiper from 'swiper';
 /*dom tree 생성이전 시점*/
 //rem 설정 및 호스트 환경체크
 CommonUI.resize.font();

@@ -1,4 +1,6 @@
-//import '@babel/polyfill';
+import Swiper from 'swiper';
+import CSSSelector from 'swiper';
+
 export namespace CommonUI {
     //namespace CommonUI {
     export const $: JQueryStatic = jQuery;
@@ -86,7 +88,7 @@ export namespace CommonUI {
         },
     };
     export const slide = {
-        init(target: JQuery, sort: string, option: any) {
+        init(target: any, sort: string, option: any) {
             if (sort == 'slick') {
                 //console.log('slick');
                 return target.slick(option);

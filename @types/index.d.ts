@@ -1,5 +1,6 @@
 /*declare*/
-declare const Swiper: (target: any, option: any) => void;
+//declare const Swiper: (target: any, option: any) => void;
+
 
 
 /*interface*/
