@@ -134,7 +134,7 @@ gulp.task('build', ()=>
 );
 
 gulp.task('clean', ()=>
-    del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/mo`, `${TASK_BASE_URL}/pc`], {force:true})
+    del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/scripts/build/dist`], {force:true})
 );
 
 

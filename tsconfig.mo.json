@@ -2,5 +2,9 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "rootDir": "./wwwroot/mo/assets/ts",
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "./wwwroot/pc/assets"
+  ]
 }

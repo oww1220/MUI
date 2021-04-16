@@ -28,17 +28,18 @@ $(() => {
     console.log(ddd);
 
     //비동기 함수들 --> 동기적으로 실행 예시!!
+    const promiseCallback: PromiseCallback = (resolve, reject) => {
+        $('.col:first-child h2').animate({ 'margin-left': 100 }, 5000, () => {
+            resolve(true);
+        });
+    };
     CommonUI.async.generaterRun(function* () {
         console.log('!!!!!!!!!!!!start');
 
         const delay1 = yield CommonUI.async.wait(2000, 'delay2초');
         console.log(delay1);
 
-        const runVal11 = yield CommonUI.async.promise((resolve, reject) => {
-            $('.col:first-child h2').animate({ 'margin-left': 100 }, 5000, () => {
-                resolve(true);
-            });
-        });
+        const runVal11 = yield CommonUI.async.promise(promiseCallback);
         console.log(runVal11);
 
         const runVal2 = yield 'test2';

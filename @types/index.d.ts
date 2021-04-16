@@ -1,9 +1,8 @@
+/*declare*/
 declare const Swiper: (target: any, option: any) => void;
 
 
-declare global {
-
-}
+/*interface*/
 interface Window{
     CommonUI: any;
 }
@@ -21,3 +20,6 @@ interface Iiscrolls {
     init(target: string, option: any): void;
     resize(): void;
 }
+
+/*type*/
+type PromiseCallback = (resolve: (value: any) => void, reject: (reason?: any) => void) => void;
