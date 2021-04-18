@@ -1,5 +1,4 @@
 import { CommonUI } from './CommonUI';
-import Swiper from 'swiper';
 /*dom tree 생성이전 시점*/
 //rem 설정 및 호스트 환경체크
 CommonUI.resize.font();
@@ -209,7 +208,7 @@ $(() => {
     (() => {
         if ($('.target1').length && $.fn.slick) {
             (function () {
-                CommonUI.slide.init($('.target1'), 'slick', {
+                CommonUI.slide.init('.target1', 'slick', {
                     infinite: true,
                     autoplay: true,
                     arrows: true,
@@ -218,6 +217,7 @@ $(() => {
                 $('.target1').on('mouseleave', function (e) {
                     $(this).slick('slickPlay');
                 });
+                //CommonUI.slide.init('.target1', 'swiper');
             })();
         }
     })();

@@ -80,6 +80,7 @@ gulp.task('webpack', ()=>
         , {allowEmpty: true}
     )
     .pipe(webpack({
+        mode: 'production',
         output: {filename: 'UI.bundle.js'},
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/bundle`))

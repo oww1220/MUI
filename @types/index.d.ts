@@ -1,7 +1,5 @@
 /*declare*/
-//declare const Swiper: (target: any, option: any) => void;
-
-
+declare const Swiper: (target: SwiperParm, option: any) => void;
 
 /*interface*/
 interface Window{
@@ -24,3 +22,4 @@ interface Iiscrolls {
 
 /*type*/
 type PromiseCallback = (resolve: (value: any) => void, reject: (reason?: any) => void) => void;
+type SwiperParm = string | HTMLElement;
