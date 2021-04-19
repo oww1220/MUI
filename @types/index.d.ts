@@ -34,4 +34,5 @@ interface IJqMap {
 
 /*type*/
 type PromiseCallback = (resolve: (value: any) => void, reject: (reason?: any) => void) => void;
-type SwiperParm = string | HTMLElement;
+type SwiperParam = string | HTMLElement;
+type slideSortParam = 'slick' | 'swiper';

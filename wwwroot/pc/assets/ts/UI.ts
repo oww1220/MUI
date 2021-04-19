@@ -208,7 +208,7 @@ $(() => {
     (() => {
         if ($('.target1').length && $.fn.slick) {
             (function () {
-                CommonUI.slide.init('.target1', 'slick', {
+                CommonUI.slide.init($('.target1'), 'slick', {
                     infinite: true,
                     autoplay: true,
                     arrows: true,
@@ -217,9 +217,10 @@ $(() => {
                 $('.target1').on('mouseleave', function (e) {
                     $(this).slick('slickPlay');
                 });
-                //CommonUI.slide.init('.target1', 'swiper');
             })();
         }
+
+        //CommonUI.slide.init('.target1', 'swiper');
     })();
 
     //커스텀 셀렉트

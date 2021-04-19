@@ -85,13 +85,12 @@ export namespace CommonUI {
         },
     };
     export const slide = {
-        init(target: SwiperParm, sort: string, option?: any) {
-            if (sort == 'slick' && typeof target === 'string') {
-                const $target = $(target);
-                return $target.slick(option);
+        init(target: SwiperParam | JQuery, sort: slideSortParam, option?: any) {
+            if (sort == 'slick') {
+                return (<JQuery>target).slick(option);
             }
             if (sort === 'swiper') {
-                return new Swiper(target, option);
+                return new Swiper(<SwiperParam>target, option);
             }
         },
     };
