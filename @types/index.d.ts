@@ -1,5 +1,5 @@
 /*declare*/
-declare const Swiper: (target: SwiperParm, option?: object) => void;
+declare const Swiper: (target: SwiperParm, option?: IObj) => void;
 
 /*interface*/
 interface Window{
