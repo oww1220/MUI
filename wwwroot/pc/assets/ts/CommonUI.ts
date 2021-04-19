@@ -85,7 +85,7 @@ export namespace CommonUI {
         },
     };
     export const slide = {
-        init(target: SwiperParam, sort: slideSortParam, option?: object) {
+        init(target: SwiperParam, sort: slideSortParam, option?: IObj) {
             if (sort == 'slick' && typeof target === 'string') {
                 const $target = $(target);
                 return $target.slick(option!);
@@ -317,7 +317,7 @@ export namespace CommonUI {
         },
         calander(
             target: string,
-            option: any,
+            option: IObj,
             callback?: JQuery.TypeEventHandler<HTMLElement, unknown, any, any, 'change'>,
         ) {
             $(target).each(function () {
@@ -377,7 +377,7 @@ export namespace CommonUI {
                 beScrollTop = 0;
             const $header = $('#header'),
                 $topBanner = $('.top_bn_w'),
-                fixdTop = $header.offset()?.top || 0,
+                fixdTop = $header.offset()!.top || 0,
                 paddingTop = $header.height() || 0,
                 scrollThreshold = 90;
 
@@ -429,7 +429,7 @@ export namespace CommonUI {
         },
         resize: function () {
             if (!this.cash) return;
-            $.each(this.cash.map, (key: number, value: { sort: HTMLElement; option: any }) => {
+            $.each(this.cash.map, (key: number, value: { sort: HTMLElement; option: IObj }) => {
                 if (value.sort.className == 'select_list') {
                     //console.log(key, value.sort.iscrolls);
                     value.sort.iscrolls!.scrollTo(0, 0);

@@ -16,7 +16,7 @@ interface HTMLElement {
 interface Iiscrolls {
     cash: IJqMap | null;
     num: number;
-    init(target: string, option: any): void;
+    init(target: string, option: IObj): void;
     resize(): void;
 }
 
