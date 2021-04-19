@@ -10,14 +10,26 @@ interface Window{
 //}
 
 interface HTMLElement {
-    iscrolls?: object;
+    iscrolls?: IScroll;
 }
 
 interface Iiscrolls {
-    cash: any;
+    cash: IJqMap | null;
     num: number;
     init(target: string, option: any): void;
     resize(): void;
+}
+
+interface IJqMap {
+    map: object | null;
+    put<T>(key: any, value: T): void;
+    get<T>(key: any): T;
+    containsKey(key: any): boolean | null;
+    clear(): void;
+    remove(key: any): void;
+    keys(): any[];
+    values(): any[];
+    size(): number;
 }
 
 /*type*/

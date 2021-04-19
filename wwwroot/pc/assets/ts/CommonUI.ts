@@ -13,7 +13,7 @@ export namespace CommonUI {
         },
         font() {
             const doc = document.documentElement;
-            const caculateWidth: any = (doc.clientWidth / 320) * 62.5 * 100;
+            const caculateWidth = String((doc.clientWidth / 320) * 62.5 * 100);
             let fontSizeVal = parseFloat(caculateWidth) / 100;
             fontSizeVal = fontSizeVal >= 85 ? 85 : fontSizeVal;
 
@@ -28,22 +28,22 @@ export namespace CommonUI {
     };
     export const Map = {
         init() {
-            class JqMap {
-                map: Object;
+            class JqMap implements IJqMap {
+                map: object | null = null;
                 constructor() {
                     this.map = new Object();
                 }
                 /* key, value 값으로 구성된 데이터를 추가 */
-                put(key: any, value: any) {
-                    this.map[key] = value;
+                put<T>(key: string | number, value: T) {
+                    this.map && (this.map[key] = value);
                 }
                 /* 지정한 key값의 value값 반환 */
-                get(key: any): any {
-                    return this.map[key];
+                get<T>(key: string | number): T {
+                    return this.map && this.map[key];
                 }
                 /* 구성된 key 값 존재여부 반환 */
-                containsKey(key: any): boolean {
-                    return key in this.map;
+                containsKey(key: string | number): boolean | null {
+                    return this.map && key in this.map;
                 }
                 /* 구성된 데이터 초기화 */
                 clear() {
@@ -52,8 +52,8 @@ export namespace CommonUI {
                     }
                 }
                 /*  key에 해당하는 데이터 삭제 */
-                remove(key: any) {
-                    delete this.map[key];
+                remove(key: string | number) {
+                    this.map && delete this.map[key];
                 }
                 /* 배열로 key 반환 */
                 keys(): any[] {
@@ -423,16 +423,16 @@ export namespace CommonUI {
 
                 targetIdx.iscrolls = new IScroll(item, option);
                 //console.log(item);
-                this.cash.put(this.num++, { sort: item, option: option });
+                this.cash!.put<{ sort: HTMLElement; option: any }>(this.num++, { sort: item, option: option });
             });
             //console.log(this.cash);
         },
         resize: function () {
             if (!this.cash) return;
-            $.each(this.cash.map, (key, value) => {
+            $.each(this.cash.map, (key: number, value: { sort: HTMLElement; option: any }) => {
                 if (value.sort.className == 'select_list') {
                     //console.log(key, value.sort.iscrolls);
-                    value.sort.iscrolls.scrollTo(0, 0);
+                    value.sort.iscrolls!.scrollTo(0, 0);
                 }
             });
         },
