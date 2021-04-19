@@ -171,7 +171,7 @@ $(() => {
     (() => {
         if ($('.target1').length && $.fn.slick) {
             (function () {
-                CommonUI.slide.init($('.target1'), 'slick', {
+                CommonUI.slide.init('.target1', 'slick', {
                     infinite: true,
                     autoplay: true,
                     arrows: true,
