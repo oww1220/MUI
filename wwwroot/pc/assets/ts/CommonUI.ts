@@ -35,15 +35,15 @@ export namespace CommonUI {
                 }
                 /* key, value 값으로 구성된 데이터를 추가 */
                 put<T>(key: string | number, value: T) {
-                    this.map && (this.map[key] = value);
+                    this.map![key] = value;
                 }
                 /* 지정한 key값의 value값 반환 */
                 get<T>(key: string | number): T {
-                    return this.map && this.map[key];
+                    return this.map![key];
                 }
                 /* 구성된 key 값 존재여부 반환 */
-                containsKey(key: string | number): boolean | null {
-                    return this.map && key in this.map;
+                containsKey(key: string | number): boolean {
+                    return key in this.map!;
                 }
                 /* 구성된 데이터 초기화 */
                 clear() {
@@ -53,7 +53,7 @@ export namespace CommonUI {
                 }
                 /*  key에 해당하는 데이터 삭제 */
                 remove(key: string | number) {
-                    this.map && delete this.map[key];
+                    delete this.map![key];
                 }
                 /* 배열로 key 반환 */
                 keys(): any[] {
@@ -423,7 +423,7 @@ export namespace CommonUI {
 
                 targetIdx.iscrolls = new IScroll(item, option);
                 //console.log(item);
-                this.cash!.put<{ sort: HTMLElement; option: any }>(this.num++, { sort: item, option: option });
+                this.cash!.put(this.num++, { sort: item, option: option });
             });
             //console.log(this.cash);
         },

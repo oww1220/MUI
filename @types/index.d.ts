@@ -24,7 +24,7 @@ interface IJqMap {
     map: object | null;
     put<T>(key: any, value: T): void;
     get<T>(key: any): T;
-    containsKey(key: any): boolean | null;
+    containsKey(key: any): boolean;
     clear(): void;
     remove(key: any): void;
     keys(): any[];
