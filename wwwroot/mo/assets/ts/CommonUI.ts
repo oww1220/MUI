@@ -29,7 +29,7 @@ export namespace CommonUI {
     export const Map = {
         init() {
             class JqMap implements IJqMap {
-                map: object | null = null;
+                map: IObj | null = null;
                 constructor() {
                     this.map = new Object();
                 }
@@ -56,8 +56,8 @@ export namespace CommonUI {
                     delete this.map![key];
                 }
                 /* 배열로 key 반환 */
-                keys(): any[] {
-                    const arKey = new Array();
+                keys(): (string | number)[] {
+                    const arKey: (string | number)[] = new Array();
                     for (const prop in this.map) {
                         arKey.push(prop);
                     }
@@ -85,13 +85,13 @@ export namespace CommonUI {
         },
     };
     export const slide = {
-        init(target: SwiperParam, sort: slideSortParam, option?: any) {
+        init(target: SwiperParam, sort: slideSortParam, option?: object) {
             if (sort == 'slick' && typeof target === 'string') {
                 const $target = $(target);
-                return $target.slick(option);
+                return $target.slick(option!);
             }
             if (sort === 'swiper') {
-                return new Swiper(target, option);
+                return new Swiper(target, option!);
             }
         },
     };

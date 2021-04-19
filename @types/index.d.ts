@@ -1,5 +1,5 @@
 /*declare*/
-declare const Swiper: (target: SwiperParm, option: any) => void;
+declare const Swiper: (target: SwiperParm, option?: object) => void;
 
 /*interface*/
 interface Window{
@@ -21,15 +21,19 @@ interface Iiscrolls {
 }
 
 interface IJqMap {
-    map: object | null;
-    put<T>(key: any, value: T): void;
-    get<T>(key: any): T;
-    containsKey(key: any): boolean;
+    map: IObj | null;
+    put<T>(key:string | number, value: T): void;
+    get<T>(key:string | number): T;
+    containsKey(key:string | number): boolean;
     clear(): void;
-    remove(key: any): void;
-    keys(): any[];
+    remove(key:string | number): void;
+    keys(): (string | number)[];
     values(): any[];
     size(): number;
+}
+
+interface IObj {
+    [key: string | number]: any;
 }
 
 /*type*/
