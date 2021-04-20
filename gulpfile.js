@@ -1,4 +1,4 @@
-const URL = process.env.APP_ENV_URL;
+const URL = process.env.APP_ENV_URL || 'pc';
 
 const gulp = require('gulp');
 const del = require('del');
