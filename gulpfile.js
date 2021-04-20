@@ -86,7 +86,7 @@ gulp.task('webpack', ()=>
     }))
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/bundle`))
+    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
 );
 
 gulp.task('sass', ()=>
@@ -100,9 +100,9 @@ gulp.task('sass', ()=>
     )
     .pipe(
         sass({
-            outputStyle: 'expanded', //[nested, compact, expanded, compressed]
-            indentType: 'tab',
-            indentWidth: 1,
+            outputStyle: 'compressed', //[nested, compact, expanded, compressed]
+            //indentType: 'tab',
+            //indentWidth: 1,
         }).on('error', sass.logError)
     )
     .pipe(
@@ -115,33 +115,10 @@ gulp.task('sass', ()=>
     .pipe(gulp.dest(`${TASK_BASE_URL}/styles`))
     .pipe(browserSync.reload({ stream: true }))
 );
-gulp.task('build', ()=>
-    gulp
-    .src(`${TASK_BASE_URL}/scss/**/*.scss`)
-    .pipe(plumber(plumberOption))
-    .pipe(
-        sass({
-            outputStyle: 'compressed', //[nested, compact, expanded, compressed]
-        }).on('error', sass.logError)
-    )
-    .pipe(
-        autoprefixer({
-            browsers: autoprefixBrowsers,
-            cascade: true,
-        })
-    )
-    .pipe(gulp.dest(`${TASK_BASE_URL}/styles/dist`))
-    .pipe(browserSync.reload({ stream: true }))
-    .on('end', function () {
-        console.log('-------- appned css --------');
-    })
-);
 
 gulp.task('clean', ()=>
-    del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/scripts/build/dist`], {force:true})
-    //del([`${TASK_BASE_URL}/scripts/build/js`], {force:true})
+    del([`${TASK_BASE_URL}/scripts/build`], {force:true})
 );
-
 
 gulp.task('watch', ()=> {
     browserSync.init({
@@ -155,15 +132,15 @@ gulp.task('watch', ()=> {
 
     gulp.watch(
         `${TASK_BASE_URL}/scss/**/*.scss`,
-        gulp.series('sass', 'build')
+        gulp.series('sass')
     );
 
     gulp.watch(`${BASE_URL}/**/*.html`).on('change', browserSync.reload);
-    gulp.watch(`${TASK_BASE_URL}/scripts/build/bundle/*.js`).on('change', browserSync.reload);
+    gulp.watch(`${TASK_BASE_URL}/scripts/bundle/*.js`).on('change', browserSync.reload);
     gulp.watch(`${BASE_URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
 });
 
 gulp.task(
     'default',
-    gulp.series('sass', 'build', 'ts', 'babel', 'webpack', 'clean', 'watch')
+    gulp.series('sass', 'ts', 'babel', 'webpack', 'clean', 'watch')
 );
