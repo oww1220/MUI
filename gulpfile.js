@@ -79,13 +79,12 @@ gulp.task('webpack', ()=>
     .src(`${TASK_BASE_URL}/scripts/build/dist/**/*.js`
         , {allowEmpty: true}
     )
+    .pipe(plumber(plumberOption))
     .pipe(webpack({
         mode: 'production',
         output: {filename: 'UI.bundle.js'},
-        devtool: 'source-map',
+        devtool: 'source-map'
     }))
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
 );
 
@@ -93,11 +92,7 @@ gulp.task('sass', ()=>
     gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
     .pipe(plumber(plumberOption))
-    .pipe(
-        sourcemaps.init({
-            loadMaps: true,
-        })
-    )
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(
         sass({
             outputStyle: 'compressed', //[nested, compact, expanded, compressed]
@@ -111,7 +106,7 @@ gulp.task('sass', ()=>
             cascade: true,
         })
 	)
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(`${TASK_BASE_URL}/styles`))
     .pipe(browserSync.reload({ stream: true }))
 );
