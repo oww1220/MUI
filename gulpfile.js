@@ -60,7 +60,7 @@ return tsProject.src()
 // babel 
 gulp.task('babel', ()=>
     gulp
-    .src([polyfill, `${TASK_BASE_URL}/scripts/build/js/*.js`], {allowEmpty: true})
+    .src([polyfill, `${TASK_BASE_URL}/scripts/build/js/**/*.js`], {allowEmpty: true})
     .pipe(babel({
         presets: [
             [ '@babel/preset-env', {
@@ -76,7 +76,7 @@ gulp.task('babel', ()=>
 //웹팩 모듈 번들러.. 모듈 코딩시에만 필요!
 gulp.task('webpack', ()=>
     gulp
-    .src(`${TASK_BASE_URL}/scripts/build/dist/*.js`
+    .src(`${TASK_BASE_URL}/scripts/build/dist/**/*.js`
         , {allowEmpty: true}
     )
     .pipe(webpack({
@@ -136,6 +136,7 @@ gulp.task('build', ()=>
 
 gulp.task('clean', ()=>
     del([`${TASK_BASE_URL}/scripts/build/js`, `${TASK_BASE_URL}/scripts/build/dist`], {force:true})
+    //del([`${TASK_BASE_URL}/scripts/build/js`], {force:true})
 );
 
 
