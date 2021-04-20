@@ -22,6 +22,7 @@ $(() => {
     const ddd = Object.assign({ as }, { cs });
     console.log(ddd);
     console.log(ddd);
+    console.log(ddd);
 
     //비동기 함수들 --> 동기적으로 실행 예시!!
     const promiseCallback: PromiseCallback = (resolve, reject) => {

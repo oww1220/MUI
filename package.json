@@ -16,7 +16,7 @@
     }
   },
   "lint-staged": {
-    "wwwroot/**/*.{js,jsx,ts,tsx,json,css,scss}": [
+    "wwwroot/**/*.{ts,tsx,json,scss}": [
       "prettier --write",
       "git add"
     ]
