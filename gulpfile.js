@@ -82,7 +82,10 @@ gulp.task('webpack', ()=>
     .pipe(webpack({
         mode: 'production',
         output: {filename: 'UI.bundle.js'},
+        devtool: 'source-map',
     }))
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/bundle`))
 );
 
