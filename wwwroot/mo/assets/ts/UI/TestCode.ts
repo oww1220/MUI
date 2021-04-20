@@ -1,8 +1,12 @@
 import { CommonUI } from '../CommonUI';
+import * as Const from '../Lib/Const';
 
 // ---- test code ---- //
 $(() => {
     //ie test es6 method!
+
+    console.log('TOUCH_EVENT', Const.TOUCH_EVENT);
+
     const aaa = new Promise<number>((resolve, reject) => {
         setTimeout(() => {
             resolve(1);
@@ -20,6 +24,7 @@ $(() => {
     const { as, cs } = bb;
 
     const ddd = Object.assign({ as }, { cs });
+    console.log(ddd);
     console.log(ddd);
     console.log(ddd);
 

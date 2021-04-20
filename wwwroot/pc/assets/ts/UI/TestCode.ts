@@ -1,8 +1,12 @@
 import { CommonUI } from '../CommonUI';
+import * as Const from '../Lib/Const';
 
 // ---- test code ---- //
 $(() => {
     //ie test es6 method!
+
+    console.log('TOUCH_EVENT', Const.TOUCH_EVENT);
+
     const aaa = new Promise<number>((resolve, reject) => {
         setTimeout(() => {
             resolve(1);
