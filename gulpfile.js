@@ -122,6 +122,14 @@ gulp.task('sass', ()=>
             //indentWidth: 1,
         }).on('error', sass.logError)
     )
+    .pipe(pxtorem({
+            propList: ['*', '!'],
+            rootValue: 16,
+            replace: false,
+            minPixelValue: 2,
+            mediaQuery: true
+        }
+    ))
     .pipe(
         autoprefixer({
             browsers: autoprefixBrowsers,
