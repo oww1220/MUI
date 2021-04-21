@@ -45,7 +45,7 @@ const polyfill = './node_modules/@babel/polyfill/browser.js';
 const BASE_URL = `./wwwroot/${URL}`;
 const TASK_BASE_URL = `${BASE_URL}/assets`;
 
-/*typescript*/
+// typescript: typescript 컴파일러
 gulp.task('ts', ()=> {
     //createProject 인스턴스 하나만 요구해서 함수내부 scope로 옮겨서 task callback 함수내부에서 인스턴스 생성(함수호출시마다 매번 다른 인스턴스 생성)..
     const tsProjectP = ts.createProject('tsconfig.pc.json');
@@ -57,7 +57,7 @@ return tsProject.src()
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/js`))
 });
 
-// babel 
+// babel: 구형 브라우저에서도 동작하는 ES5 이하의 코드로 변환(트랜스파일링)
 gulp.task('babel', ()=>
     gulp
     .src([polyfill, `${TASK_BASE_URL}/scripts/build/js/**/*.js`], {allowEmpty: true})
@@ -73,7 +73,7 @@ gulp.task('babel', ()=>
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/dist`))
 );
 
-//웹팩 모듈 번들러.. 모듈 코딩시에만 필요!
+// webpack: 모듈 번들
 gulp.task('webpack', ()=>
     gulp
     .src(`${TASK_BASE_URL}/scripts/build/dist/**/*.js`
@@ -82,12 +82,34 @@ gulp.task('webpack', ()=>
     .pipe(plumber(plumberOption))
     .pipe(webpack({
         mode: 'production',
+        // 파일 다중으로 내보내기 가능
+        /*
+        entry: {
+            //CommonUI: [`${TASK_BASE_URL}/scripts/build/dist/CommonUI.js`, `${TASK_BASE_URL}/scripts/build/dist/browser.js`],
+            //UI: `${TASK_BASE_URL}/scripts/build/dist/UI/Datepicker.js`,
+        },
+        output: {filename: '[name].bundle.js'},
+        */
         output: {filename: 'UI.bundle.js'},
         devtool: 'source-map'
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
+    .pipe(browserSync.reload({ stream: true }))
 );
 
+// concat: 제이쿼리 코어및 사용 플러그인들 머지
+gulp.task('jquery:concat', ()=>
+    gulp
+    .src(`${TASK_BASE_URL}/scripts/jquery/**/*.js`)
+    .pipe(plumber(plumberOption))
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(concat('jquery.bundle.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
+);
+
+// sass: sass컴파일러
 gulp.task('sass', ()=>
     gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
@@ -111,11 +133,15 @@ gulp.task('sass', ()=>
     .pipe(browserSync.reload({ stream: true }))
 );
 
+// clean: 파일정리(delete)
 gulp.task('clean', ()=>
     del([`${TASK_BASE_URL}/scripts/build`], {force:true})
 );
 
+// watch: 소스 옵져빙(소스변경 감지해서 task실행및 서버 재시작)
 gulp.task('watch', ()=> {
+
+    //서버실행
     browserSync.init({
         //logLevel: 'debug',
         port: 3333,
@@ -125,17 +151,24 @@ gulp.task('watch', ()=> {
         browser: 'google chrome',
     });
 
+    // watch sass
     gulp.watch(
         `${TASK_BASE_URL}/scss/**/*.scss`,
         gulp.series('sass')
     );
 
+    // watch ts
+    gulp.watch(
+        `${BASE_URL}/**/*.ts`,
+        gulp.series('ts', 'babel', 'webpack', 'clean')
+    );
+
+    // watch html
     gulp.watch(`${BASE_URL}/**/*.html`).on('change', browserSync.reload);
-    gulp.watch(`${TASK_BASE_URL}/scripts/bundle/*.js`).on('change', browserSync.reload);
-    gulp.watch(`${BASE_URL}/**/*.ts`).on('change', gulp.series('ts', 'babel', 'webpack', 'clean'));
 });
 
+// task 묶어서 실행
 gulp.task(
     'default',
-    gulp.series('sass', 'ts', 'babel', 'webpack', 'clean', 'watch')
+    gulp.series('sass', 'ts', 'babel', 'webpack', 'jquery:concat', 'clean', 'watch')
 );
