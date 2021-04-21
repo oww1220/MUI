@@ -97,7 +97,7 @@ gulp.task('webpack', ()=>
     .pipe(browserSync.reload({ stream: true }))
 );
 
-// concat: 제이쿼리 코어및 사용 플러그인들 머지
+// concat: 제이쿼리 코어및 사용 플러그인들 머지 -- 선택
 gulp.task('jquery:concat', ()=>
     gulp
     .src(`${TASK_BASE_URL}/scripts/jquery/**/*.js`)
@@ -109,7 +109,7 @@ gulp.task('jquery:concat', ()=>
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
 );
 
-// sass: sass컴파일러
+// sass: sass컴파일러, px-->rem, autoprefixer 
 gulp.task('sass', ()=>
     gulp
     .src(`${TASK_BASE_URL}/scss/**/*.scss`)
@@ -123,11 +123,11 @@ gulp.task('sass', ()=>
         }).on('error', sass.logError)
     )
     .pipe(pxtorem({
-            propList: ['*', '!'],
-            rootValue: 16,
-            replace: false,
-            minPixelValue: 2,
-            mediaQuery: true
+            propList: ['*', '!'], // (Array) Use wildcard * to enable all properties. Use ! to not match a property. 
+            rootValue: 16, // (Number | Function) Represents the root element font size
+            replace: false, //  (Boolean) Replaces rules containing rems instead of adding fallbacks.
+            minPixelValue: 2, // (Number) Set the minimum pixel value to replace.
+            mediaQuery: false // (Boolean) Allow px to be converted in media queries.
         }
     ))
     .pipe(
@@ -136,6 +136,7 @@ gulp.task('sass', ()=>
             cascade: true,
         })
 	)
+    //.pipe(concat('UI.bundle.css'))
     .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(`${TASK_BASE_URL}/styles`))
     .pipe(browserSync.reload({ stream: true }))
@@ -178,5 +179,5 @@ gulp.task('watch', ()=> {
 // task 묶어서 실행
 gulp.task(
     'default',
-    gulp.series('sass', 'ts', 'babel', 'webpack', 'jquery:concat', 'clean', 'watch')
+    gulp.series('sass', 'ts', 'babel', 'webpack', 'clean', 'watch')
 );

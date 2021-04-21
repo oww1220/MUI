@@ -5,7 +5,7 @@
         width: 50% !important;
     }
     &:after {
-        @include Background($sprite: 'arr_lf_8', $type: 'png', $position: right center);
+        @include Background($sprite: 'arr_lf_8', $position: right center);
         display: block;
         content: '';
         width: 20px;
