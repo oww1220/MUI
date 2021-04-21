@@ -32,13 +32,14 @@ Undefined: 정책 적용 안함.<br />
    - gulp: gulp core 빌드 자동화 툴
    - del: 폴더 삭제 모듈!
 
-- `npm i -D gulp-sass node-sass gulp-sourcemaps gulp-autoprefixer gulp-pxtorem gulp-modify-css-urls`
+- `npm i -D gulp-sass node-sass gulp-sourcemaps gulp-autoprefixer gulp-pxtorem gulp-modify-css-urls gulp-cssnano`
 	- gulp-sass: sass를 CSS 로 변경
 	- node-sass: sass 컴파일러
 	- gulp-sourcemaps: sass map파일 생성
    	- gulp-autoprefixer: 자동으로 CSS prefixer 생성
    	- gulp-pxtorem: 자동으로 CSS rem 생성
 	- gulp-modify-css-urls: css 내부 백그라운드 url변경
+	- gulp-cssnano: css 작성 시 실수할 수 있는 요소들, 불필요하게 길게 작성하는 요소들을 정리
 
 - `npm i -D browser-sync`
    	- browser-sync: CSS, HTML, JS, TS 수정시 브라우저 자동 리플레쉬

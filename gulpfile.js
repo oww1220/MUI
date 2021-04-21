@@ -17,6 +17,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
 const modifyCssUrls = require('gulp-modify-css-urls');
 const pxtorem = require('gulp-pxtorem');
+const cssnano = require('gulp-cssnano');
 
 /*타입스크립트*/
 const ts = require('gulp-typescript');
@@ -122,6 +123,7 @@ gulp.task('sass', ()=>
             //indentWidth: 1,
         }).on('error', sass.logError)
     )
+    .pipe(cssnano())
     .pipe(pxtorem({
             propList: ['*', '!'], // (Array) Use wildcard * to enable all properties. Use ! to not match a property. 
             rootValue: 16, // (Number | Function) Represents the root element font size
