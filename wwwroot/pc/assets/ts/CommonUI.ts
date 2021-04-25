@@ -1,3 +1,5 @@
+import * as ICommonUI from 'CommonUI';
+
 export namespace CommonUI {
     //namespace CommonUI {
     export const $: JQueryStatic = jQuery;
@@ -28,7 +30,7 @@ export namespace CommonUI {
     };
     export const Map = {
         init() {
-            class JqMap implements IJqMap {
+            class JqMap implements ICommonUI.IJqMap {
                 map: IObj | null = null;
                 constructor() {
                     this.map = new Object();
@@ -85,7 +87,7 @@ export namespace CommonUI {
         },
     };
     export const slide = {
-        init(target: SwiperParam, sort: slideSortParam, option?: IObj) {
+        init(target: ICommonUI.SwiperParam, sort: ICommonUI.slideSortParam, option?: IObj) {
             if (sort == 'slick' && typeof target === 'string') {
                 const $target = $(target);
                 return $target.slick(option!);
@@ -413,7 +415,7 @@ export namespace CommonUI {
             });
         },
     };
-    export const iscrolls: Iiscrolls = {
+    export const iscrolls: ICommonUI.Iiscrolls = {
         cash: null,
         num: 0,
         init(target, option) {
