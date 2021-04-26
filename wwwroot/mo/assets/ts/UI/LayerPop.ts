@@ -1,4 +1,4 @@
-import { CommonUI } from '../CommonUI';
+import CommonUI from '../CommonUI';
 import * as Const from '../Lib/Const';
 
 // ---- LayerPop ---- //

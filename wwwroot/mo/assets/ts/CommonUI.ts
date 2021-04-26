@@ -1,7 +1,6 @@
 import * as ICommonUI from 'CommonUI';
 
-export namespace CommonUI {
-    //namespace CommonUI {
+namespace CommonUI {
     export const $: JQueryStatic = jQuery;
     export const resize = {
         chk(target: JQuery) {
@@ -462,6 +461,7 @@ export namespace CommonUI {
         },
     };
 }
+export default CommonUI;
 
 //전역으로 내보냄 -- 선택사항
 window.CommonUI = CommonUI;

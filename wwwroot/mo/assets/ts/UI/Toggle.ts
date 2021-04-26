@@ -1,4 +1,4 @@
-import { CommonUI } from '../CommonUI';
+import CommonUI from '../CommonUI';
 
 // ---- Toggle ---- //
 $(() => {
