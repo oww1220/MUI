@@ -1,4 +1,4 @@
-import * as Type_CommonUI from 'CommonUI';
+import * as Type_CommonUI from 'Type_CommonUI';
 
 namespace CommonUI {
     export const $: JQueryStatic = jQuery;

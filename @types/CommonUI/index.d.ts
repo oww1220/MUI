@@ -1,11 +1,11 @@
-declare module 'CommonUI' {
-    export interface Iiscrolls {
+declare module 'Type_CommonUI' {
+    interface Iiscrolls {
         cash: IJqMap | null;
         num: number;
         init(target: string, option: IObj): void;
         resize(): void;
     }
-    export interface IJqMap {
+    interface IJqMap {
         map: IObj | null;
         put<T>(key:string | number, value: T): void;
         get<T>(key:string | number): T;
@@ -18,7 +18,8 @@ declare module 'CommonUI' {
     }
 
     /*type*/
-    export type SwiperParam = string | HTMLElement;
-    export type slideSortParam = 'slick' | 'swiper';
+    type SwiperParam = string | HTMLElement;
+    type slideSortParam = 'slick' | 'swiper';
+    
 }
 
