@@ -2,12 +2,14 @@ import CommonUI from '../CommonUI';
 
 // ---- Select ---- //
 $(() => {
+    const { Event, Iscrolls } = CommonUI;
+
     //커스텀 셀렉트
-    CommonUI.event.customSelect('.select_custum');
+    Event.customSelect('.select_custum');
     $(window).on('load', function () {
         /*아이스크롤*/
         if ($('.select_custum .select_list').length) {
-            CommonUI.iscrolls.init('.select_custum .select_list', {
+            Iscrolls.init('.select_custum .select_list', {
                 scrollbars: true,
                 mouseWheel: true,
                 interactiveScrollbars: true,
@@ -19,5 +21,5 @@ $(() => {
     });
 
     //커스텀 셀렉트(기본 인풋사용)
-    CommonUI.event.changeSelect('.sort_select select');
+    Event.changeSelect('.sort_select select');
 });

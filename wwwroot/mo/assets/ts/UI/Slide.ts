@@ -2,8 +2,10 @@ import CommonUI from '../CommonUI';
 
 // ---- Slide ---- //
 $(() => {
+    const { Slide } = CommonUI;
+
     if ($('.target1').length && $.fn.slick) {
-        CommonUI.slide.init('.target1', 'slick', {
+        Slide.init('.target1', 'slick', {
             infinite: true,
             autoplay: true,
             arrows: true,
@@ -14,5 +16,5 @@ $(() => {
         });
     }
 
-    //CommonUI.slide.init('.target1', 'swiper');
+    //Slide.init('.target1', 'swiper');
 });

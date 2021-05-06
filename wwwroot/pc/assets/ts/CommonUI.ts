@@ -2,7 +2,7 @@ import * as Type_CommonUI from 'Type_CommonUI';
 
 namespace CommonUI {
     export const $: JQueryStatic = jQuery;
-    export const resize = {
+    export const Resize = {
         chk(target: JQuery) {
             if ((target.width() || 0) >= 1025) {
                 target.removeClass('pc mobile tablet').addClass('pc');
@@ -21,9 +21,9 @@ namespace CommonUI {
             doc.style.fontSize = fontSizeVal + '%';
         },
         resize($BODY: JQuery) {
-            $(window).on('resize', function () {
-                CommonUI.resize.chk($BODY);
-                CommonUI.resize.font();
+            $(window).on('resize', () => {
+                this.chk($BODY);
+                this.font();
             });
         },
     };
@@ -85,7 +85,7 @@ namespace CommonUI {
             return new JqMap();
         },
     };
-    export const slide = {
+    export const Slide = {
         init(target: Type_CommonUI.SwiperParam, sort: Type_CommonUI.slideSortParam, option?: IObj) {
             if (sort == 'slick' && typeof target === 'string') {
                 const $target = $(target);
@@ -96,7 +96,7 @@ namespace CommonUI {
             }
         },
     };
-    export const layer = {
+    export const Layer = {
         scrollTop: 0,
         calculate(layer: string) {
             const $layer = $(layer),
@@ -209,7 +209,7 @@ namespace CommonUI {
             $(window).off('resize.layer');
         },
     };
-    export const event = {
+    export const Event = {
         toggle(target: string, parent: string | null, callback?: (logic: () => void, layer: JQuery) => void) {
             $(document).on('click', target, function (e) {
                 const $this = $(this);
@@ -338,7 +338,7 @@ namespace CommonUI {
                 } else {
                     $(parent).removeClass('on');
                     $parent.addClass('on');
-                    CommonUI.iscrolls.resize();
+                    CommonUI.Iscrolls.resize();
                 }
                 //console.log($parent);
             });
@@ -414,7 +414,7 @@ namespace CommonUI {
             });
         },
     };
-    export const iscrolls: Type_CommonUI.Iiscrolls = {
+    export const Iscrolls: Type_CommonUI.Iiscrolls = {
         cash: null,
         num: 0,
         init(target, option) {
@@ -438,8 +438,7 @@ namespace CommonUI {
             });
         },
     };
-
-    export const async = {
+    export const Async = {
         generaterRun(gen: () => Generator) {
             const iter = gen();
             (function iterate({ value, done }) {
@@ -458,6 +457,32 @@ namespace CommonUI {
             return new Promise((resolve, reject) => {
                 callback(resolve, reject);
             });
+        },
+    };
+    export const Fn = {
+        filter: function* <T>(f: (a: T) => boolean, iter: Iterable<T>) {
+            for (const a of iter) {
+                if (f(a)) yield a;
+            }
+        },
+        map: function* <T>(f: (a: T) => T, iter: Iterable<T>) {
+            for (const a of iter) {
+                yield f(a);
+            }
+        },
+        take: function <T>(length: number, iter: Iterable<T>) {
+            let res: T[] = [];
+            for (const a of iter) {
+                res.push(a);
+                if (res.length === length) return res;
+            }
+            return res;
+        },
+        reduce: function <T, U>(f: (acc: U, a: T) => U, acc: U, iter: Iterable<T>) {
+            for (const a of iter) {
+                acc = f(acc, a);
+            }
+            return acc;
         },
     };
 }

@@ -2,7 +2,9 @@ import CommonUI from '../CommonUI';
 
 // ---- Datepicker ---- //
 $(() => {
-    CommonUI.event.calander(
+    const { Event } = CommonUI;
+
+    Event.calander(
         '.datepicker',
         {
             dateFormat: 'yy-mm-dd',
