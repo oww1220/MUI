@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import * as Type_CommonUI from 'Type_CommonUI';
 
 namespace CommonUI {

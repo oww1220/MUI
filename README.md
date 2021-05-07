@@ -58,14 +58,15 @@ Undefined: 정책 적용 안함.<br />
 - `npm i -D webpack-stream`
    	- webpack-stream: Run webpack as a stream to conveniently integrate with gulp.
 
-- `npm i -D gulp-babel @babel/core @babel/preset-env`
-   	- gulp-babel @babel/core @babel/preset-env: babel 트랜스파일러!
+- `npm i -D babel-loader @babel/core @babel/preset-env`
+	- babel-loader: webpack용 babel loader!
+   	- @babel/core @babel/preset-env: babel 트랜스파일러 core!
 
 - `npm i -D @babel/polyfill`
 	- @babel/polyfill: 바벨을 사용하면 새로운 문법을 구형 자바스크립트 문법으로만 바꿔줍니다. ES2015의 새로운 객체(Promise, Map, Set 등등)과 메소드(Array.find, Object.assign 등등)을 사용가능하게 해줌!
 
 ### `■ 파이프라인 ■`
-.ts --> `[gulp-typescript]` --> es2015 --> `[gulp-babel]` --> es5 --> `[webpack-stream]` --> bundle
+.ts --> `[gulp-typescript]` --> es2015 --> `[webpack-stream]` --> bundle 및 es5
 
 ### `■ 번들기능 삭제`
 - 걸프 모듈 번들 task전부 삭제
