@@ -42,6 +42,61 @@ $extra-small-devices: 320px;
     flex-wrap: $wrap;
 }
 
+@mixin Flex_wrap {
+    @include Flex-config($wrap: wrap);
+}
+@mixin Flex-center-center {
+    @include Flex-config($justify: center, $align: center);
+}
+@mixin Flex-start-center {
+    @include Flex-config($align: center);
+}
+@mixin Flex-end-center {
+    @include Flex-config($justify: flex-end, $align: center);
+}
+@mixin Flex-start-start {
+    @include Flex-config();
+}
+@mixin Flex-center-start {
+    @include Flex-config($justify: center);
+}
+@mixin Flex-center-end {
+    @include Flex-config($justify: center, $align: flex-end);
+}
+@mixin Flex-between-start {
+    @include Flex-config($justify: space-between);
+}
+@mixin Flex-between-center {
+    @include Flex-config($justify: space-between, $align: center);
+}
+@mixin Flex-between-end {
+    @include Flex-config($justify: space-between, $align: flex-end);
+}
+@mixin Flex-around-start {
+    @include Flex-config($justify: space-around);
+}
+@mixin Flex-around-center {
+    @include Flex-config($justify: space-around, $align: center);
+}
+@mixin Flex-around-end {
+    @include Flex-config($justify: space-around, $align: flex-end);
+}
+@mixin Flex_column-center-center {
+    @include Flex-config($justify: center, $align: center, $flow: column);
+}
+@mixin Flex_column-start-center {
+    @include Flex-config($align: center, $flow: column);
+}
+@mixin Flex_column-start-start {
+    @include Flex-config($flow: column);
+}
+@mixin Flex_inline-start-start {
+    @include Flex-config($display: inline-flex);
+}
+@mixin Flex_inline-start-center {
+    @include Flex-config($display: inline-flex, $align: center);
+}
+
 /*인라인 가로스크롤*/
 @mixin Inline-scrolling {
     box-sizing: border-box;
@@ -253,6 +308,64 @@ $extra-small-devices: 320px;
 //}
 @mixin media($queryPoint) {
     @media #{ $queryPoint } {
+        @content;
+    }
+}
+
+//
+// 미디어 쿼리 MIXIN
+// --------------------------------------------------
+
+// Break Point (Desktop First 기준 내림차순 설정)
+$desktop-l-width: 1440px;
+$tablet-l-width: 1024px;
+$tablet-s-width: 768px;
+$mob-l-width: 640px;
+$mob-m-width: 425px;
+$mob-s-width: 375px;
+
+// only PC
+@mixin pc-only {
+    @media screen and (min-width: $tablet-l-width + 1) {
+        @content;
+    }
+}
+// PC large
+@mixin pc-large {
+    @media screen and (min-width: $desktop-l-width + 1) {
+        @content;
+    }
+}
+
+// --------------------------------------------------
+
+// 태블릿
+@mixin tab {
+    @media screen and (max-width: $tablet-l-width) {
+        @content;
+    }
+}
+// 모바일
+@mixin mob {
+    @media screen and (max-width: $tablet-s-width - 1) {
+        @content;
+    }
+}
+// 모바일 large
+@mixin mob-large {
+    @media screen and (max-width: $mob-l-width) {
+        @content;
+    }
+}
+// 모바일 mid
+@mixin mob-mid {
+    @media screen and (max-width: $mob-m-width) {
+        @content;
+    }
+}
+// 모바일 small
+@mixin mob-small {
+    @media screen and (max-width: $mob-s-width) {
         @content;
     }
 }

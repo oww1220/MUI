@@ -1,69 +1,77 @@
 .cont00 {
-	width: 400px !important;
-	@include Flex-config($wrap:wrap);
-	li{width: 50% !important;}
+    width: 600px !important;
+    @include Flex_wrap;
+    li {
+        width: 50% !important;
+    }
+    &:after {
+        @include Background($sprite: 'arr_lf_8', $position: right center);
+        display: block;
+        content: '';
+        width: 20px;
+        height: 20px;
+    }
 }
 .cont01 {
-	height: 200px;
-	@include Flex-config($justify:center, $align:center);
+    height: 200px;
+    @include Flex-center-center;
 }
 .cont01-2 {
-	height: 200px;
-	@include Flex-config($align:center);
+    height: 200px;
+    @include Flex-start-center;
 }
 .cont01-3 {
-	height: 200px;
-	@include Flex-config();
+    height: 200px;
+    @include Flex-start-start;
 }
 .cont01-4 {
-	height: 200px;
-	@include Flex-config($justify:flex-end, $align:center);
+    height: 200px;
+    @include Flex-end-center;
 }
 .cont01-5 {
-	height: 200px;
-	@include Flex-config($justify:center);
+    height: 200px;
+    @include Flex-center-start;
 }
 .cont01-6 {
-	height: 200px;
-	@include Flex-config($justify:center, $align:flex-end);
+    height: 200px;
+    @include Flex-center-end;
 }
 .cont01-7 {
-	height: 200px;
-	@include Flex-config($justify:space-between);
+    height: 200px;
+    @include Flex-between-start;
 }
 .cont01-8 {
-	height: 200px;
-	@include Flex-config($justify:space-between, $align:center);
+    height: 200px;
+    @include Flex-between-center;
 }
 .cont01-9 {
-	height: 200px;
-	@include Flex-config($justify:space-between, $align:flex-end);
+    height: 200px;
+    @include Flex-between-end;
 }
 .cont01-10 {
-	height: 200px;
-	@include Flex-config($justify:space-around);
+    height: 200px;
+    @include Flex-around-start;
 }
 
 .cont02 {
-	height: 300px;
-	@include Flex-config($justify:center, $align:center, $flow:column);
+    height: 300px;
+    @include Flex_column-center-center;
 }
 .cont03 {
-	height: 300px;
-	@include Flex-config($align:center, $flow:column);
+    height: 300px;
+    @include Flex_column-start-center;
 }
 .cont04 {
-	height: 300px;
-	@include Flex-config($flow:column);
+    height: 300px;
+    @include Flex_column-start-start;
 }
 
-.cont05{
-	height: 300px;
-	@include Flex-config($display:inline-flex);
+.cont05 {
+    height: 300px;
+    @include Flex_inline-start-start;
 }
 
-.cont06{
-	height: 300px;
-	@include Flex-config($display:inline-flex, $align:center);
+.cont06 {
+    height: 300px;
+    @include Flex_inline-start-center;
 }
-
