@@ -19,8 +19,6 @@ const modifyCssUrls = require('gulp-modify-css-urls');
 const pxtorem = require('gulp-pxtorem');
 const cssnano = require('gulp-cssnano');
 
-/*타입스크립트*/
-const ts = require('gulp-typescript');
 
 /*오류 처리*/
 const plumber = require('gulp-plumber');
@@ -28,6 +26,7 @@ const plumber = require('gulp-plumber');
 
 /*webpack*/
 const webpack = require('webpack-stream');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 
 const errorHandler = (error)=>{
@@ -43,27 +42,17 @@ const autoprefixBrowsers = ['> 0%', 'last 4 versions'];
 const BASE_URL = `./wwwroot/${URL}`;
 const TASK_BASE_URL = `${BASE_URL}/assets`;
 
-// typescript: typescript 컴파일러
-gulp.task('ts', ()=> {
-    //createProject 인스턴스 하나만 요구해서 함수내부 scope로 옮겨서 task callback 함수내부에서 인스턴스 생성(함수호출시마다 매번 다른 인스턴스 생성)..
-    const tsProjectP = ts.createProject('tsconfig.pc.json');
-    const tsProjectM = ts.createProject('tsconfig.mo.json');
-    const tsProject = (URL === 'mo') ? tsProjectM : tsProjectP;
-return tsProject.src()
-    .pipe(plumber(plumberOption))
-    .pipe(tsProject())
-    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build/dist`))
-});
 
-// webpack: 모듈 번들 및 바밸로더
+// webpack: 타입스크립트 컴파일 && 바밸 트렌스파일링
 gulp.task('webpack', ()=>
     gulp
-    .src(`${TASK_BASE_URL}/scripts/build/dist/**/*.js`
+    .src(`${TASK_BASE_URL}/ts/**/*.ts`
         , {allowEmpty: true}
     )
     .pipe(plumber(plumberOption))
     .pipe(webpack({
         mode: 'production',
+        //entry: ['@babel/polyfill', './src/'],
         // 파일 다중으로 내보내기 가능
         /*
         entry: {
@@ -73,21 +62,22 @@ gulp.task('webpack', ()=>
         output: {filename: '[name].bundle.js'},
         */
         output: {filename: 'UI.bundle.js'},
+        resolve: {
+            extensions: ['.ts', '.js']
+        },
         devtool: 'source-map',
         module: {   
             rules: [
                 {
-                test: /\.js$/,
-                exclude: /node_modules\/(?!bullets-js)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
+                    test: /\.(js|ts)$/,
+                    exclude: /node_modules\/(?!bullets-js)/,
+                    use: {
+                        loader: 'babel-loader'
                     }
                 }
-                }
             ]
-        }
+        },
+        plugins: [new ForkTsCheckerWebpackPlugin()]
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
     .pipe(browserSync.reload({ stream: true }))
@@ -166,7 +156,7 @@ gulp.task('watch', ()=> {
     // watch ts
     gulp.watch(
         `${BASE_URL}/**/*.ts`,
-        gulp.series('ts', 'webpack', 'clean')
+        gulp.series('webpack')
     );
 
     // watch html
@@ -176,5 +166,5 @@ gulp.task('watch', ()=> {
 // task 묶어서 실행
 gulp.task(
     'default',
-    gulp.series('sass', 'ts', 'webpack', 'clean', 'watch')
+    gulp.series('sass', 'webpack', 'watch')
 );

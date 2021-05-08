@@ -28,8 +28,8 @@ $(() => {
     const { as, cs } = bb;
 
     const ddd = Object.assign({ as }, { cs });
-    //log(ddd);
-    //log(ddd);
+    log(ddd);
+    log(ddd);
     //log(ddd);
 
     //비동기 함수들 --> 동기적으로 실행 예시!!

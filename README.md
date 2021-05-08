@@ -51,19 +51,24 @@ Undefined: 정책 적용 안함.<br />
 - `npm i -D gulp-plumber`
    	- gulp-plumber: errorhandling!
 
-- `npm i -D gulp-typescript typescript`
-   	- gulp-typescript: TypeScript 컴파일 워크 플로를 처리하기위한 gulp 플러그인. 플러그인은 TypeScript API를 사용하여 TypeScript의 컴파일러 옵션을 gulp에 노출합니다.
-	- typescript: typescript core 컴파일러
-
-- `npm i -D webpack-stream`
+- `npm i -D webpack-stream fork-ts-checker-webpack-plugin`
    	- webpack-stream: Run webpack as a stream to conveniently integrate with gulp.
+	- fork-ts-checker-webpack-plugin: webpack에서 typescript error발생시 빌드막는 플러그인
+
+- `npm i -D typescript @babel/preset-typescript @babel/plugin-proposal-class-properties @babel/plugin-proposal-object-rest-spread`
+	- typescript: typescript core 컴파일러
+	- @babel/preset-typescript : babel-loader가 ts 컴파일 하게 해줌!
+	- @babel/plugin-proposal-class-properties : class 를 사용 가능처리!
+	- @babel/plugin-proposal-object-rest-spread : spread연산자 사용 가능처리!
 
 - `npm i -D babel-loader @babel/core @babel/preset-env`
 	- babel-loader: webpack용 babel loader!
-   	- @babel/core @babel/preset-env: babel 트랜스파일러 core!
+   	- @babel/core : babel 사용필수 라이브러리!
+	- @babel/preset-env: babel es5 트랜스파일러!
 
 - `npm i -D @babel/polyfill`
 	- @babel/polyfill: 바벨을 사용하면 새로운 문법을 구형 자바스크립트 문법으로만 바꿔줍니다. ES2015의 새로운 객체(Promise, Map, Set 등등)과 메소드(Array.find, Object.assign 등등)을 사용가능하게 해줌!
+		- es6 의 새로운 객체와 메소드 사용 가능 처리
 
 ### `■ 파이프라인 ■`
 .ts --> `[gulp-typescript]` --> es2015 --> `[webpack-stream]` --> bundle 및 es5
