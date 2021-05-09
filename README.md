@@ -72,14 +72,8 @@ Undefined: 정책 적용 안함.<br />
 		- es6 의 새로운 객체와 메소드 사용 가능 처리
 
 ### `■ 파이프라인 ■`
-.ts --> `[gulp-typescript]` --> es2015 --> `[webpack-stream]` --> bundle 및 es5
+.ts --> `[webpack-stream]` --> bundle 및 es5
 
-### `■ 번들기능 삭제`
-- 걸프 모듈 번들 task전부 삭제
-- ts 내에 import, export제거
-- scripts/dist 파일 사용
-	- scripts/dist: 타입스크립트 컴파일러 결과물
-	- scripts/bundle: webpack으로 말아서 나온 결과물
 
 ### `■ env-cmd`
 package.json 내부에 scripts에서 env-cmd -f .env.dev이런식으로 env 파일을 강제로 실행시키게 해준다!<br/>
