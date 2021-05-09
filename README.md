@@ -54,6 +54,7 @@ Undefined: 정책 적용 안함.<br />
 - `npm i -D webpack-stream fork-ts-checker-webpack-plugin`
    	- webpack-stream: Run webpack as a stream to conveniently integrate with gulp.
 	- fork-ts-checker-webpack-plugin: webpack에서 typescript error발생시 빌드막는 플러그인
+		- 별도의 프로세스에서 정적 유형 검사를 실행, 이는 빌드 속도를 극적으로 향상시키기 때문에 환상적임
 
 - `npm i -D typescript @babel/preset-typescript @babel/plugin-proposal-class-properties @babel/plugin-proposal-object-rest-spread`
 	- typescript: typescript core 컴파일러
