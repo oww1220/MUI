@@ -5,8 +5,7 @@
                 "browsers": [ "last 1 version", "ie >= 11" ]
             }
         }
-        ],
-        "@babel/preset-typescript"
+        ]
     ],
     "plugins": [
         "@babel/proposal-class-properties",

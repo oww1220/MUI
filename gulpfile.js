@@ -23,10 +23,11 @@ const cssnano = require('gulp-cssnano');
 /*오류 처리*/
 const plumber = require('gulp-plumber');
 
+/*타입스크립트*/
+const ts = require('gulp-typescript');
 
 /*webpack*/
 const webpack = require('webpack-stream');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 
 const errorHandler = (error)=>{
@@ -43,16 +44,25 @@ const BASE_URL = `./wwwroot/${URL}`;
 const TASK_BASE_URL = `${BASE_URL}/assets`;
 
 
-// webpack: 타입스크립트 컴파일 && 바밸 트렌스파일링
-gulp.task('webpack', ()=>
-    gulp
+// typescript: typescript 컴파일러
+gulp.task('ts', ()=> {
+    const tsProject = ts.createProject('tsconfig.json');
+return gulp
     .src(`${TASK_BASE_URL}/ts/**/*.ts`
         , {allowEmpty: true}
     )
+    .pipe(tsProject())
+    .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/build`))
+});
+
+
+// webpack: 타입스크립트 컴파일 && 바밸 트렌스파일링
+gulp.task('webpack', ()=>
+    gulp
+    .src(`${TASK_BASE_URL}/scripts/build/**/*.js`, {allowEmpty: true})
     .pipe(plumber(plumberOption))
     .pipe(webpack({
         mode: 'production',
-        //entry: ['@babel/polyfill', './src/'],
         // 파일 다중으로 내보내기 가능
         /*
         entry: {
@@ -63,21 +73,19 @@ gulp.task('webpack', ()=>
         */
         output: {filename: 'UI.bundle.js'},
         resolve: {
-            extensions: ['.ts', '.js']
+            extensions: ['.js']
         },
         devtool: 'source-map',
         module: {   
             rules: [
                 {
-                    test: /\.(js|ts)$/,
+                    test: /\.(js)$/,
                     exclude: /node_modules\/(?!bullets-js)/,
-                    use: {
-                        loader: 'babel-loader'
-                    }
+                    use: ['babel-loader'],
                 }
             ]
         },
-        plugins: [new ForkTsCheckerWebpackPlugin()]
+        //plugins: [new ForkTsCheckerWebpackPlugin()]
     }))
     .pipe(gulp.dest(`${TASK_BASE_URL}/scripts/bundle`))
     .pipe(browserSync.reload({ stream: true }))
@@ -156,7 +164,7 @@ gulp.task('watch', ()=> {
     // watch ts
     gulp.watch(
         `${BASE_URL}/**/*.ts`,
-        gulp.series('webpack')
+        gulp.series('ts', 'webpack', 'clean')
     );
 
     // watch html
@@ -166,5 +174,5 @@ gulp.task('watch', ()=> {
 // task 묶어서 실행
 gulp.task(
     'default',
-    gulp.series('sass', 'webpack', 'watch')
+    gulp.series('sass', 'ts', 'webpack', 'clean', 'watch')
 );

@@ -29,50 +29,71 @@ Undefined: 정책 적용 안함.<br />
 
 ### ■ gulp 패키지들
 - `npm i -D gulp del`
-   - gulp: gulp core 빌드 자동화 툴
-   - del: 폴더 삭제 모듈!
+	- gulp : 
+   		- gulp core 빌드 자동화 툴
+	- del : 
+   		- 폴더 삭제 모듈!
 
 - `npm i -D gulp-sass node-sass gulp-sourcemaps gulp-autoprefixer gulp-pxtorem gulp-modify-css-urls gulp-cssnano`
-	- gulp-sass: sass를 CSS 로 변경
-	- node-sass: sass 컴파일러
-	- gulp-sourcemaps: sass map파일 생성
-   	- gulp-autoprefixer: 자동으로 CSS prefixer 생성
-   	- gulp-pxtorem: 자동으로 CSS rem 생성
-	- gulp-modify-css-urls: css 내부 백그라운드 url변경
-	- gulp-cssnano: css 작성 시 실수할 수 있는 요소들, 불필요하게 길게 작성하는 요소들을 정리
+	- gulp-sass : 
+		- sass를 CSS 로 변경
+	- node-sass : 
+		- sass 컴파일러
+	- gulp-sourcemaps : 
+		- sass map파일 생성
+   	- gulp-autoprefixer : 
+	   - 자동으로 CSS prefixer 생성
+   	- gulp-pxtorem : 
+	   - 자동으로 CSS rem 생성
+	- gulp-modify-css-urls : 
+		- css 내부 백그라운드 url변경
+	- gulp-cssnano : 
+		- css 작성 시 실수할 수 있는 요소들, 불필요하게 길게 작성하는 요소들을 정리
 
 - `npm i -D browser-sync`
-   	- browser-sync: CSS, HTML, JS, TS 수정시 브라우저 자동 리플레쉬
+   	- browser-sync : 
+	   - 웹페이지를 자동으로 리로드하는 기능이 있는 서버
 
 - `npm i -D gulp-uglify gulp-concat`
-   	- gulp-uglify: 파일 압축
-	- gulp-concat: 파일 병합
+   	- gulp-uglify : 
+	   - 파일 압축
+	- gulp-concat : 
+		- 파일 병합
 
 - `npm i -D gulp-plumber`
-   	- gulp-plumber: errorhandling!
+   	- gulp-plumber : 
+	   - errorhandling!
 
-- `npm i -D webpack-stream fork-ts-checker-webpack-plugin`
-   	- webpack-stream: Run webpack as a stream to conveniently integrate with gulp.
-	- fork-ts-checker-webpack-plugin: webpack에서 typescript error발생시 빌드막는 플러그인
-		- 별도의 프로세스에서 정적 유형 검사를 실행, 이는 빌드 속도를 극적으로 향상시키기 때문에 환상적임
+- `npm i -D webpack-stream`
+   	- webpack-stream : 
+		- Run webpack as a stream to conveniently integrate with gulp.
 
-- `npm i -D typescript @babel/preset-typescript @babel/plugin-proposal-class-properties @babel/plugin-proposal-object-rest-spread`
-	- typescript: typescript core 컴파일러
-	- @babel/preset-typescript : babel-loader가 ts 컴파일 하게 해줌!
-	- @babel/plugin-proposal-class-properties : class 를 사용 가능처리!
-	- @babel/plugin-proposal-object-rest-spread : spread연산자 사용 가능처리!
 
-- `npm i -D babel-loader @babel/core @babel/preset-env`
-	- babel-loader: webpack용 babel loader!
-   	- @babel/core : babel 사용필수 라이브러리!
-	- @babel/preset-env: babel es5 트랜스파일러!
+- `npm i -D typescript gulp-typescript`
+	- typescript : 
+		- typescript 컴파일러
+	- gulp-typescript : 
+		- gulp typescript 컴파일러 스트림
+
+
+- `npm i -D babel-loader @babel/core @babel/preset-env @babel/plugin-proposal-class-properties @babel/plugin-proposal-object-rest-spread`
+	- babel-loader :
+		- webpack용 babel loader!
+   	- @babel/core : 
+		- babel 사용필수 라이브러리
+	- @babel/preset-env :
+		- babel es5 트랜스파일러
+	- @babel/plugin-proposal-class-properties :
+		- es6의 class 를 사용 가능처리
+	- @babel/plugin-proposal-object-rest-spread :
+		- es6의 spread연산자 사용 가능처리
 
 - `npm i -D @babel/polyfill`
-	- @babel/polyfill: 바벨을 사용하면 새로운 문법을 구형 자바스크립트 문법으로만 바꿔줍니다. ES2015의 새로운 객체(Promise, Map, Set 등등)과 메소드(Array.find, Object.assign 등등)을 사용가능하게 해줌!
-		- es6 의 새로운 객체와 메소드 사용 가능 처리
+	- @babel/polyfill: 
+		- es6의 새로운 객체(Promise, Map, Set 등등)와 메소드(Array.find, Object.assign 등등) 사용 가능 처리
 
 ### `■ 파이프라인 ■`
-.ts --> `[webpack-stream]` --> bundle 및 es5
+.ts(es6) --> `[gulp-typescript]` --> .js(es6) --> `[webpack-stream]` --> bundle 및 .js(es5)
 
 
 ### `■ env-cmd`
@@ -80,10 +101,10 @@ package.json 내부에 scripts에서 env-cmd -f .env.dev이런식으로 env 파�
 `npm i -D env-cmd`
 
 ### `■ 경로체크부분`
-- `tsconfig.json` : 타입스크립트 설정->프로젝트 맞게 url설정 및 필요하다면 상속으로 각각 환경에 맞게 tsconfig 재정의함
-- `gulp.js` : 걸프 파이프 라인 설정->프로젝트 맞게 url설정
-- `.env` : 환경변수 설정 파일->프로젝트 맞게 내부 키워드 설정 ex) pc, mo 
-- `.gitignore` : 프로젝트 내에서 깃 커밋 무시->프로젝트 맞게 url설정 
+- `.env` : 
+	- 환경변수 설정 파일->프로젝트 맞게 내부 키워드 설정 ex) pc, mo 
+- `.gitignore` : 
+	- 프로젝트 내에서 깃 커밋 무시->프로젝트 맞게 url설정 
 
 
 ### `■ 메타변환함수 예시`
