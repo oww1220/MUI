@@ -42,59 +42,54 @@ $extra-small-devices: 320px;
     flex-wrap: $wrap;
 }
 
-@mixin Flex_wrap {
-    @include Flex-config($wrap: wrap);
+@mixin Flex-start-start($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-center-center {
-    @include Flex-config($justify: center, $align: center);
+@mixin Flex-start-center($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($align: center, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-start-center {
-    @include Flex-config($align: center);
+@mixin Flex-start-end($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($align: flex-end, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-end-center {
-    @include Flex-config($justify: flex-end, $align: center);
-}
-@mixin Flex-start-start {
-    @include Flex-config();
-}
-@mixin Flex-center-start {
+
+@mixin Flex-center-start($display: flex, $wrap: nowrap, $flow: row) {
     @include Flex-config($justify: center);
 }
-@mixin Flex-center-end {
-    @include Flex-config($justify: center, $align: flex-end);
+@mixin Flex-center-center($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: center, $align: center, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-between-start {
-    @include Flex-config($justify: space-between);
+@mixin Flex-center-end($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: center, $align: flex-end, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-between-center {
-    @include Flex-config($justify: space-between, $align: center);
+
+@mixin Flex-end-start($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: flex-end, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-between-end {
-    @include Flex-config($justify: space-between, $align: flex-end);
+@mixin Flex-end-center($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: flex-end, $align: center, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-around-start {
-    @include Flex-config($justify: space-around);
+@mixin Flex-end-end($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: flex-end, $align: flex-end, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-around-center {
-    @include Flex-config($justify: space-around, $align: center);
+
+@mixin Flex-between-start($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: space-between, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex-around-end {
-    @include Flex-config($justify: space-around, $align: flex-end);
+@mixin Flex-between-center($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: space-between, $align: center, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex_column-center-center {
-    @include Flex-config($justify: center, $align: center, $flow: column);
+@mixin Flex-between-end($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: space-between, $align: flex-end, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex_column-start-center {
-    @include Flex-config($align: center, $flow: column);
+
+@mixin Flex-around-start($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: space-around, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex_column-start-start {
-    @include Flex-config($flow: column);
+@mixin Flex-around-center($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: space-around, $align: center, $display: $display, $wrap: $wrap, $flow: $flow);
 }
-@mixin Flex_inline-start-start {
-    @include Flex-config($display: inline-flex);
-}
-@mixin Flex_inline-start-center {
-    @include Flex-config($display: inline-flex, $align: center);
+@mixin Flex-around-end($display: flex, $wrap: nowrap, $flow: row) {
+    @include Flex-config($justify: space-around, $align: flex-end, $display: $display, $wrap: $wrap, $flow: $flow);
 }
 
 /*인라인 가로스크롤*/

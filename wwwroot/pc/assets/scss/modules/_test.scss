@@ -1,6 +1,6 @@
 .cont00 {
     width: 600px !important;
-    @include Flex_wrap;
+    @include Flex-start-start($wrap: wrap);
     li {
         width: 50% !important;
     }
@@ -55,23 +55,23 @@
 
 .cont02 {
     height: 300px;
-    @include Flex_column-center-center;
+    @include Flex-center-center($flow: column);
 }
 .cont03 {
     height: 300px;
-    @include Flex_column-start-center;
+    @include Flex-start-center($flow: column);
 }
 .cont04 {
     height: 300px;
-    @include Flex_column-start-start;
+    @include Flex-start-start($flow: column);
 }
 
 .cont05 {
     height: 300px;
-    @include Flex_inline-start-start;
+    @include Flex-start-start($display: inline-flex);
 }
 
 .cont06 {
     height: 300px;
-    @include Flex_inline-start-center;
+    @include Flex-start-center($display: inline-flex);
 }
