@@ -36,29 +36,34 @@ $(() => {
     const promiseCallback: PromiseCallback = (resolve, reject) => {
         $('.col:first-child h2').animate({ 'margin-left': 100 }, 5000, () => {
             resolve(true);
+            //reject(new Error('에러다!'));
         });
     };
     const promiseCallback2: PromiseCallback = (resolve, reject) => {
         $('.col:first-child h2').animate({ 'margin-left': 0 }, 5000, () => {
             resolve(true);
+            //reject(new Error('에러다!'));
         });
     };
     Async.generaterRun(function* () {
         //log('!!!!!!!!!!!!start');
+        try {
+            const delay1 = yield Async.wait(2000, 'delay2초');
+            //log(delay1);
 
-        const delay1 = yield Async.wait(2000, 'delay2초');
-        //log(delay1);
+            const runVal11 = yield Async.promise(promiseCallback);
+            //log(runVal11);
 
-        const runVal11 = yield Async.promise(promiseCallback);
-        //log(runVal11);
+            const runVal2 = yield 'test2';
+            //log(runVal2);
 
-        const runVal2 = yield 'test2';
-        //log(runVal2);
+            const delay2 = yield Async.wait(3000, 'delay3초');
+            //log(delay2);
 
-        const delay2 = yield Async.wait(3000, 'delay3초');
-        //log(delay2);
-
-        const runVal22 = yield Async.promise(promiseCallback2);
+            const runVal22 = yield Async.promise(promiseCallback2);
+        } catch (err) {
+            log(err.message);
+        }
         //log(runVal22);
 
         //log('end!!!!!!!!!!!!');

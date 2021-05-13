@@ -445,6 +445,10 @@ namespace CommonUI {
             (function iterate({ value, done }) {
                 if (done) return value;
                 if (value.constructor === Promise) {
+                    /*
+                        프라미스 객체가 이행(Fulfilled)상태면 -> then 핸들러 샐행 : resolve 된 값을 받아 멈춰진 yield 표현식 변수에 값을 넣어주고 다음 yield까지 코드 실행(재귀호출로)! 
+                        프라미스 객체가 실패(Rejected) 상태면 -> catch 핸들러 샐행 : Generator.throw 메소드를 실행하여 제너레이터에 에러를 알려줌!
+                    */
                     value.then((data) => iterate(iter.next(data))).catch((err) => iter.throw(err));
                 } else {
                     iterate(iter.next(value));
@@ -456,10 +460,35 @@ namespace CommonUI {
         },
         promise(callback: PromiseCallback) {
             return new Promise((resolve, reject) => {
+                /*
+                리턴되어진 프라미스(future 모나드 타입) 핸들러(1. 값을 꺼내어 연산이나 평가후 다시 future 모나드 타입으로만들어서 return 하거나, 2.프로시저로 작성해서 흐름을 마무리): then 핸들러, catch 핸들러
+                new Promise에 전달되는 파라미터 함수는 executor(실행자, 실행 함수) 라고 부릅니다. 
+                    resolve 함수 실행시 : 리턴되어진 프라미스(future 모나드 타입) 객체가 이행(Fulfilled) 상태가 됩니다.
+                    reject 함수 실행시 : 리턴되어진 프라미스(future 모나드 타입) 객체가 실패(Rejected) 상태가 됩니다.
+                */
+
+                // 기본적으로 에러는 발생함..... catch유무확인...내용임!!
+                // 프라미스 executor(실행자, 실행 함수)와 프라미스 핸들러 코드 주위엔 '보이지 않는 try..catch'가 있습니다. 예외가 발생하면 암시적 try..catch에서 예외를 잡고, 이를 reject처럼 다룹니다.
+                // throw new Error("에러 발생!");
+                // reject(new Error("에러 발생!"));
+                // -- 위 두 케이스는 모두 error catch 할수있음!
+                /*
+                // setTimeout 메소드는 비동기로 에러가 나중에 발생하기때문에 reject로 비동기 함수 실행시점에 에러를 알려주어야된다(error catch됨)!
+                setTimeout(() => {
+                    //throw new Error("에러 발생!");
+                    //reject(new Error("에러 발생!"));
+                }, 1000);
+
+                즉, throw new Error("에러 발생!")에러는 executor(실행자, 실행 함수)가 실행되는 동안만  유효함(error catch됨)!!!!!!
+                */
+
+                // 하단 콜백은 에러가 다른문맥에서 발생하기때문에 reject로 해당함수 문맥에서 에러를 알려주어야된다(error catch됨)!
                 callback(resolve, reject);
             });
         },
     };
+
+    //함수형 프로그래밍 공부용 모듈!
     export const Fn = {
         filter: function* <T>(f: (a: T) => boolean, iter: Iterable<T>) {
             for (const a of iter) {
