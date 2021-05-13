@@ -479,6 +479,14 @@ namespace CommonUI {
                     //reject(new Error("에러 발생!"));
                 }, 1000);
 
+                ** 비동기식으로 작동하는 콜백의 내부에서 발생한 에러는, 콜백 바깥에 있는 try 블록으로는 잡아낼 수 없습니다.
+                ** JavaScript 엔진은 에러가 발생하는 순간 호출 스택을 되감는 과정을 거칩니다. 
+                이 과정 중에 try 블록을 만나야 코드의 실행 흐름을 원상복구시킬 수 있습니다. 
+                위 예제에서 setTimeout에 넘겨진 콜백에서 throw new Error("에러 발생!")가 발생하면, 
+                호출 스택을 따라 올라가도 try 블록을 만나는 것이 아니므로, (setTimeout는 task queue에 저장 )
+                (Event Loop는 사전적인 의미처럼 계속 반복해서 call stack과 queue 사이의 작업들을 확인하고, call stack이 비워있는 경우 queue에서 작업을 꺼내어 call stack에 넣는다.)
+                코드의 실행 흐름이 catch 블록으로 옮겨지지 않는 것입니다. (즉setTimeout 비동기 함수가 실행되는 시점은 call stack 이 비워져 있는 시점이라  try 블록을 만날수가 없다!!!!!)
+                
                 즉, throw new Error("에러 발생!")에러는 executor(실행자, 실행 함수)가 실행되는 동안만  유효함(error catch됨)!!!!!!
                 */
 
