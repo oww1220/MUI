@@ -23,4 +23,8 @@ $(() => {
         console.log('toggle');
         logic();
     });
+    Event.toggle('.toggle_btn5', null, (logic, layer) => {
+        console.log('toggle');
+        logic();
+    });
 });
