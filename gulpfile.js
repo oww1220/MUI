@@ -6,6 +6,7 @@ const del = require('del');
 /*유틸*/
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
 
 /*view server*/
 const browserSync = require('browser-sync').create();
@@ -13,7 +14,6 @@ const browserSync = require('browser-sync').create();
 /*scss, css*/
 const sass = require('gulp-sass');
 sass.compiler = require('node-sass');
-const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
 const modifyCssUrls = require('gulp-modify-css-urls');
 const pxtorem = require('gulp-pxtorem');
