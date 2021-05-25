@@ -431,23 +431,75 @@
 
                 </ul>
             </div>
-            <!--
+
+            <div style="max-width: 373px;">
+                <ul class="target2">
+
+                    <li>
+                        <a href="#">
+                            <div class="list_in">
+                                <div class="img_wrap">
+                                    <div class="flag_icon">
+                                        <div class="flag_item yellow">30%<br/>할인</div>
+                                    </div>
+                                    <img src="./assets/images/main_s_bn01.png" alt="이벤트"/>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">
+                            <div class="list_in">
+                                <div class="img_wrap">
+                                    <img src="./assets/images/main_s_bn02.png" alt="이벤트"/>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">
+                            <div class="list_in">
+                                <div class="img_wrap">
+                                    <img src="./assets/images/main_s_bn03.png" alt="이벤트"/>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="#">
+                            <div class="list_in">
+                                <div class="img_wrap">
+                                    <img src="./assets/images/main_s_bn02.png" alt="이벤트"/>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </div>
+            
             <script>
-                /*메인 상단 슬라이드*/
-                if($('.target1').length && $.fn.slick) {
-                    (function(){
-                        CommonUI.slide.init($('.target1'), 'slick', {
+                setTimeout(()=>{
+                    
+                    if($('.target2').length && $.fn.slick) {
+                        CommonUI.Slide.init('.target2', 'slick', {
                             infinite: true,
                             autoplay: true,
                             arrows: true,
                             dots: true,
                         });
-                        $('.target1').on('mouseleave', function(e){
+                        $('.target2').on('mouseleave', function(e){
                             $(this).slick('slickPlay');
                         });
-                    })();
-                }
-            </script>-->
+                    }
+                },100);
+                /*메인 상단 슬라이드*/
+                
+            </script>
         </div>
     </div>
     <br/><br/>
