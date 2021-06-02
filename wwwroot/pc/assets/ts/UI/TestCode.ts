@@ -87,6 +87,14 @@ $(() => {
             )!,
         );
     };
+    const FF2 = (list: number[], length: number) =>
+        Fn.go(
+            list,
+            (list) => Fn.filter((a) => Boolean(a % 2), list),
+            (list) => Fn.map((a) => a * a, list),
+            (list) => Fn.take(length, list),
+            (list) => Fn.reduce((acc, a) => acc + a, 0, list),
+        );
 
     //const test11 = Fn.filter((a)=>Boolean(a%2), [1,2,3,4,5]);
     //log('리턴값', test11); //리턴값은 제너레이터인;;
@@ -103,6 +111,8 @@ $(() => {
     */
 
     (() => {
-        log(FF([1, 2, 3, 4, 5], 2));
+        log(FF([1, 2, 3, 4, 5], 3));
+
+        log(FF2([1, 2, 3, 4, 5], 3));
     })();
 });
