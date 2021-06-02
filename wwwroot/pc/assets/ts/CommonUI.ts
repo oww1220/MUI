@@ -498,17 +498,35 @@ namespace CommonUI {
 
     //함수형 프로그래밍 공부용 모듈!
     export const Fn = {
-        filter: function* <T>(f: (a: T) => boolean, iter: Iterable<T>) {
+        /**
+         * @param {(a: T) => boolean} f 콜백함수: T타입을 받아 boolean 리턴
+         * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등): 이터러블 객체도 일반화 시키면 모나드 타입;;;;인듯
+         * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
+         **/
+        filter: function* <T>(f: (a: T) => boolean, iter: Iterable<T>): Generator<T> {
             for (const a of iter) {
                 if (f(a)) yield a;
             }
         },
-        map: function* <T>(f: (a: T) => T, iter: Iterable<T>) {
+
+        /**
+         * @param {(a: T) => T} f 콜백함수: T타입을 받아 T타입 리턴 즉, 같은 타입 리턴
+         * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등)
+         * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
+         **/
+        map: function* <T>(f: (a: T) => T, iter: Iterable<T>): Generator<T> {
             for (const a of iter) {
+                //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
                 yield f(a);
             }
         },
-        take: function <T>(length: number, iter: Iterable<T>) {
+
+        /**
+         * @param {number} length 길이 상수 값
+         * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
+         * @return{T[]} T타입 array객체
+         **/
+        take: function <T>(length: number, iter: Iterable<T>): T[] {
             let res: T[] = [];
             for (const a of iter) {
                 res.push(a);
@@ -516,7 +534,13 @@ namespace CommonUI {
             }
             return res;
         },
-        reduce: function <T, U>(f: (acc: U, a: T) => U, acc: U, iter: Iterable<T>) {
+        /**
+         * @param {(acc: U, a: T) => U} f 콜백함수: U타입 T타입 을 각각받아 로직실행후 U타입 리턴(T타입 을 U타입에 녹이야됨)
+         * @param {U} acc U타입 시작 값
+         * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
+         * @return{U} U타입
+         **/
+        reduce: function <T, U>(f: (acc: U, a: T) => U, acc: U, iter: Iterable<T>): U {
             for (const a of iter) {
                 acc = f(acc, a);
             }

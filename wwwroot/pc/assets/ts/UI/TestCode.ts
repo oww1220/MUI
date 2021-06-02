@@ -89,7 +89,18 @@ $(() => {
     };
 
     //const test11 = Fn.filter((a)=>Boolean(a%2), [1,2,3,4,5]);
-    //log('리턴값', test11);
+    //log('리턴값', test11); //리턴값은 제너레이터인;;
+    /*
+    const test22 = Fn.map(
+        (a) => a * a,
+        Fn.filter((a) => Boolean(a % 2), [1,2,3,4,5]),
+    );
+
+    log('리턴값', test22.next());
+    log('리턴값', test22.next());
+    log('리턴값', test22.next());
+    log('리턴값', test22.next());
+    */
 
     (() => {
         log(FF([1, 2, 3, 4, 5], 2));
