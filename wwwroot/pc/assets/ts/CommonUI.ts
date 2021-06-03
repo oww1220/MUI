@@ -498,13 +498,17 @@ namespace CommonUI {
 
     //함수형 프로그래밍 공부용 모듈!
     export const Fn = {
+        curry(f: (...a: any[]) => any) {
+            return (a: any, ...bs: any[]) => (bs.length ? f(a, ...bs) : (...bs: any[]) => f(a, ...bs));
+        },
+
         /**
          * @description : filter 함수는 명령형 프로그램의 if문을 추상화한 함수임
          * @param {(a: T) => boolean} f 콜백함수: T타입을 받아 boolean 리턴
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등): 이터러블 객체도 일반화 시키면 모나드 타입;;;;인듯
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
-        filter: function* <T>(f: (a: T) => boolean, iter: Iterable<T>): Generator<T> {
+        *filter<T>(f: (a: T) => boolean, iter: Iterable<T>): Generator<T> {
             for (const a of iter) {
                 if (f(a)) yield a;
             }
@@ -516,7 +520,7 @@ namespace CommonUI {
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등)
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
-        map: function* <T>(f: (a: T) => T, iter: Iterable<T>): Generator<T> {
+        *map<T>(f: (a: T) => T, iter: Iterable<T>): Generator<T> {
             for (const a of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
                 yield f(a);
@@ -528,7 +532,7 @@ namespace CommonUI {
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
          * @return{T[]} T타입 array객체
          */
-        take: function <T>(length: number, iter: Iterable<T>): T[] {
+        take<T>(length: number, iter: Iterable<T>): T[] {
             let res: T[] = [];
             for (const a of iter) {
                 res.push(a);
@@ -544,7 +548,11 @@ namespace CommonUI {
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
          * @return{U} U타입
          */
-        reduce: function <T, U>(f: (acc: U, a: T) => U, acc: U, iter: Iterable<T>): U {
+        reduce<T, U>(f: (acc: U, a: T) => U, acc: U, iter: Iterable<T>): U {
+            if (arguments.length == 2) {
+                iter = acc[Symbol.iterator]();
+                //acc = iter.next().value;
+            }
             for (const a of iter) {
                 acc = f(acc, a);
             }
@@ -553,8 +561,8 @@ namespace CommonUI {
         /**
          * @description: 리스프(Lisp, LISP) 혹은 리습, LISt Processing"(리스트(연결리스트) 프로세싱)을 추상화
          */
-        go: function <T>(a: Iterable<T>, ...fs: ((a: Iterable<T>) => any)[]) {
-            return this.reduce((a, f) => f(a), a, fs);
+        go<T>(acc: Iterable<T>, ...fs: ((a: Iterable<T>) => any)[]) {
+            return this.reduce((acc, f) => f(acc), acc, fs);
         },
     };
 }
