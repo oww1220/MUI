@@ -76,19 +76,19 @@ $(() => {
     //함수형 프로그래밍 test코드!
     const FF = (list: number[], length: number) => {
         return Fn.reduce(
-            (acc, a) => acc + a,
+            (acc, cur) => acc + cur,
             0,
             Fn.take(
                 length,
                 Fn.map(
-                    (a) => a * a,
-                    Fn.filter((a) => Boolean(a % 2), list),
+                    (cur) => cur * cur,
+                    Fn.filter((cur) => Boolean(cur % 2), list),
                 ),
             )!,
         );
     };
     const FF2 = (list: number[], length: number) =>
-        Fn.go(
+        Fn.Lisp(
             list,
             Fn.curry(Fn.filter)((a: number) => Boolean(a % 2)),
             Fn.curry(Fn.map)((a: number) => a * a),
@@ -99,8 +99,8 @@ $(() => {
     //log('리턴값', test11); //리턴값은 제너레이터인;;
     /*
     const test22 = Fn.map(
-        (a) => a * a,
-        Fn.filter((a) => Boolean(a % 2), [1,2,3,4,5]),
+        (cur) => cur * cur,
+        Fn.filter((cur) => Boolean(cur % 2), [1,2,3,4,5]),
     );
 
     log('리턴값', test22.next());
