@@ -500,26 +500,26 @@ namespace CommonUI {
     export const Fn = {
         /**
          * @description : filter 함수는 명령형 프로그램의 if문을 추상화한 함수임
-         * @param {(a: T) => boolean} f 콜백함수: T타입을 받아 boolean 리턴
+         * @param {(cur: T) => boolean} f 콜백함수: T타입을 받아 boolean 리턴
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등): 이터러블 객체도 일반화 시키면 모나드 타입;;;;인듯
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
-        filter: function* <T>(f: (a: T) => boolean, iter: Iterable<T>): Generator<T> {
-            for (const a of iter) {
-                if (f(a)) yield a;
+        filter: function* <T>(f: (cur: T) => boolean, iter: Iterable<T>): Generator<T> {
+            for (const cur of iter) {
+                if (f(cur)) yield cur;
             }
         },
 
         /**
          * @description : map 함수는 명령형 프로그램의 연산부분을 추상화한 함수임
-         * @param {(a: T) => T} f 콜백함수: T타입을 받아 T타입 리턴 즉, 같은 타입 리턴
+         * @param {(cur: T) => T} f 콜백함수: T타입을 받아 T타입 리턴 즉, 같은 타입 리턴
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등)
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
-        map: function* <T>(f: (a: T) => T, iter: Iterable<T>): Generator<T> {
-            for (const a of iter) {
+        map: function* <T>(f: (cur: T) => T, iter: Iterable<T>): Generator<T> {
+            for (const cur of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
-                yield f(a);
+                yield f(cur);
             }
         },
 
@@ -530,8 +530,8 @@ namespace CommonUI {
          */
         take: function <T>(length: number, iter: Iterable<T>): T[] {
             let res: T[] = [];
-            for (const a of iter) {
-                res.push(a);
+            for (const cur of iter) {
+                res.push(cur);
                 if (res.length === length) return res;
             }
             return res;
@@ -539,22 +539,24 @@ namespace CommonUI {
         /**
          * @description : reduce 함수는 명령형 프로그램의 누산기 부분을 추상화한 함수임
          * 누산기(accumulator): 컴퓨터의 중앙처리장치(CPU)의 중간 계산 결과가 저장되는 레지스터임
-         * @param {(acc: U, a: T) => U} f 콜백함수: U타입 T타입 을 각각받아 로직실행후 U타입 리턴(T타입 을 U타입에 녹이야됨)
-         * @param {U} acc U타입 시작 값
+         * @param {(acc: U, cur: T) => U} f 콜백함수: U타입(누산기) T타입(이터레이터에서 꺼낸 현재 값) 을 각각받아 로직실행후 U타입 리턴(T타입 을 U타입에 녹이야됨)
+         * @param {U} acc U타입 시작 값(초기값으로 누산이 되는 값)
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
          * @return{U} U타입
          */
-        reduce: function <T, U>(f: (acc: U, a: T) => U, acc: U, iter: Iterable<T>): U {
-            for (const a of iter) {
-                acc = f(acc, a);
+        reduce: function <T, U>(f: (acc: U, cur: T) => U, acc: U, iter: Iterable<T>): U {
+            for (const cur of iter) {
+                acc = f(acc, cur);
             }
             return acc;
         },
         /**
          * @description: 리스프(Lisp, LISP) 혹은 리습, LISt Processing"(리스트(연결리스트) 프로세싱)을 추상화
+         * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
+         * @param {((acc: Iterable<T>)=>any)[]} ...fs acc누산기(이터러블객체) 파라미터 값을 받아 로직처리하는 함수 array객체: 각 함수들은 실행후 리턴된 값이 누산된다!!
          */
-        go: function <T>(a: Iterable<T>, ...fs: ((a: Iterable<T>) => any)[]) {
-            return this.reduce((a, f) => f(a), a, fs);
+        Lisp: function <T>(iter: Iterable<T>, ...fs: ((acc: Iterable<T>) => any)[]) {
+            return this.reduce((acc, fcur) => fcur(acc), iter, fs);
         },
     };
 }
