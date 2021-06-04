@@ -74,6 +74,7 @@ $(() => {
     //};
 
     //함수형 프로그래밍 test코드!
+    /*
     const FF = (list: number[], length: number) => {
         return Fn.reduce(
             (acc, cur) => acc + cur,
@@ -86,14 +87,19 @@ $(() => {
                 ),
             )!,
         );
-    };
+    };*/
+
+    console.log(Fn.map((cur: number) => cur * cur, [1, 2]));
+
     const FF2 = (list: number[], length: number) =>
         Fn.Lisp(
             list,
-            Fn.curry(Fn.filter)((a: number) => Boolean(a % 2)),
-            Fn.curry(Fn.map)((a: number) => a * a),
+            Fn.curry(Fn.filter)((cur: number) => Boolean(cur % 2)), //실제함수를 커리함수로 만들고 콜백함수를 파라미터로 넘겨 한번 커링된 상태임! (...bs: any[]) => f(a, ...bs)
+            Fn.curry(Fn.map)((cur: number) => Promise.resolve(cur * cur)),
             Fn.curry(Fn.take)(length),
-            (list) => Fn.reduce((acc, a) => acc + a, 0, list),
+            //Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur)
+            //Fn.curry(Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur))(0),
+            //(list)=>Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur)(0, list),
         );
     //const test11 = Fn.filter((a)=>Boolean(a%2), [1,2,3,4,5]);
     //log('리턴값', test11); //리턴값은 제너레이터인;;
@@ -109,11 +115,11 @@ $(() => {
     log('리턴값', test22.next());
     */
 
-    const test33 = Fn.curry((a, b) => a * b);
-    log('test', test33(3)(2));
+    const test33 = Fn.curry((a, b, c) => a * b + c);
+    log('test', Fn.curry(test33(3))(2)(1));
 
     (() => {
-        log(FF([1, 2, 3, 4, 5], 3));
+        //log(FF([1, 2, 3, 4, 5], 3));
 
         log(FF2([1, 2, 3, 4, 5], 3));
     })();
