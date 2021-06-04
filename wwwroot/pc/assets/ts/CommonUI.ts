@@ -513,20 +513,6 @@ namespace CommonUI {
             return (a: any, ...bs: any[]) =>
                 bs.length ? f.bind(this)(a, ...bs) : (...bs: any[]) => f.bind(this)(a, ...bs);
         },
-        // generaterRun({ value, done }) {
-        //     (function iterate({ value, done }) {
-        //         if (done) return value;
-        //         if (value.constructor === Promise) {
-        //             /*
-        //                 프라미스 객체가 이행(Fulfilled)상태면 -> then 핸들러 샐행 : resolve 된 값을 받아 멈춰진 yield 표현식 변수에 값을 넣어주고 다음 yield까지 코드 실행(재귀호출로)!
-        //                 프라미스 객체가 실패(Rejected) 상태면 -> catch 핸들러 샐행 : Generator.throw 메소드를 실행하여 제너레이터에 에러를 알려줌!
-        //             */
-        //             value.then((data) => iterate(iter.next(data))).catch((err) => iter.throw(err));
-        //         } else {
-        //             iterate(iter.next(value));
-        //         }
-        //     })();
-        // },
 
         /**
          * @description : filter 함수는 명령형 프로그램의 if문을 추상화한 함수임(제너레이터 함수를 써서 동시성 프로그래밍 및 지연평가를 할수 있게함!)
@@ -547,19 +533,9 @@ namespace CommonUI {
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
         *map<T>(f: (cur: T) => T, iter: Iterable<T>): Generator<T> {
-            //console.log('this', this);
             for (const cur of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
-                //if (cur instanceof Promise) cur.then((data) => (iter as Generator).next(data)).catch((err) => (iter as Generator).throw(err));
-                let val = f(cur);
-                if (val instanceof Promise) {
-                    yield (function* () {
-                        const aa = yield val;
-                        console.log('val', aa);
-                    } as any)().next();
-                } else {
-                    yield val;
-                }
+                yield f(cur);
             }
         },
 
@@ -608,11 +584,15 @@ namespace CommonUI {
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
          * @param {((acc: Iterable<T>)=>any)[]} ...fs acc누산기(이터러블객체) 파라미터 값을 받아 로직처리하는 함수 array객체: 각 함수들은 실행후 리턴된 값이 누산된다!!
          */
-        Lisp<T>(acc: Iterable<T>, ...fs: ((a: Iterable<T>) => any)[]) {
+        Lisp<T>(acc: Iterable<T> | Promise<T>, ...fs: ((a: Iterable<T> | T) => any)[]) {
             //fs(f함수들) 아규먼트(인자)배열로 받아서 리듀스 돌림
 
             //fs이터러블의 각 함수들을 꺼내어 누산기를 파라미터로 넘기고 실행!
-            return this.reduce((acc, fc) => fc(acc), acc, fs);
+            return this.reduce(this.chkPromise, acc, fs);
+        },
+        chkPromise<T>(acc: Iterable<T> | Promise<T>, fc: (a: Iterable<T> | T) => any) {
+            console.log(acc);
+            return acc instanceof Promise ? acc.then(fc) : fc(acc);
         },
     };
 }

@@ -113,10 +113,20 @@ $(() => {
     log('리턴값', test22.next());
     log('리턴값', test22.next());
     log('리턴값', test22.next());
-    */
 
     const test33 = Fn.curry((a, b, c) => a * b + c);
     log('test', Fn.curry(test33(3))(2)(1));
+    */
+
+    /*
+    Fn.Lisp(
+        Promise.resolve(1),
+        (a) => (a as number) + 1,
+        (a) => Promise.resolve((a as number) + 5),
+        (a) => (a as number) + 22,
+        log
+    );
+        */
 
     (() => {
         //log(FF([1, 2, 3, 4, 5], 3));
