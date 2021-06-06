@@ -89,18 +89,22 @@ $(() => {
         );
     };*/
 
-    console.log(Fn.map((cur: number) => cur * cur, [1, 2]));
+    //console.log(Fn.map((cur) => (cur as number) * (cur as number), [1, 2]));
 
-    const FF2 = (list: number[], length: number) =>
-        Fn.Lisp(
+    const FF2 = async (list: number[], length: number) => {
+        const val = await Fn.Lisp(
             list,
             Fn.curry(Fn.filter)((cur: number) => Boolean(cur % 2)), //실제함수를 커리함수로 만들고 콜백함수를 파라미터로 넘겨 한번 커링된 상태임! (...bs: any[]) => f(a, ...bs)
             Fn.curry(Fn.map)((cur: number) => Promise.resolve(cur * cur)),
-            Fn.curry(Fn.take)(length),
-            //Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur)
+            Fn.curry(Fn.map)((cur: number) => cur + cur),
+            Fn.curry(Fn.map)((cur: number) => Promise.resolve(cur * cur)),
+            Fn.curry(Fn.takeWhile)((cur: number) => cur < 12250),
+            //Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur),
             //Fn.curry(Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur))(0),
-            //(list)=>Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur)(0, list),
         );
+
+        console.log('val', val);
+    };
     //const test11 = Fn.filter((a)=>Boolean(a%2), [1,2,3,4,5]);
     //log('리턴값', test11); //리턴값은 제너레이터인;;
     /*
@@ -126,11 +130,14 @@ $(() => {
         (a) => (a as number) + 22,
         log
     );
+
+    console.log('test', Fn.takeWhile((a)=>a<3, [1, 2]));
+    Fn.takeWhile((a)=>a<3, [Promise.resolve(1), Promise.resolve(2)]).then((a)=>console.log('test2', a));
         */
 
     (() => {
         //log(FF([1, 2, 3, 4, 5], 3));
 
-        log(FF2([1, 2, 3, 4, 5], 3));
+        log('FF2', FF2([1, 2, 3, 4, 5], 3));
     })();
 });

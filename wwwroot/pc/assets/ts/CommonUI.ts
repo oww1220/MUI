@@ -532,10 +532,10 @@ namespace CommonUI {
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등)
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
-        *map<T>(f: (cur: T) => T, iter: Iterable<T>): Generator<T> {
+        *map<T>(f: (cur: Iterable<T> | T) => T, iter: Iterable<T>): Generator<T> {
             for (const cur of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
-                yield f(cur);
+                yield Fn.Synthesis(cur as any, f);
             }
         },
 
@@ -547,12 +547,49 @@ namespace CommonUI {
          */
         take<T>(length: number, iter: Iterable<T>): T[] {
             let res: T[] = [];
-            for (const cur of iter) {
-                res.push(cur);
-                if (res.length === length) return res;
-            }
-            return res;
+            // for (const cur of iter) {
+            //     res.push(cur);
+            //     if (res.length === length) return res;
+            // }
+            // return res;
+
+            return (function recur() {
+                //console.log('run function')
+                for (const cur of iter) {
+                    console.log('run', cur);
+                    if (cur instanceof Promise) {
+                        //console.log(1)
+                        return cur.then(async (b) => (b ? (res.push(await cur), recur()) : res));
+                    }
+                    //res.push(cur);
+                    //if (res.length === length) return res;
+                }
+                return res;
+            })();
         },
+
+        takeWhile<T>(f: any, iter: Iterable<T>): T {
+            let res: T[] = [];
+
+            (iter as any) = iter[Symbol.iterator]();
+            (iter as any).return = null;
+            return (function recur() {
+                //console.log('run!!')
+                for (const cur of iter) {
+                    const b = Fn.Synthesis(cur as any, f);
+                    //console.log('cur : ', cur)
+                    if (!b) return res;
+
+                    if (b instanceof Promise) {
+                        //console.log('promise')
+                        return b.then(async (b) => (b ? (res.push(await cur), recur()) : res));
+                    }
+                    res.push(cur);
+                }
+                return res;
+            })();
+        },
+
         /**
          * @description : reduce 함수는 명령형 프로그램의 누산기 부분을 추상화한 함수임
          * 누산기(accumulator): 컴퓨터의 중앙처리장치(CPU)의 중간 계산 결과가 저장되는 레지스터임
@@ -588,10 +625,11 @@ namespace CommonUI {
             //fs(f함수들) 아규먼트(인자)배열로 받아서 리듀스 돌림
 
             //fs이터러블의 각 함수들을 꺼내어 누산기를 파라미터로 넘기고 실행!
-            return this.reduce(this.chkPromise, acc, fs);
+            return this.reduce(this.Synthesis, acc, fs);
         },
-        chkPromise<T>(acc: Iterable<T> | Promise<T>, fc: (a: Iterable<T> | T) => any) {
-            console.log(acc);
+        Synthesis<T>(acc: Iterable<T> | Promise<T>, fc: (a: Iterable<T> | T) => any) {
+            //console.log(acc);
+            //프라미스(future 모나드)인 경우 then에서 값을 꺼내어 함수합성을함!
             return acc instanceof Promise ? acc.then(fc) : fc(acc);
         },
     };
