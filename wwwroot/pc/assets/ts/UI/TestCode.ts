@@ -96,11 +96,11 @@ $(() => {
     const FF2 = async (list: number[], length: number) => {
         const val = await Fn.Lisp(
             list,
-            FilterCurry((cur: number) => Boolean(cur % 2)), //실제함수를 커리함수로 만들고 콜백함수를 파라미터로 넘겨 한번 커링된 상태임! (...bs: any[]) => f(a, ...bs)
-            MapCurry((cur: number) => Promise.resolve(cur * cur)),
-            MapCurry((cur: number) => cur + cur),
-            MapCurry((cur: number) => Promise.resolve(cur * cur)),
-            TakeCurry(2), //파라미터로 받은 상수 값만틈만 리스트를 가져옴!
+            TakeWhileCurry((cur: number) => Boolean(cur % 2)), //실제함수를 커리함수로 만들고 콜백함수를 파라미터로 넘겨 한번 커링된 상태임! (...bs: any[]) => f(a, ...bs)
+            //MapCurry((cur: number) => Promise.resolve(cur * cur)),
+            //MapCurry((cur: number) => cur + cur),
+            //MapCurry((cur: number) => Promise.resolve(cur * cur)),
+            //TakeCurry(length), //파라미터로 받은 상수 값만틈만 리스트를 가져옴!
             //TakeWhileCurry((cur: number) => cur), //파라미터로 받은 인수 그대로 리턴 시키면 모든 값 가져옴!
             //ReduceCurry((acc: number, cur: number) => acc + cur),
             //Fn.curry(Fn.curry(Fn.reduce)((acc: number, cur: number) => acc + cur))(0),

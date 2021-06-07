@@ -522,6 +522,7 @@ namespace CommonUI {
          */
         *filter<T>(f: (cur: T) => boolean, iter: Iterable<T>): Generator<T> {
             for (const cur of iter) {
+                console.log('filter', f(cur));
                 if (f(cur)) yield cur;
             }
         },
@@ -549,7 +550,7 @@ namespace CommonUI {
             let res: T[] = [];
 
             (iter as any) = iter[Symbol.iterator]();
-            (iter as any).return = null;
+            (iter as any).return = null; //비동기가 일어났을때 끊내지 않겠다! 즉 아래 재귀호출함수에게 end조건을 맡김!
             return (function recur() {
                 //console.log('run!!')
                 for (const cur of iter) {
@@ -576,12 +577,14 @@ namespace CommonUI {
                 //console.log('run!!')
                 for (const cur of iter) {
                     const b = Fn.Synthesis(cur, f);
-                    //console.log('cur : ', cur)
-                    if (!b) return res;
-
+                    console.log('조건', b, cur);
+                    //if (!b) return res; //true false 확인
+                    if (!b) break; //true false 확인
                     if (b instanceof Promise) {
-                        //console.log('promise')
-                        return b.then(async (b) => (b ? (res.push(await cur), recur()) : res));
+                        console.log('promise');
+                        return b
+                            .then(async (b) => (b ? (res.push(await cur), recur()) : res))
+                            .catch((e) => Promise.reject(e));
                     }
                     res.push(cur);
                 }
@@ -628,7 +631,7 @@ namespace CommonUI {
         },
 
         /**
-         * @description 리듀스에서 함수합성하기 위한 콜백함수! 두번째 인자로 함수를 받아서 acc를 가공하여 리턴한다!!
+         * @description 함수합성하기 위한 콜백함수! 두번째 인자로 함수를 받아서 acc를 가공하여 리턴한다!!
          * @param {Iterable<T> | Promise<T> | T} acc 누산값
          * @param {(a: Iterable<T> | T) => any} f 콜백함수!
          * @returns fc함수의 리턴값! acc 가 Promise이면 then에서 값을꺼내어 합수합성, acc 가 Promise아니면 일반 함수합성!
