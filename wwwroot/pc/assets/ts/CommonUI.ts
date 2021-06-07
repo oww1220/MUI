@@ -499,7 +499,7 @@ namespace CommonUI {
     //함수형 프로그래밍 공부용 모듈!
     export const Fn = {
         /**
-         * @description : curry 함수는 
+         * @description curry 함수는 
          * 어떤 함수를 호출할 때 대부분의 매개 변수가 항상 비슷하다면 커링을 사용할 만한 후보라고 할 수 있다.
          * 매개변수 일부를 적용하여 새로운 함수를 동적으로 생성하면 이 동적 생성된 함수는 반복적으로 사용되는 매개변수를 내부적으로 저장하여, 
          * 매번 인자를 전달하지 않아도 원본함수가 기대하는 기능을 채워 놓게 될 것이다.
@@ -515,7 +515,7 @@ namespace CommonUI {
         },
 
         /**
-         * @description : filter 함수는 명령형 프로그램의 if문을 추상화한 함수임(제너레이터 함수를 써서 동시성 프로그래밍 및 지연평가를 할수 있게함!)
+         * @description filter 함수는 명령형 프로그램의 if문을 추상화한 함수임(제너레이터 함수를 써서 동시성 프로그래밍 및 지연평가를 할수 있게함!)
          * @param {(cur: T) => boolean} f 콜백함수: T타입을 받아 boolean 리턴
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등): 이터러블 객체도 일반화 시키면 모나드 타입;;;;인듯
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
@@ -527,7 +527,7 @@ namespace CommonUI {
         },
 
         /**
-         * @description : map 함수는 명령형 프로그램의 연산부분을 추상화한 함수임(제너레이터 함수를 써서 동시성 프로그래밍 및 지연평가를 할수 있게함!)
+         * @description map 함수는 명령형 프로그램의 연산부분을 추상화한 함수임(제너레이터 함수를 써서 동시성 프로그래밍 및 지연평가를 할수 있게함!)
          * @param {(cur: T) => T} f 콜백함수: T타입을 받아 T타입 리턴 즉, 같은 타입 리턴
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등)
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
@@ -535,34 +535,33 @@ namespace CommonUI {
         *map<T>(f: (cur: Iterable<T> | T) => T, iter: Iterable<T>): Generator<T> {
             for (const cur of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
-                yield Fn.Synthesis(cur as any, f);
+                yield Fn.Synthesis(cur, f);
             }
         },
 
         /**
-         * @description : take 함수는 해당 이터러블을 몇 번 불러올지 정한다.(횟수제한!)
+         * @description take 함수는 해당 이터러블을 몇 번 불러올지 정한다.(횟수제한!)
          * @param {number} length 길이 상수 값
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
          * @return{T[]} T타입 array객체
          */
         take<T>(length: number, iter: Iterable<T>): T[] {
             let res: T[] = [];
-            // for (const cur of iter) {
-            //     res.push(cur);
-            //     if (res.length === length) return res;
-            // }
-            // return res;
 
+            (iter as any) = iter[Symbol.iterator]();
+            (iter as any).return = null;
             return (function recur() {
-                //console.log('run function')
+                //console.log('run!!')
                 for (const cur of iter) {
-                    console.log('run', cur);
+                    //console.log('cur : ', cur)
                     if (cur instanceof Promise) {
-                        //console.log(1)
-                        return cur.then(async (b) => (b ? (res.push(await cur), recur()) : res));
+                        //console.log('promise')
+                        return cur
+                            .then((a) => ((res.push(a), res).length == length ? res : recur()))
+                            .catch((e) => Promise.reject(e));
                     }
-                    //res.push(cur);
-                    //if (res.length === length) return res;
+                    res.push(cur);
+                    if (res.length === length) return res;
                 }
                 return res;
             })();
@@ -576,7 +575,7 @@ namespace CommonUI {
             return (function recur() {
                 //console.log('run!!')
                 for (const cur of iter) {
-                    const b = Fn.Synthesis(cur as any, f);
+                    const b = Fn.Synthesis(cur, f);
                     //console.log('cur : ', cur)
                     if (!b) return res;
 
@@ -591,7 +590,7 @@ namespace CommonUI {
         },
 
         /**
-         * @description : reduce 함수는 명령형 프로그램의 누산기 부분을 추상화한 함수임
+         * @description reduce 함수는 명령형 프로그램의 누산기 부분을 추상화한 함수임
          * 누산기(accumulator): 컴퓨터의 중앙처리장치(CPU)의 중간 계산 결과가 저장되는 레지스터임
          * @param {(acc: U, cur: T) => U} f 콜백함수: U타입(누산기) T타입(이터레이터에서 꺼낸 현재 값) 을 각각받아 로직실행후 U타입 리턴(T타입 을 U타입에 녹이야됨)
          * @param {U} acc U타입 시작 값(초기값으로 누산이 되는 값)
@@ -600,7 +599,7 @@ namespace CommonUI {
          */
         reduce<T, U>(f: (acc: U, cur: T) => U, acc: U, iter: Iterable<T>): U {
             /**
-             * @description : 누산기 초기값을 받지않고 이터러블이 2번째 파라미터로 들어올경우-->
+             * @description 누산기 초기값을 받지않고 이터러블이 2번째 파라미터로 들어올경우-->
              * acc변수는 Iterable<T>이므로 초기값과 이터레이터를 분리시켜주야됨!
              * iter변수에 Symbol.iterator를 호출해 이터레이터를 담는다.!
              * 그 다음 이 이터레이터를 한번 호출해 첫번째 값을 가져와 acc변수에 재할당한다!
@@ -617,9 +616,9 @@ namespace CommonUI {
             return acc;
         },
         /**
-         * @description: 리스프(Lisp, LISP) 혹은 리습, LISt Processing"(리스트(연결리스트) 프로세싱)을 추상화
+         * @description 리스프(Lisp, LISP) 혹은 리습, LISt Processing"(리스트(연결리스트) 프로세싱)을 추상화
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
-         * @param {((acc: Iterable<T>)=>any)[]} ...fs acc누산기(이터러블객체) 파라미터 값을 받아 로직처리하는 함수 array객체: 각 함수들은 실행후 리턴된 값이 누산된다!!
+         * @param {((acc: Iterable<T>)=>any)[]} fs acc누산기(이터러블객체) 파라미터 값을 받아 로직처리하는 함수 array객체: 각 함수들은 실행후 리턴된 값이 누산된다!!
          */
         Lisp<T>(acc: Iterable<T> | Promise<T>, ...fs: ((a: Iterable<T> | T) => any)[]) {
             //fs(f함수들) 아규먼트(인자)배열로 받아서 리듀스 돌림
@@ -627,12 +626,26 @@ namespace CommonUI {
             //fs이터러블의 각 함수들을 꺼내어 누산기를 파라미터로 넘기고 실행!
             return this.reduce(this.Synthesis, acc, fs);
         },
-        Synthesis<T>(acc: Iterable<T> | Promise<T>, fc: (a: Iterable<T> | T) => any) {
-            //console.log(acc);
-            //프라미스(future 모나드)인 경우 then에서 값을 꺼내어 함수합성을함!
-            return acc instanceof Promise ? acc.then(fc) : fc(acc);
+
+        /**
+         * @description 리듀스에서 함수합성하기 위한 콜백함수! 두번째 인자로 함수를 받아서 acc를 가공하여 리턴한다!!
+         * @param {Iterable<T> | Promise<T> | T} acc 누산값
+         * @param {(a: Iterable<T> | T) => any} f 콜백함수!
+         * @returns fc함수의 리턴값! acc 가 Promise이면 then에서 값을꺼내어 합수합성, acc 가 Promise아니면 일반 함수합성!
+         */
+        Synthesis<T>(acc: Iterable<T> | Promise<T> | T, f: (a: Iterable<T> | T) => any) {
+            //console.log('Promise chk:', acc instanceof Promise, '누산된 값', acc);
+            //프라미스(future 모나드)인 경우 then에서 값을 꺼내어 함수합성을함! ,
+            //한번 프라미스로 리턴되면 리턴값은 프라미스로 고정됨 즉, acc.then(fc).then(fc).then(fc)....로 이어져나감!
+            return acc instanceof Promise ? acc.then(f) : f(acc);
         },
     };
+
+    export const FilterCurry = Fn.curry(Fn.filter);
+    export const MapCurry = Fn.curry(Fn.map);
+    export const TakeCurry = Fn.curry(Fn.take);
+    export const TakeWhileCurry = Fn.curry(Fn.takeWhile);
+    export const ReduceCurry = Fn.curry(Fn.reduce);
 }
 export default CommonUI;
 
