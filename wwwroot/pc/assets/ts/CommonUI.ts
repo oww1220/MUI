@@ -516,15 +516,36 @@ namespace CommonUI {
 
         /**
          * @description filter 함수는 명령형 프로그램의 if문을 추상화한 함수임(제너레이터 함수를 써서 동시성 프로그래밍 및 지연평가를 할수 있게함!)
-         * @param {(cur: T) => boolean} f 콜백함수: T타입을 받아 boolean 리턴
+         * takeWhile과의 차이는 검사를 통과한 이벤트 이후의 이벤트 무시 유무임! filter는 이후의 이벤트도 받는다!
+         * @param {(cur: T) => U} f 콜백함수: 각 루프 이벤트 체크용 콜백함수! T타입을 받아 U(boolean)타입 리턴-true false 확인
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등): 이터러블 객체도 일반화 시키면 모나드 타입;;;;인듯
-         * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
+         * @return {T[]} T타입 array객체
          */
-        *filter<T>(f: (cur: T) => boolean, iter: Iterable<T>): Generator<T> {
-            for (const cur of iter) {
-                console.log('filter', f(cur));
-                if (f(cur)) yield cur;
-            }
+        filter<T, U>(f: (cur: T) => U, iter: Iterable<T>): T[] {
+            let res: T[] = [];
+
+            (iter as any) = iter[Symbol.iterator]();
+            (iter as any).return = null;
+            return (function recur() {
+                //console.log('run!!')
+                for (const cur of iter) {
+                    const b = Fn.Synthesis(cur, f);
+                    //console.log('조건', b, cur);
+                    //if (!b) return res; //true false 확인
+                    if (!b) continue; //true false 확인
+                    if (b instanceof Promise) {
+                        //console.log('promise');
+                        return (
+                            b
+                                //.then(async (b) => (b ? (res.push(await cur), recur()) : res))
+                                .then(async (b) => (b ? (res.push(await cur), recur()) : recur()))
+                                .catch((e) => Promise.reject(e))
+                        );
+                    }
+                    res.push(cur);
+                }
+                return res;
+            })();
         },
 
         /**
@@ -533,7 +554,7 @@ namespace CommonUI {
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(Generator객체, array객체, string객체 등등)
          * @return {Generator<T>} T타입 Generator객체[free모나드 타입]
          */
-        *map<T>(f: (cur: Iterable<T> | T) => T, iter: Iterable<T>): Generator<T> {
+        *map<T>(f: (cur: T) => T, iter: Iterable<T>): Generator<T> {
             for (const cur of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
                 yield Fn.Synthesis(cur, f);
@@ -541,7 +562,7 @@ namespace CommonUI {
         },
 
         /**
-         * @description take 함수는 해당 이터러블을 몇 번 불러올지 정한다.(횟수제한!)
+         * @description  take는 처음 발생하는 length개의 이벤트만 받고 나머지는 무시한다.
          * @param {number} length 길이 상수 값
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
          * @return{T[]} T타입 array객체
@@ -568,7 +589,13 @@ namespace CommonUI {
             })();
         },
 
-        takeWhile<T>(f: any, iter: Iterable<T>): T {
+        /**
+         * @description 만약에 검사를 통과하지 못한 이벤트가 있다면?? 그 이벤트는 물론이고 그 이후의 모든 이벤트가 무시된다.
+         * @param {(cur: T) => U} f  콜백함수: 각 루프 이벤트 체크용 콜백함수! T타입을 받아 boolean타입 리턴-true false 확인
+         * @param {Iterable<T>} iter  iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등) //커리 함수로 감싼 후에는 이터객체만 호출시키면됨!
+         * @returns {T[]} T타입 array객체
+         */
+        takeWhile<T, U>(f: (cur: T) => U, iter: Iterable<T>): T[] {
             let res: T[] = [];
 
             (iter as any) = iter[Symbol.iterator]();
@@ -577,14 +604,17 @@ namespace CommonUI {
                 //console.log('run!!')
                 for (const cur of iter) {
                     const b = Fn.Synthesis(cur, f);
-                    console.log('조건', b, cur);
-                    //if (!b) return res; //true false 확인
-                    if (!b) break; //true false 확인
+                    //console.log('조건', b, cur);
+                    if (!b) return res; //true false 확인
+                    //if (!b) continue; //true false 확인
                     if (b instanceof Promise) {
                         console.log('promise');
-                        return b
-                            .then(async (b) => (b ? (res.push(await cur), recur()) : res))
-                            .catch((e) => Promise.reject(e));
+                        return (
+                            b
+                                .then(async (b) => (b ? (res.push(await cur), recur()) : res))
+                                //.then(async (b) => (b ? (res.push(await cur), recur()) : recur()))
+                                .catch((e) => Promise.reject(e))
+                        );
                     }
                     res.push(cur);
                 }
@@ -595,10 +625,10 @@ namespace CommonUI {
         /**
          * @description reduce 함수는 명령형 프로그램의 누산기 부분을 추상화한 함수임
          * 누산기(accumulator): 컴퓨터의 중앙처리장치(CPU)의 중간 계산 결과가 저장되는 레지스터임
-         * @param {(acc: U, cur: T) => U} f 콜백함수: U타입(누산기) T타입(이터레이터에서 꺼낸 현재 값) 을 각각받아 로직실행후 U타입 리턴(T타입 을 U타입에 녹이야됨)
+         * @param {(acc: U, cur: T) => U} f 콜백함수: U타입(누산기) T타입(이터레이터에서 꺼낸 현재 값) 을 각각받아 로직실행후 U타입 리턴(T타입 을 U타입(누산된 타입)에 녹이야됨)
          * @param {U} acc U타입 시작 값(초기값으로 누산이 되는 값)
          * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
-         * @return{U} U타입
+         * @return{U} U타입: 최종 누산되어진 타입(값) 리턴!!
          */
         reduce<T, U>(f: (acc: U, cur: T) => U, acc: U, iter: Iterable<T>): U {
             /**
@@ -620,10 +650,11 @@ namespace CommonUI {
         },
         /**
          * @description 리스프(Lisp, LISP) 혹은 리습, LISt Processing"(리스트(연결리스트) 프로세싱)을 추상화
-         * @param {Iterable<T>} iter T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
-         * @param {((acc: Iterable<T>)=>any)[]} fs acc누산기(이터러블객체) 파라미터 값을 받아 로직처리하는 함수 array객체: 각 함수들은 실행후 리턴된 값이 누산된다!!
+         * @param {Iterable<T>} acc T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
+         * @param {((a: Iterable<T> | T) => T)[]} fs acc누산기 파라미터 값을 받아 로직처리하는 함수들을 담은 array객체: 각 함수(커리로 합성된 map, filter등등)들은 실행후 리턴된 값이 누산된다!!
+         * @returns {T} acc 누산기 값을 리턴!! Iterable<T>의 리스트 아이템들을 각각 누산시킴!
          */
-        Lisp<T>(acc: Iterable<T> | Promise<T>, ...fs: ((a: Iterable<T> | T) => any)[]) {
+        Lisp<T>(acc: Iterable<T>, ...fs: ((a: Iterable<T>) => any)[]): Iterable<T> | Generator<T> {
             //fs(f함수들) 아규먼트(인자)배열로 받아서 리듀스 돌림
 
             //fs이터러블의 각 함수들을 꺼내어 누산기를 파라미터로 넘기고 실행!
@@ -632,23 +663,27 @@ namespace CommonUI {
 
         /**
          * @description 함수합성하기 위한 콜백함수! 두번째 인자로 함수를 받아서 acc를 가공하여 리턴한다!!
-         * @param {Iterable<T> | Promise<T> | T} acc 누산값
-         * @param {(a: Iterable<T> | T) => any} f 콜백함수!
-         * @returns fc함수의 리턴값! acc 가 Promise이면 then에서 값을꺼내어 합수합성, acc 가 Promise아니면 일반 함수합성!
+         * @param {T} acc 누산값및 초기값
+         * @param {(a: T) => any} f 콜백함수! reduce를 통해 순서대로 꺼내진 콜백함수! 파라미터로는 T누산값을 받음!
+         * @returns acc 가 Promise<T>면 .then(f)을 연결한  Promise를 리턴!, acc 가 T면 f(acc)로 평가된 값 리턴!
          */
-        Synthesis<T>(acc: Iterable<T> | Promise<T> | T, f: (a: Iterable<T> | T) => any) {
+        Synthesis<T>(acc: T, f: (a: T) => any): T {
             //console.log('Promise chk:', acc instanceof Promise, '누산된 값', acc);
             //프라미스(future 모나드)인 경우 then에서 값을 꺼내어 함수합성을함! ,
-            //한번 프라미스로 리턴되면 리턴값은 프라미스로 고정됨 즉, acc.then(fc).then(fc).then(fc)....로 이어져나감!
+            //한번 프라미스로 리턴되면 리턴값은 프라미스로 고정됨 즉, acc.then(f).then(f).then(f)....로 이어져나감!
+            //프라미스가 아닌경우는....F(F(F(F(f(acc)))))....로 이어져나감!
             return acc instanceof Promise ? acc.then(f) : f(acc);
         },
     };
 
-    export const FilterCurry = Fn.curry(Fn.filter);
-    export const MapCurry = Fn.curry(Fn.map);
-    export const TakeCurry = Fn.curry(Fn.take);
-    export const TakeWhileCurry = Fn.curry(Fn.takeWhile);
-    export const ReduceCurry = Fn.curry(Fn.reduce);
+    /**
+     * @description curry함수와 합성된 함수 축약!
+     */
+    export const FilterCurry: <T, U>(a: (cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.filter);
+    export const MapCurry: <T, U>(a: (cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.map);
+    export const TakeCurry: <T>(length: T, ...bs: any[]) => any = Fn.curry(Fn.take);
+    export const TakeWhileCurry: <T, U>(a: (cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.takeWhile);
+    export const ReduceCurry: <T, U>(f: (acc: U, cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.reduce);
 }
 export default CommonUI;
 
