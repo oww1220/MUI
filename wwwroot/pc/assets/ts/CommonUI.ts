@@ -651,10 +651,13 @@ namespace CommonUI {
         /**
          * @description 리스프(Lisp, LISP) 혹은 리습, LISt Processing"(리스트(연결리스트) 프로세싱)을 추상화
          * @param {Iterable<T>} acc T타입 으로 구성된 이터러블객체(제너레이터객체, array객체, string객체 등등)
-         * @param {((a: Iterable<T> | T) => T)[]} fs acc누산기 파라미터 값을 받아 로직처리하는 함수들을 담은 array객체: 각 함수(커리로 합성된 map, filter등등)들은 실행후 리턴된 값이 누산된다!!
+         * @param {((a: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T>)[]} fs acc누산기 파라미터 값을 받아 로직처리하는 함수들을 담은 array객체: 각 함수(map, filter등등)들은 커리로 합성되어서 리턴된 고차함수임!-기존(map, filter등등)함수의 2번째 인자인 이터및 제너레이터를 받는 고차함수
          * @returns {T} acc 누산기 값을 리턴!! Iterable<T>의 리스트 아이템들을 각각 누산시킴!
          */
-        Lisp<T>(acc: Iterable<T>, ...fs: ((a: Iterable<T>) => any)[]): Iterable<T> | Generator<T> {
+        Lisp<T>(
+            acc: Iterable<T>,
+            ...fs: ((a: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T>)[]
+        ): Iterable<T> | Generator<T> | Promise<T> {
             //fs(f함수들) 아규먼트(인자)배열로 받아서 리듀스 돌림
 
             //fs이터러블의 각 함수들을 꺼내어 누산기를 파라미터로 넘기고 실행!
@@ -679,11 +682,26 @@ namespace CommonUI {
     /**
      * @description curry함수와 합성된 함수 축약!
      */
-    export const FilterCurry: <T, U>(a: (cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.filter);
-    export const MapCurry: <T, U>(a: (cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.map);
-    export const TakeCurry: <T>(length: T, ...bs: any[]) => any = Fn.curry(Fn.take);
-    export const TakeWhileCurry: <T, U>(a: (cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.takeWhile);
-    export const ReduceCurry: <T, U>(f: (acc: U, cur: T) => U | Promise<U>, ...bs: any[]) => any = Fn.curry(Fn.reduce);
+    export const FilterCurry: <T, U>(
+        f: (cur: T) => U | Promise<U>,
+        ...bs: any[]
+    ) => (iter: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T> = Fn.curry(Fn.filter);
+    export const MapCurry: <T, U>(
+        f: (cur: T) => U | Promise<U>,
+        ...bs: any[]
+    ) => (iter: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T> = Fn.curry(Fn.map);
+    export const TakeCurry: <T>(
+        length: T,
+        ...bs: any[]
+    ) => (iter: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T> = Fn.curry(Fn.take);
+    export const TakeWhileCurry: <T, U>(
+        f: (cur: T) => U | Promise<U>,
+        ...bs: any[]
+    ) => (iter: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T> = Fn.curry(Fn.takeWhile);
+    export const ReduceCurry: <T, U>(
+        f: (acc: U, cur: T) => U | Promise<U>,
+        ...bs: any[]
+    ) => (iter: Iterable<T> | Generator<T>) => Iterable<T> | Generator<T> | Promise<T> = Fn.curry(Fn.reduce);
 }
 export default CommonUI;
 
