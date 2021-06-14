@@ -530,7 +530,7 @@ namespace CommonUI {
             for (const cur of iter) {
                 //console.log('filter', f(cur));
                 //if (f(cur)) yield cur;
-                const b = this.Synthesis(cur, f);
+                const b = this.Composite(cur, f);
                 if (b instanceof Promise) yield (b as any).then((b: U) => (b ? cur : Promise.reject(this.nop)));
                 else if (b) yield cur;
             }
@@ -545,7 +545,7 @@ namespace CommonUI {
         *LMap<T>(f: (cur: T) => T, iter: Iterable<T>): Generator<T> {
             for (const cur of iter) {
                 //for of 는 암묵적으로 Generator(Generator함수가 반환한 객체) || Iterator(Iterable의 Symbol.iterator메소드가 반환한 객체) next메소드 실행
-                yield this.Synthesis(cur, f);
+                yield this.Composite(cur, f);
             }
         },
 
@@ -591,7 +591,7 @@ namespace CommonUI {
             return (function recur() {
                 //console.log('run!!')
                 for (const cur of iter) {
-                    const b = Fn.Synthesis(cur, f);
+                    const b = Fn.Composite(cur, f);
                     //console.log('조건', b, cur);
                     if (!b) return res; //true false 확인
                     if (b instanceof Promise) {
@@ -621,7 +621,7 @@ namespace CommonUI {
             return (function recur() {
                 //console.log('run!!')
                 for (const cur of iter) {
-                    const b = Fn.Synthesis(cur, f);
+                    const b = Fn.Composite(cur, f);
                     //console.log('조건', b, cur);
                     if (!b) continue; //true false 확인
                     if (b instanceof Promise) {
@@ -676,16 +676,16 @@ namespace CommonUI {
             //fs(f함수들) 아규먼트(인자)배열로 받아서 리듀스 돌림
 
             //fs이터러블의 각 함수들을 꺼내어 누산기를 파라미터로 넘기고 실행!
-            return this.reduce(this.Synthesis, acc, fs);
+            return this.reduce(this.Composite, acc, fs);
         },
 
         /**
-         * @description 함수합성하기 위한 콜백함수! 두번째 인자로 함수를 받아서 acc를 가공하여 리턴한다!!
+         * @description 함수합성하기 위한 고차함수! 두번째 인자로 함수를 받아서 acc를 가공하여 리턴한다!!
          * @param {T} acc 누산값및 초기값
          * @param {(a: T) => any} f 콜백함수! reduce를 통해 순서대로 꺼내진 콜백함수! 파라미터로는 T누산값을 받음!
          * @returns acc 가 Promise<T>면 .then(f)을 연결한  Promise를 리턴!, acc 가 T면 f(acc)로 평가된 값 리턴!
          */
-        Synthesis<T>(acc: T, f: (a: T) => any): T {
+        Composite<T>(acc: T, f: (a: T) => any): T {
             //console.log('Promise chk:', acc instanceof Promise, '누산된 값', acc);
             //프라미스(future 모나드)인 경우 then에서 값을 꺼내어 함수합성을함! ,
             //한번 프라미스로 리턴되면 리턴값은 프라미스로 고정됨 즉, acc.then(f).then(f).then(f)....로 이어져나감!
