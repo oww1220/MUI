@@ -689,6 +689,7 @@ namespace CommonUI {
             //console.log('Promise chk:', acc instanceof Promise, '누산된 값', acc);
             //프라미스(future 모나드)인 경우 then에서 값을 꺼내어 함수합성을함! ,
             //한번 프라미스로 리턴되면 리턴값은 프라미스로 고정됨 즉, acc.then(f).then(f).then(f)....로 이어져나감!
+            // then 함수의 리턴값이 Promise 임!!
             //프라미스가 아닌경우는....F(F(F(F(f(acc)))))....로 이어져나감!
             return acc instanceof Promise ? acc.then(f) : f(acc);
         },
