@@ -560,14 +560,21 @@ namespace CommonUI {
 
             (iter as any) = iter[Symbol.iterator]();
             (iter as any).return = null; //비동기가 일어났을때 끊내지 않겠다! 즉 아래 재귀호출함수에게 end조건을 맡김!
+            //null 값 안넣으면 아래 재귀호출 한번만 실행됨;;; 즉 순회를 전부다 해버림;
             return (function recur() {
-                //console.log('run!!')
+                console.log('run!!');
                 for (const cur of iter) {
                     //console.log('cur : ', cur)
                     if (cur instanceof Promise) {
-                        //console.log('promise')
+                        //console.log('promise');
+
+                        // Promise 재귀는 Promise.resolve(1).then(a => Promise.resolve(a+1).then(b=>Promise.resolve(b+1).then(c=>c+1)));  이런형태로구현되어짐;;;;
                         return cur
-                            .then((a) => ((res.push(a), res).length == length ? res : recur()))
+                            .then((a) =>
+                                (res.push(a), res).length == length
+                                    ? (console.log('재귀완료 값!:', res), res)
+                                    : recur(),
+                            )
                             .catch((e) => (e == Fn.nop ? recur() : Promise.reject(e)));
                     }
                     res.push(cur);
