@@ -45,29 +45,51 @@ $(() => {
             //reject(new Error('에러다!'));
         });
     };
-    Async.generaterRun(function* () {
+
+    const actionAsync = Async.generaterRun(function* () {
         //log('!!!!!!!!!!!!start');
         try {
             const delay1 = yield Async.wait(2000, 'delay2초');
-            //log(delay1);
+            log(delay1);
 
             const runVal11 = yield Async.promise(promiseCallback);
-            //log(runVal11);
+            log(runVal11);
 
             const runVal2 = yield 'test2';
-            //log(runVal2);
+            log(runVal2);
+
+            const runVal3 = yield 'test3';
+            log(runVal3);
+
+            const runVal4 = yield 'test4';
+            log(runVal4);
 
             const delay2 = yield Async.wait(3000, 'delay3초');
-            //log(delay2);
+            log(delay2);
 
             const runVal22 = yield Async.promise(promiseCallback2);
+            log(runVal22);
         } catch (err) {
             log(err.message);
         }
-        //log(runVal22);
 
         //log('end!!!!!!!!!!!!');
     });
+
+    console.log('actionAsync', actionAsync.then(log));
+
+    function* testGeneraterF() {
+        const delay1 = yield Async.wait(2000, 'delay2초');
+        const a = yield 10;
+        const b = yield `${a} + 10`;
+
+        return 10 + a + b;
+    }
+
+    const testGenerater = testGeneraterF();
+    console.log('generater next!!!', testGenerater.next().value);
+    console.log('generater next!!!', testGenerater.next().value);
+    console.log('generater next!!!', testGenerater.next(10).value);
 
     //(Array.prototype as any).mapToNumbers = function () {
     ///* ... */

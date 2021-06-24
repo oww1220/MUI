@@ -442,17 +442,22 @@ namespace CommonUI {
     export const Async = {
         generaterRun(gen: () => Generator) {
             const iter = gen();
-            (function iterate({ value, done }) {
+            //let flag = 0;
+            //console.log('%c--start generaterRun!--', 'color:green');
+            return (function iterate({ value, done }) {
+                //const num = ++flag
+                //console.log('스택 푸쉬 : ', num);
                 if (done) return value;
                 if (value.constructor === Promise) {
                     /*
                         프라미스 객체가 이행(Fulfilled)상태면 -> then 핸들러 샐행 : resolve 된 값을 받아 멈춰진 yield 표현식 변수에 값을 넣어주고 다음 yield까지 코드 실행(재귀호출로)! 
                         프라미스 객체가 실패(Rejected) 상태면 -> catch 핸들러 샐행 : Generator.throw 메소드를 실행하여 제너레이터에 에러를 알려줌!
                     */
-                    value.then((data) => iterate(iter.next(data))).catch((err) => iter.throw(err));
+                    return value.then((data) => iterate(iter.next(data))).catch((err) => iter.throw(err));
                 } else {
-                    iterate(iter.next(value));
+                    return iterate(iter.next(value));
                 }
+                //console.log('스택 팝 : ', num);
             })(iter.next());
         },
         wait(ms: number, value?: any) {
@@ -570,11 +575,7 @@ namespace CommonUI {
 
                         // Promise 재귀는 Promise.resolve(1).then(a => Promise.resolve(a+1).then(b=>Promise.resolve(b+1).then(c=>c+1)));  이런형태로구현되어짐;;;;
                         return cur
-                            .then((a) =>
-                                (res.push(a), res).length == length
-                                    ? (console.log('재귀완료 값!:', res), res)
-                                    : recur(),
-                            )
+                            .then((a) => ((res.push(a), res).length == length ? res : recur()))
                             .catch((e) => (e == Fn.nop ? recur() : Promise.reject(e)));
                     }
                     res.push(cur);
