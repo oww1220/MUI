@@ -440,8 +440,9 @@ namespace CommonUI {
         },
     };
     export const Async = {
-        generaterRun(gen: () => Generator) {
-            const iter = gen();
+        generaterRun(iter: Generator) {
+            //generaterRun(gen: () => Generator) {
+            //const iter = gen();
             //let flag = 0;
             //console.log('%c--start generaterRun!--', 'color:green');
             return (function iterate({ value, done }) {

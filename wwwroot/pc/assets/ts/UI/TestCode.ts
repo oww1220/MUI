@@ -46,7 +46,7 @@ $(() => {
         });
     };
 
-    const actionAsync = Async.generaterRun(function* () {
+    function* testEvent01() {
         //log('!!!!!!!!!!!!start');
         try {
             const delay1 = yield Async.wait(2000, 'delay2초');
@@ -74,9 +74,48 @@ $(() => {
         }
 
         //log('end!!!!!!!!!!!!');
+    }
+
+    let cashGenerator: any = null;
+    $('.startBtn_0').on('click', () => {
+        if (cashGenerator) cashGenerator.return();
+        cashGenerator = testEvent01();
+        Async.generaterRun(cashGenerator);
+    });
+    $('.endBtn_0').on('click', () => {
+        if (cashGenerator) cashGenerator.return();
+    });
+
+    /*
+    const actionAsync = Async.generaterRun(function* () {
+        try {
+            const delay1 = yield Async.wait(2000, 'delay2초');
+            log(delay1);
+
+            const runVal11 = yield Async.promise(promiseCallback);
+            log(runVal11);
+
+            const runVal2 = yield 'test2';
+            log(runVal2);
+
+            const runVal3 = yield 'test3';
+            log(runVal3);
+
+            const runVal4 = yield 'test4';
+            log(runVal4);
+
+            const delay2 = yield Async.wait(3000, 'delay3초');
+            log(delay2);
+
+            const runVal22 = yield Async.promise(promiseCallback2);
+            log(runVal22);
+        } catch (err) {
+            log(err.message);
+        }
     });
 
     console.log('actionAsync', actionAsync.then(log));
+    */
 
     function* testGeneraterF() {
         const delay1 = yield Async.wait(2000, 'delay2초');
