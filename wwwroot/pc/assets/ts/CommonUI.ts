@@ -440,7 +440,7 @@ namespace CommonUI {
         },
     };
     export const Async = {
-        generaterRun(iter: Generator) {
+        generaterRun<T>(iter: Generator<T>): T | Promise<T> {
             //generaterRun(gen: () => Generator) {
             //const iter = gen();
             //let flag = 0;

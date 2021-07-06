@@ -32,59 +32,67 @@ $(() => {
     log(ddd);
     //log(ddd);
 
-    //비동기 함수들 --> 동기적으로 실행 예시!!
-    const promiseCallback: PromiseCallback = (resolve, reject) => {
-        $('.col:first-child h2').animate({ 'margin-left': 100 }, 5000, () => {
-            resolve(true);
-            //reject(new Error('에러다!'));
-        });
-    };
-    const promiseCallback2: PromiseCallback = (resolve, reject) => {
-        $('.col:first-child h2').animate({ 'margin-left': 0 }, 5000, () => {
-            resolve(true);
-            //reject(new Error('에러다!'));
-        });
-    };
+    (() => {
+        let cashGenerator: null | Generator = null;
+        let eventChkFlag = true;
 
-    function* testEvent01() {
-        //log('!!!!!!!!!!!!start');
-        try {
-            const delay1 = yield Async.wait(2000, 'delay2초');
-            log(delay1);
+        //비동기 함수들 --> 동기적으로 실행 예시!!
+        const promiseCallback: PromiseCallback = (resolve, reject) => {
+            $('.col:first-child h2').animate({ 'margin-left': 100 }, 5000, () => {
+                resolve(true);
+                //reject(new Error('에러다!'));
+            });
+        };
+        const promiseCallback2: PromiseCallback = (resolve, reject) => {
+            $('.col:first-child h2').animate({ 'margin-left': 0 }, 5000, () => {
+                resolve(true);
+                //reject(new Error('에러다!'));
+            });
+        };
 
-            const runVal11 = yield Async.promise(promiseCallback);
-            log(runVal11);
+        function* testEvent01() {
+            //log('!!!!!!!!!!!!start');
+            eventChkFlag = false;
+            try {
+                const delay1 = yield Async.wait(2000, 'delay2초');
+                log(delay1);
 
-            const runVal2 = yield 'test2';
-            log(runVal2);
+                const runVal11 = yield Async.promise(promiseCallback);
+                log(runVal11);
 
-            const runVal3 = yield 'test3';
-            log(runVal3);
+                const runVal2 = yield 'test2';
+                log(runVal2);
 
-            const runVal4 = yield 'test4';
-            log(runVal4);
+                const runVal3 = yield 'test3';
+                log(runVal3);
 
-            const delay2 = yield Async.wait(3000, 'delay3초');
-            log(delay2);
+                const runVal4 = yield 'test4';
+                log(runVal4);
 
-            const runVal22 = yield Async.promise(promiseCallback2);
-            log(runVal22);
-        } catch (err) {
-            log(err.message);
+                const delay2 = yield Async.wait(3000, 'delay3초');
+                log(delay2);
+
+                const runVal22 = yield Async.promise(promiseCallback2);
+                log(runVal22);
+            } catch (err) {
+                log(err.message);
+            }
+            eventChkFlag = true;
+            //log('end!!!!!!!!!!!!');
         }
 
-        //log('end!!!!!!!!!!!!');
-    }
-
-    let cashGenerator: any = null;
-    $('.startBtn_0').on('click', () => {
-        if (cashGenerator) cashGenerator.return();
-        cashGenerator = testEvent01();
-        Async.generaterRun(cashGenerator);
-    });
-    $('.endBtn_0').on('click', () => {
-        if (cashGenerator) cashGenerator.return();
-    });
+        $('.startBtn_0').on('click', () => {
+            //if (cashGenerator) cashGenerator.return();
+            console.log(eventChkFlag);
+            if (!eventChkFlag) return;
+            cashGenerator = testEvent01();
+            Async.generaterRun(cashGenerator);
+        });
+        $('.endBtn_0').on('click', () => {
+            if (cashGenerator) cashGenerator.return(true);
+            if (!eventChkFlag) eventChkFlag = true;
+        });
+    })();
 
     /*
     const actionAsync = Async.generaterRun(function* () {
