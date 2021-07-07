@@ -32,6 +32,23 @@ $(() => {
     log(ddd);
     //log(ddd);
 
+    //디바운스 쓰로쓸링 테스트
+    const TestPromise2 = (timeout: number) =>
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, timeout);
+        });
+
+    const DTestPromise2 = Async.debounce(TestPromise2, 1000);
+    const TTestPromise2 = Async.throttling(TestPromise2, 2000);
+
+    $('h2').on('click', () => {
+        console.log('test!!');
+        DTestPromise2(1000).then(console.log);
+        //TTestPromise2(1000).then(console.log);
+    });
+
     (() => {
         let cashGenerator: null | Generator = null;
         let eventChkFlag = true;

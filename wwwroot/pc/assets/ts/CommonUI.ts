@@ -500,6 +500,32 @@ namespace CommonUI {
                 callback(resolve, reject);
             });
         },
+        debounce(f: (...args: any[]) => any, interval: number) {
+            let timer: ReturnType<typeof setTimeout> | null = null;
+            return (...args: any[]) => {
+                clearTimeout(timer!);
+                return new Promise((resolve) => {
+                    timer = setTimeout(
+                        () => resolve(f(...args)), //이함수 리턴값이 프람미스면 리턴값이 이함수 리턴값으로됨
+                        //예시 Promise.resolve(Promise.resolve(1)) 같은원리로 동작
+                        interval,
+                    );
+                });
+            };
+        },
+        throttling(f: (...args: any[]) => any, interval: number) {
+            let timer: ReturnType<typeof setTimeout> | null = null;
+            return (...args: any[]) => {
+                return new Promise((resolve) => {
+                    if (!timer) {
+                        timer = setTimeout(() => {
+                            resolve(f(...args));
+                            timer = null;
+                        }, interval);
+                    }
+                });
+            };
+        },
     };
 
     //함수형 프로그래밍 공부용 모듈!
