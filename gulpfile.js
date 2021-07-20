@@ -11,6 +11,16 @@ const sourcemaps = require('gulp-sourcemaps');
 /*view server*/
 const browserSync = require('browser-sync').create();
 
+//서버실행
+browserSync.init({
+    //logLevel: 'debug',
+    port: 3333,
+    open: false,
+    directory: true,
+    server: './wwwroot/',
+    browser: 'google chrome',
+});
+
 /*scss, css*/
 const sass = require('gulp-sass');
 sass.compiler = require('node-sass');
@@ -144,16 +154,6 @@ gulp.task('clean', ()=>
 
 // watch: 소스 옵져빙(소스변경 감지해서 task실행및 서버 재시작)
 gulp.task('watch', ()=> {
-
-    //서버실행
-    browserSync.init({
-        //logLevel: 'debug',
-        port: 3333,
-        open: false,
-        directory: true,
-        server: './wwwroot/',
-        browser: 'google chrome',
-    });
 
     // watch sass
     gulp.watch(
